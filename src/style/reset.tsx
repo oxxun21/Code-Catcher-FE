@@ -3,14 +3,14 @@ import { css } from "@emotion/react";
 const reset = css`
   :root {
     /* 메인 색상 확정되면 넣어주세요 */
-    /* --main-color: #49ed3f;
+    --main-color: #49ed3f;
     --sub-color: #3fd636;
     --gray50-color: #f9f9f9;
     --gray100-color: #f2f2f2;
     --gray200-color: #e2e2e2;
     --gray300-color: #d3d3d3;
-    --gray400-color: #9c9c9c;
-    --gray500-color: #626262; */
+    --gray400-color: #989898;
+    --gray500-color: #32323a;
     --background-color: #17171b;
   }
 
