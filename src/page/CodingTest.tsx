@@ -1,10 +1,12 @@
-import { CodeEditor, SelectLang, TestDescSection, TestResultSection } from "../components";
+import { CodeEditor, Modal, SelectLang, TestDescSection, TestResultSection } from "../components";
 import styled from "@emotion/styled";
 import gutter_horizontal from "../assets/gutter_horizontal.svg";
 import gutter_vertical from "../assets/gutter_vertical.svg";
 import { useDraggable } from "../hook";
+import { useState } from "react";
 
 export const CodingTest = () => {
+  const [isModal, setIsModal] = useState(true);
   const {
     width: descWidth,
     height: editorHeight,
@@ -13,6 +15,10 @@ export const CodingTest = () => {
   } = useDraggable({ initialWidth: 40, initialHeight: 60 });
 
   const isMedia = window.innerWidth <= 768;
+
+  const handleClose = () => {
+    setIsModal(prev => !prev);
+  };
 
   return (
     <>
@@ -33,8 +39,13 @@ export const CodingTest = () => {
       <ButtonContain>
         <button disabled>초기화</button>
         <button disabled>코드 실행</button>
-        <button>제출 후 채점하기</button>
+        <button onClick={() => setIsModal(true)}>제출 후 채점하기</button>
       </ButtonContain>
+      {isModal && (
+        <Modal onClose={handleClose}>
+          <p>Hi</p>
+        </Modal>
+      )}
     </>
   );
 };
@@ -59,7 +70,6 @@ const Contain = styled.div`
   display: flex;
   background-color: var(--gray500-color);
   height: 81vh;
-  position: relative;
   @media only screen and (max-width: 768px) {
     flex-direction: column;
     height: 100%;
@@ -73,9 +83,6 @@ const CodeContain = styled.div`
 `;
 
 const ButtonContain = styled.div`
-  position: absolute;
-  bottom: 0;
-  right: 0;
   width: 100%;
   padding: 12px 24px;
   display: flex;
