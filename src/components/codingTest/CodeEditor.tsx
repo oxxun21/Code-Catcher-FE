@@ -3,7 +3,7 @@ import Editor, { OnMount, OnChange } from "@monaco-editor/react";
 import { editor } from "monaco-editor";
 import styled from "@emotion/styled";
 
-export const CodeEditor = () => {
+export const CodeEditor = (editorHeight: { editorHeight: number }) => {
   const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
   const [language, setLanguage] = useState("java");
 
@@ -42,7 +42,7 @@ export const CodeEditor = () => {
 
   // 구역 잡기 css 수정 필요
   return (
-    <CodeEditContain>
+    <CodeEditContain style={{ width: `${editorHeight}%` }}>
       <LangSelect>
         <select value={language} onChange={handleLanguageChange}>
           <option value="java">Java</option>
@@ -72,7 +72,7 @@ export const CodeEditor = () => {
 };
 
 const CodeEditContain = styled.section`
-  min-height: calc(60% - 7px);
+  min-height: 20%;
   overflow: hidden;
 `;
 

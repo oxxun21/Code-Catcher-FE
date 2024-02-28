@@ -1,7 +1,17 @@
 import { CodeEditor } from "../components";
 import styled from "@emotion/styled";
+import gutter_horizontal from "../assets/gutter_horizontal.svg";
+import gutter_vertical from "../assets/gutter_vertical.svg";
+import { useDraggable } from "../hook";
 
 export const CodingTest = () => {
+  const {
+    width: descWidth,
+    height: editorHeight,
+    startDragHorizontal,
+    startDragVertical,
+  } = useDraggable({ initialWidth: 40, initialHeight: 60 });
+
   return (
     <>
       <PageHeader>
@@ -9,7 +19,7 @@ export const CodingTest = () => {
         <span>Lv.1</span>
       </PageHeader>
       <Contain>
-        <DescSection>
+        <DescSection style={{ width: `${descWidth}%` }}>
           <DescArticle>
             <strong>문제 설명</strong>
             <p>정수 어쩌구랑 어쩌구가 주어질 때, return 구하는 solution 함수를 완성해주세요</p>
@@ -42,10 +52,12 @@ export const CodingTest = () => {
             </table>
           </DescArticle>
         </DescSection>
-        <CodeContain>
-          <CodeEditor />
+        <Gutter orientation="horizontal" onMouseDown={startDragHorizontal} />
+        <CodeContain style={{ width: `${100 - descWidth}%` }}>
+          <CodeEditor editorHeight={editorHeight} />
           {/* 컴포넌트 분리 */}
-          <ResultContain>
+          <Gutter orientation="vertical" onMouseDown={startDragVertical} />
+          <ResultContain style={{ height: `${100 - editorHeight}%` }}>
             <strong>실행 결과</strong>
             <article>실행 결과가 여기에 표시됩니다.</article>
           </ResultContain>
@@ -79,14 +91,13 @@ const PageHeader = styled.div`
 const Contain = styled.div`
   display: flex;
   background-color: var(--gray500-color);
+  height: 81vh;
+  position: relative;
 `;
 
 const DescSection = styled.section`
-  min-width: calc(40% - 12px);
-  width: 40%;
+  min-width: 30%;
   padding: 36px 28px;
-  /* gutter 추가 후엔 변경 */
-  border-right: 2px solid var(--background-color);
 `;
 
 const DescArticle = styled.article`
@@ -117,25 +128,22 @@ const DescArticle = styled.article`
 `;
 
 const CodeContain = styled.div`
+  min-width: 30%;
   display: flex;
   flex-direction: column;
-  width: 60%;
 `;
 
 const ResultContain = styled.section`
-  // 이거 풀면 높이 제어가 안됨
-  min-height: calc(40% - 7px);
+  min-height: 20%;
   & > strong {
-    border: 2px solid var(--background-color);
-    border-right: 0;
-    border-left: 0;
     display: block;
     font-size: 0.875rem;
-    padding: 24px; // gutter 추가 부분
+    padding: 0 24px 20px 24px;
     color: var(--gray400-color);
     font-weight: 600;
   }
   & > article {
+    border-top: 2px solid var(--background-color);
     padding: 24px;
     color: var(--gray400-color);
     font-size: 0.75rem;
@@ -143,6 +151,10 @@ const ResultContain = styled.section`
 `;
 
 const ButtonContain = styled.div`
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 100%;
   padding: 12px 24px;
   display: flex;
   justify-content: flex-end;
@@ -155,10 +167,21 @@ const ButtonContain = styled.div`
     color: #000;
     font-weight: 600;
     border-radius: 4px;
-    /* font-family:; */
-
     &:disabled {
       background-color: #757575;
     }
   }
+`;
+
+const Gutter = styled.div<{ orientation: "vertical" | "horizontal" }>`
+  width: ${props => props.orientation === "horizontal" && "24px"};
+  height: ${props => props.orientation === "vertical" && "24px"};
+  background: ${props =>
+    props.orientation === "horizontal"
+      ? `url(${gutter_horizontal}) no-repeat center`
+      : `url(${gutter_vertical}) no-repeat center`};
+  background-size: ${props => (props.orientation === "horizontal" ? "auto/40px" : "40px/auto")};
+  border-right: ${props => props.orientation === "horizontal" && "2px solid var(--background-color)"};
+  border-top: ${props => props.orientation === "vertical" && "2px solid var(--background-color)"};
+  cursor: ${props => (props.orientation === "horizontal" ? "e-resize" : "n-resize")};
 `;
