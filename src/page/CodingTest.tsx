@@ -4,9 +4,10 @@ import gutter_horizontal from "../assets/gutter_horizontal.svg";
 import gutter_vertical from "../assets/gutter_vertical.svg";
 import { useDraggable } from "../hook";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 export const CodingTest = () => {
-  const [isModal, setIsModal] = useState(true);
+  const [isModal, setIsModal] = useState(false);
   const {
     width: descWidth,
     height: editorHeight,
@@ -43,7 +44,15 @@ export const CodingTest = () => {
       </ButtonContain>
       {isModal && (
         <Modal onClose={handleClose}>
-          <p>Hi</p>
+          <ModalContain>
+            <p>이미지 자리</p>
+            <strong>10 EXP 획득!</strong>
+            <p>오늘의 첫번째 테스트를 완료했어요</p>
+            <div>
+              <Link to="/">홈으로</Link>
+              <Link to="/">Chat GPT 답안 보기</Link>
+            </div>
+          </ModalContain>
         </Modal>
       )}
     </>
@@ -118,5 +127,36 @@ const Gutter = styled.div<{ orientation: "vertical" | "horizontal" }>`
   cursor: ${props => (props.orientation === "horizontal" ? "e-resize" : "n-resize")};
   @media only screen and (max-width: 768px) {
     display: none;
+  }
+`;
+
+const ModalContain = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 26px 20px;
+  font-size: 1rem;
+  & > strong {
+    font-size: 1.375rem;
+    font-weight: 600;
+    margin-top: 12px;
+  }
+  & > div {
+    width: 100%;
+    margin-top: 24px;
+    display: flex;
+    gap: 20px;
+    & > a {
+      width: 50%;
+      border-radius: 20px;
+      background-color: #757575;
+      padding: 16px;
+      font-size: 0.875rem;
+      text-align: center;
+      &:last-of-type {
+        background-color: #222;
+      }
+    }
   }
 `;
