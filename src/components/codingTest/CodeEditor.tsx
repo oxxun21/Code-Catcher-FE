@@ -1,15 +1,11 @@
-import { useRef, useCallback, useState } from "react";
+import { useRef, useCallback } from "react";
 import Editor, { OnMount, OnChange } from "@monaco-editor/react";
 import { editor } from "monaco-editor";
 import styled from "@emotion/styled";
+import { SelectLang } from "./SelectLang";
 
 export const CodeEditor = (editorHeight: { editorHeight: number }) => {
   const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
-  const [language, setLanguage] = useState("java");
-
-  const handleLanguageChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setLanguage(event.target.value);
-  };
 
   const handleEditorChange: OnChange = useCallback((value?: string, event?: any) => {
     console.log("Here is the current model value:", value);
@@ -43,14 +39,9 @@ export const CodeEditor = (editorHeight: { editorHeight: number }) => {
   // 구역 잡기 css 수정 필요
   return (
     <CodeEditContain style={{ width: `${editorHeight}%` }}>
-      <LangSelect>
-        <select value={language} onChange={handleLanguageChange}>
-          <option value="java">Java</option>
-          <option value="python">Python</option>
-        </select>
-      </LangSelect>
+      <SelectLang />
       <Editor
-        defaultLanguage="javascript"
+        defaultLanguage="java"
         defaultValue="// 코드를 작성해주세요"
         options={{
           fontSize: 14,
@@ -74,18 +65,4 @@ export const CodeEditor = (editorHeight: { editorHeight: number }) => {
 const CodeEditContain = styled.section`
   min-height: 20%;
   overflow: hidden;
-`;
-
-const LangSelect = styled.article`
-  width: 100%;
-  padding: 14px 16px;
-  margin-bottom: 20px;
-  outline: 2px solid var(--background-color);
-  & > select {
-    background-color: #2c2c34;
-    border: none;
-    color: #fff;
-    padding: 10px 20px;
-    border-radius: 6px;
-  }
 `;
