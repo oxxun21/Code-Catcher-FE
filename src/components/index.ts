@@ -1,3 +1,4 @@
 import SplashCarousel from "./Carousel/SplashCarousel";
+import Header from "./common/Header";
 
-export { SplashCarousel };
+export { Header, SplashCarousel };
