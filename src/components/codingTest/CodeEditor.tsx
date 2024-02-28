@@ -2,9 +2,8 @@ import { useRef, useCallback } from "react";
 import Editor, { OnMount, OnChange } from "@monaco-editor/react";
 import { editor } from "monaco-editor";
 import styled from "@emotion/styled";
-import { SelectLang } from "./SelectLang";
 
-export const CodeEditor = (editorHeight: { editorHeight: number }) => {
+export const CodeEditor = ({ editorHeight }: { editorHeight: number }) => {
   const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
 
   const handleEditorChange: OnChange = useCallback((value?: string, event?: any) => {
@@ -36,10 +35,8 @@ export const CodeEditor = (editorHeight: { editorHeight: number }) => {
     monacoInstance.editor.setTheme("customTheme");
   }, []);
 
-  // 구역 잡기 css 수정 필요
   return (
-    <CodeEditContain style={{ width: `${editorHeight}%` }}>
-      <SelectLang />
+    <CodeEditContain style={{ height: `${editorHeight}%` }}>
       <Editor
         defaultLanguage="java"
         defaultValue="// 코드를 작성해주세요"
@@ -57,12 +54,11 @@ export const CodeEditor = (editorHeight: { editorHeight: number }) => {
         onMount={handleEditorDidMount}
         onChange={handleEditorChange}
       />
-      {/* <button onClick={showValue}>Show Value</button> */}
     </CodeEditContain>
   );
 };
 
 const CodeEditContain = styled.section`
   min-height: 20%;
-  overflow: hidden;
+  overflow: auto;
 `;

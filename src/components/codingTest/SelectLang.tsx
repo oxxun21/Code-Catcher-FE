@@ -40,8 +40,8 @@ export const SelectLang = () => {
 const LangSelect = styled.article`
   width: 100%;
   padding: 14px 16px;
-  margin-bottom: 20px;
-  outline: 2px solid var(--background-color);
+  /* margin-bottom: 20px; */
+  border-bottom: 2px solid var(--background-color);
   position: relative;
   & > button {
     border: none;
