@@ -1,6 +1,27 @@
 import { css } from "@emotion/react";
 
 const reset = css`
+  :root {
+    /* 메인 색상 확정되면 넣어주세요 */
+    --main-color: #49ed3f;
+    --sub-color: #3fd636;
+    --gray50-color: #f9f9f9;
+    --gray100-color: #f2f2f2;
+    --gray200-color: #e2e2e2;
+    --gray300-color: #d3d3d3;
+    --gray400-color: #989898;
+    --gray500-color: #32323a;
+    --background-color: #17171b;
+  }
+
+  :root {
+    /* 폰트 확정되면 해당 폰트 넣어주세요 */
+    /* --font--Bold: "Pretendard-Bold";
+    --font--semibold: "Pretendard-semiBold";
+    --font--Medium: "Pretendard-Medium";
+    --font--Regular: "Pretendard-Regular"; */
+  }
+
   html,
   body,
   div,
@@ -106,8 +127,10 @@ const reset = css`
   }
   body {
     line-height: 1;
-    font-family: "Wanted Sans", system-ui, sans-serif;
+    font-family: var(--font--Regular), "Wanted Sans", system-ui, sans-serif;
     font-weight: 400;
+    background-color: var(--background-color);
+    color: #fff;
   }
   ol,
   ul {
@@ -127,6 +150,25 @@ const reset = css`
   table {
     border-collapse: collapse;
     border-spacing: 0;
+  }
+
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  button {
+    all: unset;
+  }
+
+  img {
+    vertical-align: top;
+  }
+
+  a {
+    color: #fff;
+    text-decoration: none;
   }
 `;
 
