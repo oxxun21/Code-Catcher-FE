@@ -4,4 +4,4 @@ import { TestDescSection } from "./codingTest/TestDescSection";
 import { TestResultSection } from "./codingTest/TestResultSection";
 import { Modal } from "./common/Modal";
 
-export { CodeEditor, SelectLang, TestDescSection, TestResultSection, Modal };
+export { Header, SplashCarousel, CodeEditor, SelectLang, TestDescSection, TestResultSection, Modal };
