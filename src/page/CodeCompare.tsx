@@ -6,6 +6,8 @@ import MyCode from "../assets/MyCode.svg";
 import ChatGPTsCode from "../assets/ChatGPTsCode.svg";
 import ChatGPTsFeedback from "../assets/ChatGPTsFeedback.svg";
 import { useDraggable } from "../hook";
+import { ReadOnlyEditor } from "../components";
+import { Link } from "react-router-dom";
 
 export const CodeCompare = () => {
   const {
@@ -16,6 +18,11 @@ export const CodeCompare = () => {
   } = useDraggable({ initialWidth: 40, initialHeight: 60 });
 
   const isMedia = window.innerWidth <= 768;
+
+  const code = `function solution(t, p) {
+    // ... 여기에 코드 ...
+  }`;
+
   return (
     <>
       <PageHeader>
@@ -23,12 +30,13 @@ export const CodeCompare = () => {
         <span>Lv.1</span>
       </PageHeader>
       <Contain>
-        <section style={{ width: isMedia ? "100%" : `${descWidth}%` }}>
+        <section style={{ width: isMedia ? "100%" : `${descWidth}%`, overflow: "hidden" }}>
           <CompareHeader className="firstHeader">
             <strong>
               <img src={MyCode} alt="My Code" />
             </strong>
           </CompareHeader>
+          <ReadOnlyEditor code={code} />
         </section>
         <Gutter orientation="horizontal" onMouseDown={startDragHorizontal} />
         <section style={{ width: isMedia ? "100%" : `${100 - descWidth}%` }}>
@@ -42,6 +50,7 @@ export const CodeCompare = () => {
                 <img src={icon_bookmark} alt="북마크 아이콘" />
               </button>
             </CompareHeader>
+            <ReadOnlyEditor code={code} />
           </div>
           <div style={{ height: `${100 - editorHeight}%` }} className="Feedback">
             <Gutter orientation="vertical" onMouseDown={startDragVertical} />
@@ -54,7 +63,7 @@ export const CodeCompare = () => {
         </section>
       </Contain>
       <ButtonContain>
-        <button>나가기</button>
+        <Link to="/">나가기</Link>
       </ButtonContain>
     </>
   );
@@ -76,6 +85,10 @@ const PageHeader = styled.div`
   }
 `;
 
+const CompareHeader = styled.div`
+  padding: 24px 22px;
+`;
+
 const Contain = styled.div`
   display: flex;
   background-color: var(--gray500-color);
@@ -85,12 +98,22 @@ const Contain = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 12px 22px;
     & > button {
       cursor: pointer;
       font-size: 0.875rem;
+      background-color: #282828;
+      border-radius: 57px;
+      padding: 14px 20px;
+      color: #bdbdbd;
+      font-weight: 600;
+      transition: all 0.3s;
       & > img {
         margin-left: 5px;
         width: 16px;
+      }
+      &:hover {
+        color: #fff;
       }
     }
   }
@@ -103,6 +126,7 @@ const Contain = styled.div`
   }
 
   @media only screen and (max-width: 768px) {
+    width: 100%;
     flex-direction: column;
     height: 100%;
   }
@@ -129,8 +153,7 @@ const ButtonContain = styled.div`
   padding: 12px 24px;
   display: flex;
   justify-content: flex-end;
-  & > button {
-    cursor: pointer;
+  & > a {
     padding: 12px 24px;
     font-size: 1rem;
     background-color: #fff;
@@ -143,24 +166,5 @@ const ButtonContain = styled.div`
   }
   @media only screen and (max-width: 768px) {
     position: relative;
-  }
-`;
-
-const CompareHeader = styled.div`
-  padding: 24px 22px;
-  border-bottom: 2px solid var(--background-color);
-  position: relative;
-  &.firstHeader > strong {
-    height: 16px;
-    display: block;
-  }
-  &.firstHeader::after {
-    content: "";
-    position: absolute;
-    bottom: -2px;
-    right: -22px;
-    width: 24px;
-    height: 2px;
-    background-color: var(--background-color);
   }
 `;
