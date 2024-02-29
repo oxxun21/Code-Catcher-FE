@@ -86,7 +86,6 @@ const Contain = styled.div`
 `;
 
 const CodeContain = styled.div`
-  min-width: 30%;
   display: flex;
   flex-direction: column;
 `;

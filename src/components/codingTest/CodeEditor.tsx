@@ -1,7 +1,6 @@
 import { useRef, useCallback } from "react";
 import Editor, { OnMount, OnChange } from "@monaco-editor/react";
 import { editor } from "monaco-editor";
-import styled from "@emotion/styled";
 
 export const CodeEditor = ({ editorHeight }: { editorHeight: number }) => {
   const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
@@ -36,7 +35,7 @@ export const CodeEditor = ({ editorHeight }: { editorHeight: number }) => {
   }, []);
 
   return (
-    <CodeEditContain style={{ height: `${editorHeight}%` }}>
+    <section style={{ height: `${editorHeight}%` }}>
       <Editor
         defaultLanguage="java"
         defaultValue="// 코드를 작성해주세요"
@@ -54,11 +53,6 @@ export const CodeEditor = ({ editorHeight }: { editorHeight: number }) => {
         onMount={handleEditorDidMount}
         onChange={handleEditorChange}
       />
-    </CodeEditContain>
+    </section>
   );
 };
-
-const CodeEditContain = styled.section`
-  min-height: 20%;
-  overflow: auto;
-`;
