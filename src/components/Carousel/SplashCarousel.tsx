@@ -27,7 +27,7 @@ const carouselData = [
 ];
 
 // TODO: 캐러셀 슬라이드 넘길 수 있는 커스텀 버튼 필요
-const SplashCarousel = () => {
+export const SplashCarousel = () => {
   return (
     <>
       <Carousel
@@ -82,5 +82,3 @@ const StyledCarousel = styled.div`
     max-width: 451px;
   }
 `;
-
-export default SplashCarousel;
