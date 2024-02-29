@@ -149,7 +149,7 @@ const ModalContain = styled.div`
     gap: 20px;
     & > a {
       width: 50%;
-      border-radius: 20px;
+      border-radius: 4px;
       background-color: #757575;
       padding: 16px;
       font-size: 0.875rem;
