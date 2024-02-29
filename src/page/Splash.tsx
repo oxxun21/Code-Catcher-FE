@@ -3,6 +3,12 @@ import { Header, SplashCarousel } from "../components";
 import KakaoImg from "../assets/kakao_logo.svg";
 
 export const Splash = () => {
+  const handleKakaoLogin = () => {
+    const kakaoRestApi = import.meta.env.VITE_KAKAO_REST_API;
+    const rediretUri = import.meta.env.VITE_KAKAO_REDIRECT_URI;
+    const link = `https://kauth.kakao.com/oauth/authorize?client_id=${kakaoRestApi}&redirect_uri=${rediretUri}&response_type=code`;
+    window.location.href = link;
+  };
   return (
     <>
       <Header />
@@ -10,7 +16,7 @@ export const Splash = () => {
         <StyledSection>
           <div>
             <SplashCarousel />
-            <StyledButton>
+            <StyledButton onClick={handleKakaoLogin}>
               <img src={KakaoImg} alt="카카오 소셜 로고" />
               카카오 로그인
             </StyledButton>
