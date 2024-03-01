@@ -30,8 +30,8 @@ export const CodeCompare = () => {
         <span>Lv.1</span>
       </PageHeader>
       <Contain>
-        <section style={{ width: isMedia ? "100%" : `${descWidth}%`, overflow: "hidden" }}>
-          <CompareHeader className="firstHeader">
+        <section style={{ width: isMedia ? "100%" : `${descWidth}%` }}>
+          <CompareHeader>
             <strong>
               <img src={MyCode} alt="My Code" />
             </strong>
@@ -120,9 +120,14 @@ const Contain = styled.div`
 
   .Feedback {
     background-color: #3f3f47;
-    & > div {
+    & > div:last-of-type {
       padding-top: 0;
+      border-bottom: 2px solid var(--background-color);
     }
+  }
+  & > section:first-of-type > div:last-of-type {
+    margin-right: 10px;
+    height: 85%;
   }
 
   @media only screen and (max-width: 768px) {

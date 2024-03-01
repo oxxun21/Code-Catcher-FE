@@ -10,8 +10,8 @@ const useDraggable = ({ initialWidth, initialHeight }: DraggableProps) => {
   const [height, setHeight] = useState(initialHeight);
   const minWidth = 30;
   const maxWidth = 70;
-  const minHeight = 20;
-  const maxHeight = 80;
+  const minHeight = 30;
+  const maxHeight = 70;
 
   const startDragHorizontal = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
