@@ -1,42 +1,67 @@
 import styled from "@emotion/styled";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
-const Header = () => {
+export const Header = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    setIsLoggedIn(token !== null);
+  }, []);
+
   return (
     <StyledHeader>
-      <h1>CodeCatcher</h1>
-      <button>로그인</button>
+      <h1>Codee</h1>
+      {!isLoggedIn ? (
+        <StyledLoginBtn>로그인</StyledLoginBtn>
+      ) : (
+        <StyledBtnGroup>
+          <button>로그아웃</button>
+          <button onClick={() => navigate("/my-page")}>마이페이지</button>
+        </StyledBtnGroup>
+      )}
     </StyledHeader>
   );
 };
 
 const StyledHeader = styled.header`
-  max-width: 1280px;
-  height: 100px;
-  margin: 0 auto;
+  width: 100%;
+  padding: 10px 30px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  position: sticky;
-  top: 0;
-  padding: 0 20px;
+  background-color: var(--background-color);
 
   & > h1 {
     font-size: 24px;
     font-weight: 600;
-    /* color: #ffffff; */
+    color: #ffffff;
   }
 
-  & > button {
-    padding: 0 26.5px;
-    /* border: none; */
-    background-color: #ffffff;
-    color: #222222;
+  & button {
     font-size: 16px;
     font-weight: 600;
-    line-height: 40px;
-    border-radius: 999px;
     cursor: pointer;
   }
 `;
 
-export default Header;
+const StyledLoginBtn = styled.button`
+  padding: 12px 26.5px;
+  background-color: #ffffff;
+  color: #222222;
+  border-radius: 999px;
+`;
+
+const StyledBtnGroup = styled.div`
+  & > button {
+    border: none;
+    background-color: transparent;
+    padding: 10px;
+  }
+
+  & > button:not(:first-child) {
+    margin-left: 20px;
+  }
+`;

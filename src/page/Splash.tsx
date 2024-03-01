@@ -57,7 +57,7 @@ const StyledButton = styled.button`
   padding: 0 48px 0 18px;
   border: none;
   background-color: #fee500;
-  color: 000000;
+  color: #000000;
   font-size: 18px;
   line-height: 56px;
   border-radius: 6px;
