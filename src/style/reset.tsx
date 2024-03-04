@@ -12,11 +12,11 @@ const reset = css`
   }
 
   :root {
-    /* 폰트 확정되면 해당 폰트 넣어주세요 */
-    /* --font--Bold: "Pretendard-Bold";
+    --font--Bold: "Pretendard-Bold";
     --font--semibold: "Pretendard-semiBold";
     --font--Medium: "Pretendard-Medium";
-    --font--Regular: "Pretendard-Regular"; */
+    --font--Regular: "Pretendard-Regular";
+    --font--Galmuri: "Galmuri11";
   }
 
   html,
@@ -156,6 +156,7 @@ const reset = css`
   }
 
   button {
+    font-family: var(--font--semibold);
     all: unset;
   }
 
