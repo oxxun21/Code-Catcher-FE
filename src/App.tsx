@@ -16,7 +16,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/splash" element={<Splash />} />
         <Route path="/kakao/callback" element={<KakaoRedirection />} />
-        <Route path="/CodingTest" element={<CodingTest />} />
+        <Route path="/CodingTest/:id" element={<CodingTest />} />
         <Route path="/CodeCompare" element={<CodeCompare />} />
         <Route path="/404" element={<NotFound />} />
         <Route path={"*"} element={<Navigate to="/404" />} />

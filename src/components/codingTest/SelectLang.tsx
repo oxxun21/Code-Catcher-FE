@@ -2,8 +2,12 @@ import { useEffect, useRef, useState } from "react";
 import styled from "@emotion/styled";
 import icon_dropdown from "../../assets/icon_dropdown.svg";
 
-export const SelectLang = () => {
-  const [language, setLanguage] = useState("Java");
+interface LangProps {
+  language: string;
+  setLanguage: React.Dispatch<React.SetStateAction<any>>;
+}
+
+export const SelectLang = ({ language, setLanguage }: LangProps) => {
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -64,10 +68,14 @@ const LangSelect = styled.article`
     background: white;
     border-radius: 4px;
     z-index: 1;
-    padding: 5px 0;
+    padding: 5px;
     & > li {
       cursor: pointer;
-      padding: 10px 20px;
+      padding: 10px;
+      border-radius: 4px;
+      &:hover {
+        background-color: var(--gray300-color);
+      }
     }
   }
 `;

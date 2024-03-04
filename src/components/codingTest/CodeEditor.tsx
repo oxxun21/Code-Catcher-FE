@@ -2,7 +2,12 @@ import { useRef, useCallback } from "react";
 import Editor, { OnMount, OnChange } from "@monaco-editor/react";
 import { editor } from "monaco-editor";
 
-export const CodeEditor = ({ editorHeight }: { editorHeight: number }) => {
+interface EditorProps {
+  editorHeight: number;
+  language: "Java" | "Python";
+}
+
+export const CodeEditor = ({ editorHeight, language }: EditorProps) => {
   const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
 
   const handleEditorChange: OnChange = useCallback((value?: string, event?: any) => {
@@ -19,7 +24,7 @@ export const CodeEditor = ({ editorHeight }: { editorHeight: number }) => {
     monacoInstance.editor.defineTheme("customTheme", {
       base: "vs-dark",
       inherit: true,
-      rules: [{ token: "comment", background: "28A745" }], // 주석 색상 변경 필요
+      rules: [{ token: "comment", background: "28A745" }],
       colors: {
         "editor.foreground": "#ffffff",
         "editor.background": "#32323a",
@@ -37,7 +42,7 @@ export const CodeEditor = ({ editorHeight }: { editorHeight: number }) => {
   return (
     <section style={{ height: `${editorHeight}%` }}>
       <Editor
-        defaultLanguage="java"
+        defaultLanguage={language}
         defaultValue="// 코드를 작성해주세요"
         options={{
           fontSize: 14,
