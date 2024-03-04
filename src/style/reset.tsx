@@ -2,12 +2,9 @@ import { css } from "@emotion/react";
 
 const reset = css`
   :root {
-    /* 메인 색상 확정되면 넣어주세요 */
-    --main-color: #49ed3f;
-    --sub-color: #3fd636;
-    --gray50-color: #f9f9f9;
-    --gray100-color: #f2f2f2;
-    --gray200-color: #e2e2e2;
+    --main-color: #32cd32;
+    --light-color: #00e46c;
+    --dark-color: #44b044;
     --gray300-color: #d3d3d3;
     --gray400-color: #989898;
     --gray500-color: #32323a;
@@ -169,6 +166,17 @@ const reset = css`
   a {
     color: #fff;
     text-decoration: none;
+  }
+
+  .a11y-hidden {
+    clip: rect(1px, 1px, 1px, 1px);
+    clip-path: inset(50%);
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
   }
 `;
 
