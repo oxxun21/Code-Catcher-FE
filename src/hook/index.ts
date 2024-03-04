@@ -1,3 +1,1 @@
-import useDraggable from "./useDraggable";
-
-export { useDraggable };
+export * from "./useDraggable";

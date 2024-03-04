@@ -5,7 +5,7 @@ interface DraggableProps {
   initialHeight: number;
 }
 
-const useDraggable = ({ initialWidth, initialHeight }: DraggableProps) => {
+export const useDraggable = ({ initialWidth, initialHeight }: DraggableProps) => {
   const [width, setWidth] = useState(initialWidth);
   const [height, setHeight] = useState(initialHeight);
   const minWidth = 30;
@@ -55,5 +55,3 @@ const useDraggable = ({ initialWidth, initialHeight }: DraggableProps) => {
 
   return { width, height, startDragHorizontal, startDragVertical };
 };
-
-export default useDraggable;
