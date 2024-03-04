@@ -1,7 +1,8 @@
+import { useState, useEffect } from "react";
 import styled from "@emotion/styled";
-import { Carousel } from "react-responsive-carousel";
-import "react-responsive-carousel/lib/styles/carousel.min.css";
 import carouselImage from "../../assets/carousel_dummy_img.png";
+import arrowNext from "../../assets/arrow_next.svg";
+import arrowPrev from "../../assets/arrow_prev.svg";
 
 const carouselData = [
   {
@@ -28,57 +29,137 @@ const carouselData = [
 
 // TODO: 캐러셀 슬라이드 넘길 수 있는 커스텀 버튼 필요
 export const SplashCarousel = () => {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const totalSlides = carouselData.length;
+
+  const nextSlide = () => {
+    setCurrentSlide(prev => (prev + 1) % totalSlides);
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide(prev => (prev - 1 + totalSlides) % totalSlides);
+  };
+
+  useEffect(() => {
+    const slideInterval = setInterval(() => {
+      nextSlide();
+    }, 4000);
+
+    return () => clearInterval(slideInterval);
+  }, []);
+
   return (
     <>
-      <Carousel
-        showArrows={false}
-        showStatus={false}
-        showIndicators={false}
-        showThumbs={false}
-        autoPlay={true}
-        transitionTime={400}
-        interval={4000}
-        infiniteLoop={false}
-      >
+      <StyledCarousel style={{ transform: `translateX(-${currentSlide * 100}%)` }}>
         {carouselData.map((slide, index) => (
-          <StyledCarousel key={index}>
+          <Slide key={index}>
             <div>
               <h2>{slide.title}</h2>
               <p>{slide.desc}</p>
             </div>
-            <img src={slide.imgUrl} alt={`Slide${index + 1}`} />
-          </StyledCarousel>
+
+            <img src={slide.imgUrl} alt={`Slide ${index + 1}`} />
+          </Slide>
         ))}
-      </Carousel>
+      </StyledCarousel>
+      <CarouselControls>
+        <button onClick={prevSlide}>
+          <img src={arrowPrev} alt="이전 슬라이드" />
+        </button>
+        <span>
+          {currentSlide + 1} / {totalSlides}
+        </span>
+        <button onClick={nextSlide}>
+          <img src={arrowNext} alt="다음 슬라이드" />
+        </button>
+      </CarouselControls>
     </>
   );
 };
 
-// TODO: 반응형 미디어쿼리 추가필요
 const StyledCarousel = styled.div`
   display: flex;
-  justify-content: space-between;
+  transition: transform 0.5s ease-in-out;
+  margin: auto;
+
+  @media (max-width: 768px) {
+    max-width: none;
+  }
+`;
+
+const Slide = styled.div`
+  flex: 0 0 100%;
+  display: flex;
   align-items: center;
+  text-align: left;
+  justify-content: center;
+  gap: 20px;
+  min-height: 300px;
+  overflow: hidden;
 
   & > div {
-    min-width: 400px;
-    color: #ffffff;
+    flex: 1;
+    min-width: fit-content;
   }
 
   & h2 {
-    font-size: 32px;
+    width: fit-content;
+    font-size: 2rem;
     font-weight: bold;
-    text-align: left;
-    margin-bottom: 8px;
+    margin-bottom: 0.5rem;
     white-space: pre-wrap;
   }
+
   & p {
-    font-size: 16px;
-    text-align: left;
+    width: fit-content;
+    font-size: 1rem;
     white-space: pre-wrap;
   }
 
   & img {
-    max-width: 451px;
+    flex-grow: 1;
+    max-width: 400px;
+    height: auto;
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 10px;
+  }
+`;
+
+const CarouselControls = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  background-color: rgba(34, 34, 34, 0.8);
+  border-radius: 799.2px;
+  width: 100px;
+  height: 35px;
+
+  button {
+    border: none;
+    background: none;
+    color: white;
+    cursor: pointer;
+    user-select: none;
+
+    &:hover {
+      color: #ddd;
+    }
+  }
+
+  span {
+    margin: 0 10px;
+    font-size: 14px;
+    color: white;
+  }
+
+  @media (max-width: 768px) {
+    top: -20%;
+    transform: translateX(-50%);
+    left: 50%;
   }
 `;
