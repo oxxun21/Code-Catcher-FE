@@ -36,33 +36,47 @@ const StyledMain = styled.main`
 
 const StyledSection = styled.section`
   width: 100%;
-  height: 644px;
+  padding: 132px 0 187px 0;
   background-color: #444444;
   display: flex;
   justify-content: center;
   align-items: center;
-  position: relative;
+
   & > div {
-    width: 1185px;
+    position: relative;
+    width: 100%;
+    max-width: 1185px;
+    overflow: hidden;
+    margin: 0 10px;
+    @media (max-width: 768px) {
+      height: auto;
+      overflow: visible;
+    }
   }
 `;
 
 const StyledButton = styled.button`
   position: absolute;
-  bottom: 25%;
+  bottom: 0;
   display: flex;
   align-items: center;
-  justify-content: space-around;
   align-self: flex-start;
-  padding: 0 48px 0 18px;
+  padding: 0 16px 0 16px;
   border: none;
   background-color: #fee500;
   color: #000000;
-  font-size: 18px;
-  line-height: 56px;
+  font-size: 16px;
+  width: 174px;
+  height: 50px;
   border-radius: 6px;
   cursor: pointer;
   & > img {
     margin-right: 38px;
+  }
+
+  @media (max-width: 768px) {
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -20%;
   }
 `;
