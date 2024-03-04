@@ -1,4 +1,4 @@
-import { CodeEditor, Modal, SelectLang, TestDescSection, TestResultSection } from "../components";
+import { CodeEditor, Header, Modal, SelectLang, TestDescSection, TestResultSection } from "../components";
 import styled from "@emotion/styled";
 import gutter_horizontal from "../assets/gutter_horizontal.svg";
 import gutter_vertical from "../assets/gutter_vertical.svg";
@@ -23,6 +23,7 @@ export const CodingTest = () => {
 
   return (
     <>
+      <Header />
       <PageHeader>
         <h2>두 수의 차</h2>
         <span>Lv.1</span>
@@ -50,7 +51,7 @@ export const CodingTest = () => {
             <p>오늘의 첫번째 테스트를 완료했어요</p>
             <div>
               <Link to="/">홈으로</Link>
-              <Link to="/">Chat GPT 답안 보기</Link>
+              <Link to="/CodeCompare">Chat GPT 답안 보기</Link>
             </div>
           </ModalContain>
         </Modal>
@@ -78,7 +79,7 @@ const PageHeader = styled.div`
 const Contain = styled.div`
   display: flex;
   background-color: var(--gray500-color);
-  height: 81vh;
+  height: 72vh;
   @media only screen and (max-width: 768px) {
     flex-direction: column;
     height: 100%;

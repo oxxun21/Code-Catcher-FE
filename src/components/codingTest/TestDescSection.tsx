@@ -40,6 +40,27 @@ export const TestDescSection = ({ descWidth }: { descWidth: number }) => {
 
 const DescSection = styled.section`
   padding: 36px 28px;
+  overflow: auto;
+  ::-webkit-scrollbar {
+    width: 5px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #555;
+    border-radius: 6px;
+  }
+  ::-webkit-scrollbar-button:vertical:start:decrement,
+  ::-webkit-scrollbar-button:vertical:start:increment,
+  ::-webkit-scrollbar-button:vertical:end:decrement {
+    display: block;
+    height: 15px;
+  }
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #555 transparent;
+  }
 `;
 
 const DescArticle = styled.article`
