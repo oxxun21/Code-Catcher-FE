@@ -1,17 +1,10 @@
-import { useRef, useCallback } from "react";
-import Editor, { OnMount, OnChange } from "@monaco-editor/react";
+import Editor, { OnMount } from "@monaco-editor/react";
+import { useCallback, useRef } from "react";
 import { editor } from "monaco-editor";
+import styled from "@emotion/styled";
 
-export const CodeEditor = ({ editorHeight }: { editorHeight: number }) => {
+export const ReadOnlyEditor = ({ code }: { code: string }) => {
   const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
-
-  const handleEditorChange: OnChange = useCallback((value?: string, event?: any) => {
-    console.log("Here is the current model value:", value);
-  }, []);
-
-  const showValue = useCallback(() => {
-    console.log(editorRef.current?.getValue());
-  }, []);
 
   const handleEditorDidMount: OnMount = useCallback((editor: editor.IStandaloneCodeEditor, monacoInstance) => {
     editorRef.current = editor;
@@ -22,7 +15,7 @@ export const CodeEditor = ({ editorHeight }: { editorHeight: number }) => {
       rules: [{ token: "comment", background: "28A745" }], // 주석 색상 변경 필요
       colors: {
         "editor.foreground": "#ffffff",
-        "editor.background": "#32323a",
+        "editor.background": "#2a2a31",
         "editorCursor.foreground": "#ffffff",
         "editor.lineHighlightBackground": "#17171b5d",
         "editorLineNumber.foreground": "#989898",
@@ -35,11 +28,12 @@ export const CodeEditor = ({ editorHeight }: { editorHeight: number }) => {
   }, []);
 
   return (
-    <section style={{ height: `${editorHeight}%` }}>
+    <CodeReadSection>
       <Editor
-        defaultLanguage="java"
-        defaultValue="// 코드를 작성해주세요"
+        value={code}
+        language="java"
         options={{
+          readOnly: true,
           fontSize: 14,
           minimap: { enabled: false },
           scrollbar: {
@@ -51,8 +45,16 @@ export const CodeEditor = ({ editorHeight }: { editorHeight: number }) => {
           lineHeight: 24,
         }}
         onMount={handleEditorDidMount}
-        onChange={handleEditorChange}
       />
-    </section>
+    </CodeReadSection>
   );
 };
+
+const CodeReadSection = styled.div`
+  height: 75%;
+  overflow: auto;
+  background-color: #2a2a31;
+  border-radius: 6px;
+  padding: 30px 0px;
+  margin: 0 22px;
+`;

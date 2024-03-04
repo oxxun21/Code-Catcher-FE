@@ -39,7 +39,6 @@ export const TestDescSection = ({ descWidth }: { descWidth: number }) => {
 };
 
 const DescSection = styled.section`
-  min-width: 30%;
   padding: 36px 28px;
 `;
 

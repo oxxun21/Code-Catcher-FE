@@ -10,7 +10,6 @@ export const TestResultSection = ({ editorHeight }: { editorHeight: number }) =>
 };
 
 const ResultSection = styled.section`
-  min-height: 20%;
   & > strong {
     display: block;
     font-size: 0.875rem;

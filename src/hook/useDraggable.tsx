@@ -8,11 +8,19 @@ interface DraggableProps {
 const useDraggable = ({ initialWidth, initialHeight }: DraggableProps) => {
   const [width, setWidth] = useState(initialWidth);
   const [height, setHeight] = useState(initialHeight);
+  const minWidth = 30;
+  const maxWidth = 70;
+  const minHeight = 30;
+  const maxHeight = 70;
 
   const startDragHorizontal = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
+    const startX = e.clientX;
+    const startWidth = width;
+
     const onDrag = (e: MouseEvent) => {
-      const newWidth = (e.clientX / window.innerWidth) * 100;
+      const deltaWidth = ((e.clientX - startX) / window.innerWidth) * 100;
+      const newWidth = Math.min(Math.max(startWidth + deltaWidth, minWidth), maxWidth);
       setWidth(newWidth);
     };
 
@@ -27,8 +35,12 @@ const useDraggable = ({ initialWidth, initialHeight }: DraggableProps) => {
 
   const startDragVertical = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
+    const startY = e.clientY;
+    const startHeight = height;
+
     const onDrag = (e: MouseEvent) => {
-      const newHeight = (e.clientY / window.innerHeight) * 100;
+      const deltaHeight = ((e.clientY - startY) / window.innerHeight) * 100;
+      const newHeight = Math.min(Math.max(startHeight + deltaHeight, minHeight), maxHeight);
       setHeight(newHeight);
     };
 

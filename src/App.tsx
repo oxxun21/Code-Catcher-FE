@@ -5,6 +5,7 @@ import { Home } from "./page/Home";
 import { Splash } from "./page/Splash";
 import { KakaoRedirection } from "./page/KakaoRedirection";
 import { CodingTest } from "./page/CodingTest";
+import { CodeCompare } from "./page/CodeCompare";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/splash" element={<Splash />} />
         <Route path="/kakao/callback" element={<KakaoRedirection />} />
         <Route path="/CodingTest" element={<CodingTest />} />
+        <Route path="/CodeCompare" element={<CodeCompare />} />
       </Routes>
     </BrowserRouter>
   );
