@@ -4,7 +4,7 @@ import gutter_horizontal from "../assets/gutter_horizontal.svg";
 import gutter_vertical from "../assets/gutter_vertical.svg";
 import { useDraggable } from "../hook";
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { getQuestionAPI } from "../api";
 import { Question_I } from "../interface";
 
@@ -31,6 +31,7 @@ export const CodingTest = () => {
   const [isModal, setIsModal] = useState(false);
   const [codeValue, setCodeValue] = useState("");
   const [isMedia, setIsMedia] = useState(window.innerWidth <= 768);
+  const navigate = useNavigate();
 
   const {
     width: descWidth,
@@ -98,7 +99,18 @@ export const CodingTest = () => {
             <p>오늘의 첫번째 테스트를 완료했어요</p>
             <div>
               <Link to="/">홈으로</Link>
-              <Link to="/CodeCompare">Chat GPT 답안 보기</Link>
+              <button
+                onClick={() =>
+                  navigate("/CodeCompare", {
+                    state: {
+                      question: { title: question.title, subject: question.subject },
+                      myCode: codeValue,
+                    },
+                  })
+                }
+              >
+                Chat GPT 답안 보기
+              </button>
             </div>
           </ModalContain>
         </Modal>
@@ -198,7 +210,8 @@ const ModalContain = styled.div`
     margin-top: 24px;
     display: flex;
     gap: 20px;
-    & > a {
+    & > a,
+    & > button {
       width: 50%;
       border-radius: 20px;
       background-color: #f4f4f4;
@@ -207,11 +220,11 @@ const ModalContain = styled.div`
       padding: 16px;
       font-size: 0.875rem;
       text-align: center;
-      &:last-of-type {
-        background-color: #222;
-        border: none;
-        color: #fff;
-      }
+    }
+    & > button {
+      background-color: #222;
+      border: none;
+      color: #fff;
     }
   }
 `;
