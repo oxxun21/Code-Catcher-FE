@@ -24,14 +24,14 @@ export const UserCard = () => {
                 <span>Lv.2까지</span>
                 <span>EXP 30/90</span>
               </div>
-              <StyledProgressBar value="30" max="90"></StyledProgressBar>
+              <StyledProgressBar value="30" max="90" />
             </StyledProgress>
             <StyledProgress>
               <div>
                 <span>Lv.2까지</span>
                 <span>20문제</span>
               </div>
-              <StyledProgressBar value="30" max="90"></StyledProgressBar>
+              <StyledProgressBar value="30" max="90" />
             </StyledProgress>
           </StyledProgressGroup>
         </div>
