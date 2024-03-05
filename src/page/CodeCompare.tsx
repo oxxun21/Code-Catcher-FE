@@ -3,9 +3,6 @@ import gutter_horizontal from "../assets/gutter_horizontal.svg";
 import gutter_vertical from "../assets/gutter_vertical.svg";
 import icon_bookmark from "../assets/icon_bookmark.svg";
 import icon_bookmark_true from "../assets/icon_bookmark_true.svg";
-import MyCode from "../assets/MyCode.svg";
-import ChatGPTsCode from "../assets/ChatGPTsCode.svg";
-import ChatGPTsFeedback from "../assets/ChatGPTsFeedback.svg";
 import { useDraggable } from "../hook";
 import { Header, ReadOnlyEditor } from "../components";
 import { Link, useLocation } from "react-router-dom";
@@ -32,9 +29,7 @@ export const CodeCompare = () => {
     };
   }, []);
 
-  const code = `function solution(t, p) {
-    // ... 여기에 코드 ...
-  }`;
+  const code = `import java.util.Arrays;\nimport java.util.Scanner;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner scanner = new Scanner(System.in);\n        int amount = scanner.nextInt();\n        String[] coinStr = scanner.nextLine().split(\" \");\n        int[] coins = new int[coinStr.length];\n        for (int i = 0; i < coinStr.length; i++) {\n            coins[i] = Integer.parseInt(coinStr[i]);\n        }\n        \n        int[] dp = new int[amount + 1];\n        Arrays.fill(dp, amount + 1);\n        dp[0] = 0;\n        for (int a = 1; a <= amount; a++) {\n            for (int coin : coins) {\n                if (a >= coin) {\n                    dp[a] = Math.min(dp[a], dp[a - coin] + 1);\n                }\n            }\n        }\n        System.out.println(dp[amount] != amount + 1 ? dp[amount] : -1);\n        scanner.close();\n    }\n}`;
 
   return (
     <>
@@ -46,9 +41,7 @@ export const CodeCompare = () => {
       <Contain>
         <section style={{ width: isMedia ? "100%" : `${descWidth}%` }}>
           <CompareHeader>
-            <strong>
-              <img src={MyCode} alt="My Code" />
-            </strong>
+            <strong>My Code</strong>
           </CompareHeader>
           <ReadOnlyEditor code={location.state.myCode} />
         </section>
@@ -56,9 +49,7 @@ export const CodeCompare = () => {
         <section style={{ width: isMedia ? "100%" : `${100 - descWidth}%` }}>
           <div style={{ height: `${editorHeight}%` }}>
             <CompareHeader className="gptCode">
-              <strong>
-                <img src={ChatGPTsCode} alt="Chat GPT's Code" />
-              </strong>
+              <strong>Chat GPT's Code</strong>
               <button onClick={() => setIsbookmark(prev => !prev)}>
                 북마크에 추가하기
                 <img src={isbookmark ? icon_bookmark_true : icon_bookmark} alt="북마크 아이콘" />
@@ -69,9 +60,7 @@ export const CodeCompare = () => {
           <div style={{ height: `${100 - editorHeight}%` }} className="Feedback">
             <Gutter orientation="vertical" onMouseDown={startDragVertical} />
             <CompareHeader>
-              <strong>
-                <img src={ChatGPTsFeedback} alt="Chat GPT's Feedback" />
-              </strong>
+              <strong>Chat GPT's Feedback</strong>
             </CompareHeader>
             <p>어쩌구저쩌구</p>
           </div>
@@ -86,46 +75,55 @@ export const CodeCompare = () => {
 
 const PageHeader = styled.div`
   background-color: #32323a;
-  padding: 22px 34px;
+  padding: 1rem 22px;
   font-weight: 600;
   border-bottom: 2px solid var(--background-color);
   & > h2 {
-    font-size: 1.375rem;
+    font-size: 1rem;
     display: inline-block;
-    margin-right: 1rem;
+    margin-right: 12px;
   }
   & > span {
     color: var(--gray400-color);
-    font-size: 0.875rem;
+    font-size: 14px;
   }
 `;
 
 const CompareHeader = styled.div`
-  padding: 24px 22px;
+  padding: 1rem 22px;
+  & > strong {
+    display: block;
+    font-family: var(--font--Galmuri);
+    font-size: 12px;
+    color: #989898;
+    font-weight: 600;
+  }
 `;
 
 const Contain = styled.div`
   display: flex;
   background-color: var(--gray500-color);
-  height: 72vh;
+  height: 77vh;
 
   .gptCode {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px 22px;
+    padding: 5px 22px;
     & > button {
       cursor: pointer;
-      font-size: 0.875rem;
+      font-size: 12px;
       background-color: #282828;
       border-radius: 57px;
-      padding: 14px 20px;
+      padding: 12px 16px;
       color: #bdbdbd;
       font-weight: 600;
       transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 5px;
       & > img {
-        margin-left: 5px;
-        width: 16px;
+        width: 15px;
       }
       &:hover {
         color: #fff;
@@ -181,14 +179,14 @@ const Gutter = styled.div<{ orientation: "vertical" | "horizontal" }>`
 
 const ButtonContain = styled.div`
   width: 100%;
-  padding: 12px 24px;
+  padding: 10px 28px;
   display: flex;
   justify-content: flex-end;
   & > a {
-    padding: 12px 24px;
+    padding: 10px 24px;
     font-size: 1rem;
-    background-color: #fff;
-    color: #000;
+    background-color: var(--main-color);
+    color: #fff;
     font-weight: 600;
     border-radius: 4px;
     &:disabled {

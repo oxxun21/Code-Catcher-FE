@@ -121,7 +121,7 @@ export const CodingTest = () => {
 
 const PageHeader = styled.div`
   background-color: #32323a;
-  padding: 22px 34px;
+  padding: 22px 28px;
   font-weight: 600;
   border-bottom: 2px solid var(--background-color);
   & > h2 {
@@ -222,6 +222,7 @@ const ModalContain = styled.div`
       text-align: center;
     }
     & > button {
+      cursor: pointer;
       background-color: #222;
       border: none;
       color: #fff;
