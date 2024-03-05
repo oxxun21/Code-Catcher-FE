@@ -12,10 +12,7 @@ const reset = css`
   }
 
   :root {
-    --font--Bold: "Pretendard-Bold";
-    --font--semibold: "Pretendard-semiBold";
-    --font--Medium: "Pretendard-Medium";
-    --font--Regular: "Pretendard-Regular";
+    --font--Pretendard: "Pretendard-Regular";
     --font--Galmuri: "Galmuri11";
   }
 
@@ -124,9 +121,9 @@ const reset = css`
   }
   body {
     line-height: 1;
-    font-family: var(--font--Regular), "Wanted Sans", system-ui, sans-serif;
     font-weight: 400;
     background-color: var(--background-color);
+    font-family: var(--font--Pretendard);
     color: #fff;
   }
   ol,
@@ -156,7 +153,6 @@ const reset = css`
   }
 
   button {
-    font-family: var(--font--semibold);
     all: unset;
   }
 
