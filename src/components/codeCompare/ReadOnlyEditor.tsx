@@ -55,7 +55,7 @@ const CodeReadSection = styled.div`
   overflow: auto;
   background-color: #2a2a31;
   border-radius: 6px;
-  padding: 30px 0px;
+  padding: 20px 0px;
   margin: 0 22px;
   white-space: pre-wrap;
 `;
