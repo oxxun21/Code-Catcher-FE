@@ -5,17 +5,14 @@ import { editor } from "monaco-editor";
 interface EditorProps {
   editorHeight: number;
   language: "Java" | "Python";
+  setCodeValue: React.Dispatch<React.SetStateAction<any>>;
 }
 
-export const CodeEditor = ({ editorHeight, language }: EditorProps) => {
+export const CodeEditor = ({ editorHeight, language, setCodeValue }: EditorProps) => {
   const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
 
   const handleEditorChange: OnChange = useCallback((value?: string, event?: any) => {
-    console.log("Here is the current model value:", value);
-  }, []);
-
-  const showValue = useCallback(() => {
-    console.log(editorRef.current?.getValue());
+    setCodeValue(value);
   }, []);
 
   const handleEditorDidMount: OnMount = useCallback((editor: editor.IStandaloneCodeEditor, monacoInstance) => {
@@ -39,11 +36,20 @@ export const CodeEditor = ({ editorHeight, language }: EditorProps) => {
     monacoInstance.editor.setTheme("customTheme");
   }, []);
 
+  const defaultContent =
+    language === "Java"
+      ? `public class Main {
+    public static void main(String[] args) {
+        
+    }
+}`
+      : "// 코드를 입력해주세요";
+
   return (
     <section style={{ height: `${editorHeight}%` }}>
       <Editor
-        defaultLanguage={language}
-        defaultValue="// 코드를 작성해주세요"
+        defaultLanguage={language === "Java" ? "java" : "python"}
+        value={defaultContent}
         options={{
           fontSize: 14,
           minimap: { enabled: false },

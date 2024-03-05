@@ -29,6 +29,8 @@ export const CodingTest = () => {
   // const [question, setQuestion] = useState<Question_I | undefined>();
   const [language, setLanguage] = useState<"Java" | "Python">("Java");
   const [isModal, setIsModal] = useState(false);
+  const [codeValue, setCodeValue] = useState("");
+
   const {
     width: descWidth,
     height: editorHeight,
@@ -53,6 +55,11 @@ export const CodingTest = () => {
   //   })();
   // }, [id]);
 
+  const handleSubmit = () => {
+    console.log(codeValue);
+    setIsModal(true);
+  };
+
   return (
     <>
       <Header />
@@ -65,15 +72,14 @@ export const CodingTest = () => {
         <Gutter orientation="horizontal" onMouseDown={startDragHorizontal} />
         <CodeContain style={{ width: isMedia ? "100%" : `${100 - descWidth}%` }}>
           <SelectLang language={language} setLanguage={setLanguage} />
-          <CodeEditor language={language} editorHeight={editorHeight} />
+          <CodeEditor language={language} editorHeight={editorHeight} setCodeValue={setCodeValue} />
           <Gutter orientation="vertical" onMouseDown={startDragVertical} />
           <TestResultSection editorHeight={editorHeight} />
         </CodeContain>
       </Contain>
       <ButtonContain>
-        <button>초기화</button>
         <button>코드 실행</button>
-        <button onClick={() => setIsModal(true)}>제출 후 채점하기</button>
+        <button onClick={handleSubmit}>제출 후 채점하기</button>
       </ButtonContain>
       {isModal && (
         <Modal onClose={handleClose}>

@@ -43,7 +43,7 @@ export const SelectLang = ({ language, setLanguage }: LangProps) => {
 
 const LangSelect = styled.article`
   width: 100%;
-  padding: 14px 16px;
+  padding: 12px 16px;
   /* margin-bottom: 20px; */
   border-bottom: 2px solid var(--background-color);
   position: relative;
