@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getLoginCookie } from "../utils/loginCookie";
-import { useUserStore } from "../stores/useUserStore";
 import styled from "@emotion/styled";
 import { Header } from "../components";
 import { UserCard } from "../components";
