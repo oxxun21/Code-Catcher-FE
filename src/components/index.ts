@@ -5,4 +5,5 @@ export * from "./codingTest/TestResultSection";
 export * from "./common/Modal";
 export * from "./codeCompare/ReadOnlyEditor.tsx";
 export * from "./common/Header";
-export * from "./Carousel/SplashCarousel";
+export * from "./carousel/SplashCarousel.tsx";
+export * from "./card/UserCard.tsx";
