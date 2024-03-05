@@ -1,15 +1,22 @@
 import styled from "@emotion/styled";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { getLoginCookie, removeLoginCookie } from "../../utils/loginCookie";
 
 export const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    setIsLoggedIn(token !== null);
+    const token = getLoginCookie();
+    setIsLoggedIn(!!token);
   }, []);
+
+  const handleLogout = () => {
+    removeLoginCookie({ path: "/" });
+    setIsLoggedIn(false);
+    navigate("/splash");
+  };
 
   return (
     <StyledHeader>
@@ -18,7 +25,7 @@ export const Header = () => {
         <StyledLoginBtn>로그인</StyledLoginBtn>
       ) : (
         <StyledBtnGroup>
-          <button>로그아웃</button>
+          <button onClick={handleLogout}>로그아웃</button>
           <button onClick={() => navigate("/my-page")}>마이페이지</button>
         </StyledBtnGroup>
       )}
