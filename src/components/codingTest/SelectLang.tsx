@@ -60,8 +60,8 @@ const LangSelect = styled.article`
   }
   & > ul {
     position: absolute;
-    bottom: -75px;
-    left: 16px;
+    bottom: -78px;
+    left: 22px;
     width: 120px;
     color: #000;
     background: white;
