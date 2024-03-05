@@ -44,7 +44,6 @@ export const SelectLang = ({ language, setLanguage }: LangProps) => {
 const LangSelect = styled.article`
   width: 100%;
   padding: 12px 16px;
-  /* margin-bottom: 20px; */
   border-bottom: 2px solid var(--background-color);
   position: relative;
   & > button {
@@ -77,5 +76,8 @@ const LangSelect = styled.article`
         background-color: var(--gray300-color);
       }
     }
+  }
+  @media only screen and (max-width: 768px) {
+    border-top: 2px solid var(--background-color);
   }
 `;

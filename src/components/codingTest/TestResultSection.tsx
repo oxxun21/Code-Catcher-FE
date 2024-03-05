@@ -23,4 +23,8 @@ const ResultSection = styled.section`
     color: var(--gray400-color);
     font-size: 0.75rem;
   }
+  @media only screen and (max-width: 768px) {
+    padding-top: 20px;
+    border-top: 2px solid var(--background-color);
+  }
 `;

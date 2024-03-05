@@ -30,6 +30,7 @@ export const CodingTest = () => {
   const [language, setLanguage] = useState<"Java" | "Python">("Java");
   const [isModal, setIsModal] = useState(false);
   const [codeValue, setCodeValue] = useState("");
+  const [isMedia, setIsMedia] = useState(window.innerWidth <= 768);
 
   const {
     width: descWidth,
@@ -38,7 +39,15 @@ export const CodingTest = () => {
     startDragVertical,
   } = useDraggable({ initialWidth: 40, initialHeight: 60 });
 
-  const isMedia = window.innerWidth <= 768;
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMedia(window.innerWidth <= 768);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   const handleClose = () => {
     setIsModal(prev => !prev);
