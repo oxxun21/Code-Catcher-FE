@@ -2,22 +2,35 @@ import styled from "@emotion/styled";
 import gutter_horizontal from "../assets/gutter_horizontal.svg";
 import gutter_vertical from "../assets/gutter_vertical.svg";
 import icon_bookmark from "../assets/icon_bookmark.svg";
+import icon_bookmark_true from "../assets/icon_bookmark_true.svg";
 import MyCode from "../assets/MyCode.svg";
 import ChatGPTsCode from "../assets/ChatGPTsCode.svg";
 import ChatGPTsFeedback from "../assets/ChatGPTsFeedback.svg";
 import { useDraggable } from "../hook";
-import { ReadOnlyEditor } from "../components";
-import { Link } from "react-router-dom";
+import { Header, ReadOnlyEditor } from "../components";
+import { Link, useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 export const CodeCompare = () => {
+  const [isMedia, setIsMedia] = useState(window.innerWidth <= 768);
   const {
     width: descWidth,
     height: editorHeight,
     startDragHorizontal,
     startDragVertical,
   } = useDraggable({ initialWidth: 40, initialHeight: 60 });
+  const location = useLocation();
+  const [isbookmark, setIsbookmark] = useState(false);
 
-  const isMedia = window.innerWidth <= 768;
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMedia(window.innerWidth <= 768);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   const code = `function solution(t, p) {
     // ... 여기에 코드 ...
@@ -25,9 +38,10 @@ export const CodeCompare = () => {
 
   return (
     <>
+      <Header />
       <PageHeader>
-        <h2>두 수의 차</h2>
-        <span>Lv.1</span>
+        <h2>{location.state.question.title}</h2>
+        <span>{location.state.question.subject}</span>
       </PageHeader>
       <Contain>
         <section style={{ width: isMedia ? "100%" : `${descWidth}%` }}>
@@ -36,7 +50,7 @@ export const CodeCompare = () => {
               <img src={MyCode} alt="My Code" />
             </strong>
           </CompareHeader>
-          <ReadOnlyEditor code={code} />
+          <ReadOnlyEditor code={location.state.myCode} />
         </section>
         <Gutter orientation="horizontal" onMouseDown={startDragHorizontal} />
         <section style={{ width: isMedia ? "100%" : `${100 - descWidth}%` }}>
@@ -45,9 +59,9 @@ export const CodeCompare = () => {
               <strong>
                 <img src={ChatGPTsCode} alt="Chat GPT's Code" />
               </strong>
-              <button>
+              <button onClick={() => setIsbookmark(prev => !prev)}>
                 북마크에 추가하기
-                <img src={icon_bookmark} alt="북마크 아이콘" />
+                <img src={isbookmark ? icon_bookmark_true : icon_bookmark} alt="북마크 아이콘" />
               </button>
             </CompareHeader>
             <ReadOnlyEditor code={code} />
@@ -59,6 +73,7 @@ export const CodeCompare = () => {
                 <img src={ChatGPTsFeedback} alt="Chat GPT's Feedback" />
               </strong>
             </CompareHeader>
+            <p>어쩌구저쩌구</p>
           </div>
         </section>
       </Contain>
@@ -92,7 +107,7 @@ const CompareHeader = styled.div`
 const Contain = styled.div`
   display: flex;
   background-color: var(--gray500-color);
-  height: 81vh;
+  height: 72vh;
 
   .gptCode {
     display: flex;
@@ -123,15 +138,26 @@ const Contain = styled.div`
     & > div:last-of-type {
       padding-top: 0;
       border-bottom: 2px solid var(--background-color);
+      @media only screen and (max-width: 768px) {
+        margin-top: 20px;
+        padding-top: 24px;
+      }
+    }
+
+    & > p {
+      padding: 24px 22px;
+      font-size: 0.875rem;
     }
   }
   & > section:first-of-type > div:last-of-type {
     margin-right: 10px;
     height: 85%;
+    @media only screen and (max-width: 768px) {
+      margin-right: 22px;
+    }
   }
 
   @media only screen and (max-width: 768px) {
-    width: 100%;
     flex-direction: column;
     height: 100%;
   }

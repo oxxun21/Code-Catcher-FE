@@ -2,15 +2,17 @@ import { useRef, useCallback } from "react";
 import Editor, { OnMount, OnChange } from "@monaco-editor/react";
 import { editor } from "monaco-editor";
 
-export const CodeEditor = ({ editorHeight }: { editorHeight: number }) => {
+interface EditorProps {
+  editorHeight: number;
+  language: "Java" | "Python";
+  setCodeValue: React.Dispatch<React.SetStateAction<any>>;
+}
+
+export const CodeEditor = ({ editorHeight, language, setCodeValue }: EditorProps) => {
   const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
 
   const handleEditorChange: OnChange = useCallback((value?: string, event?: any) => {
-    console.log("Here is the current model value:", value);
-  }, []);
-
-  const showValue = useCallback(() => {
-    console.log(editorRef.current?.getValue());
+    setCodeValue(value);
   }, []);
 
   const handleEditorDidMount: OnMount = useCallback((editor: editor.IStandaloneCodeEditor, monacoInstance) => {
@@ -19,7 +21,7 @@ export const CodeEditor = ({ editorHeight }: { editorHeight: number }) => {
     monacoInstance.editor.defineTheme("customTheme", {
       base: "vs-dark",
       inherit: true,
-      rules: [{ token: "comment", background: "28A745" }], // 주석 색상 변경 필요
+      rules: [{ token: "comment", background: "28A745" }],
       colors: {
         "editor.foreground": "#ffffff",
         "editor.background": "#32323a",
@@ -34,11 +36,20 @@ export const CodeEditor = ({ editorHeight }: { editorHeight: number }) => {
     monacoInstance.editor.setTheme("customTheme");
   }, []);
 
+  const defaultContent =
+    language === "Java"
+      ? `public class Main {
+    public static void main(String[] args) {
+        
+    }
+}`
+      : "// 코드를 입력해주세요";
+
   return (
     <section style={{ height: `${editorHeight}%` }}>
       <Editor
-        defaultLanguage="java"
-        defaultValue="// 코드를 작성해주세요"
+        defaultLanguage={language === "Java" ? "java" : "python"}
+        value={defaultContent}
         options={{
           fontSize: 14,
           minimap: { enabled: false },

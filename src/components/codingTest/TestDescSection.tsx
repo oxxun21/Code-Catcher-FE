@@ -1,38 +1,46 @@
 import styled from "@emotion/styled";
+import { Question_I } from "./../../interface/question_I";
 
-export const TestDescSection = ({ descWidth }: { descWidth: number }) => {
+interface TestDescSectionProps {
+  descWidth: number;
+  question: Question_I;
+}
+
+export const TestDescSection = ({ descWidth, question }: TestDescSectionProps) => {
   return (
     <DescSection style={{ width: `${descWidth}%` }}>
       <DescArticle>
         <strong>문제 설명</strong>
-        <p>정수 어쩌구랑 어쩌구가 주어질 때, return 구하는 solution 함수를 완성해주세요</p>
+        <p>{question.script}</p>
       </DescArticle>
       <DescArticle>
-        <strong>제한 사항</strong>
-        <ul>
-          <li>제한 사항 1</li>
-          <li>제한 사항 2</li>
-        </ul>
+        <strong>입력</strong>
+        <p>{question.input_condition}</p>
+      </DescArticle>
+      <DescArticle>
+        <strong>출력</strong>
+        <p>{question.output_condition}</p>
       </DescArticle>
       <DescArticle>
         <strong>입출력 예</strong>
-        <table>
-          <tr>
-            <td>1,1</td>
-            <td>1,2</td>
-            <td>1,3</td>
-          </tr>
-          <tr>
-            <td>2,1</td>
-            <td>2,2</td>
-            <td>2,3</td>
-          </tr>
-          <tr>
-            <td>3,1</td>
-            <td>3,2</td>
-            <td>3,3</td>
-          </tr>
-        </table>
+        <InputAndOutput>
+          <div>
+            <p>예제 입력 1</p>
+            <p>{question.input_1}</p>
+          </div>
+          <div>
+            <p>예제 출력 1</p>
+            <p>{question.output_1}</p>
+          </div>
+          <div>
+            <p>예제 입력 2</p>
+            <p>{question.input_2}</p>
+          </div>
+          <div>
+            <p>예제 출력 2</p>
+            <p>{question.output_2}</p>
+          </div>
+        </InputAndOutput>
       </DescArticle>
     </DescSection>
   );
@@ -65,27 +73,32 @@ const DescSection = styled.section`
 
 const DescArticle = styled.article`
   font-size: 0.875rem;
-  line-height: 1.5;
-  margin-bottom: 5rem;
+  line-height: 2;
+  margin-bottom: 2rem;
+  white-space: pre-wrap;
   &:last-of-type {
     margin-bottom: 0;
   }
   & > strong {
     font-weight: 600;
     color: #989898;
-    margin-bottom: 1rem;
+    margin-bottom: 8px;
     display: block;
   }
-  & > ul {
-    list-style-type: disc;
-    padding-inline-start: 16px;
-  }
-  & > table {
-    background-color: #2c2c34;
-    & > tr > td {
-      font-size: 0.875rem;
-      padding: 10px 20px;
-      outline: 1px solid #404040;
+`;
+
+const InputAndOutput = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 0.75rem;
+  & > div {
+    background-color: #2a2a31;
+    border-radius: 6px;
+    padding: 10px 1rem;
+    & > p:first-of-type {
+      font-size: 0.75rem;
+      color: var(--gray400-color);
     }
   }
 `;
