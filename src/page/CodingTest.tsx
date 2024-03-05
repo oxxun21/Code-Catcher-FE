@@ -121,24 +121,24 @@ export const CodingTest = () => {
 
 const PageHeader = styled.div`
   background-color: #32323a;
-  padding: 22px 28px;
+  padding: 1rem 22px;
   font-weight: 600;
   border-bottom: 2px solid var(--background-color);
   & > h2 {
-    font-size: 1.375rem;
+    font-size: 1rem;
     display: inline-block;
-    margin-right: 1rem;
+    margin-right: 12px;
   }
   & > span {
     color: var(--gray400-color);
-    font-size: 1rem;
+    font-size: 14px;
   }
 `;
 
 const Contain = styled.div`
   display: flex;
   background-color: var(--gray500-color);
-  height: 72vh;
+  height: 77vh;
   @media only screen and (max-width: 768px) {
     flex-direction: column;
     height: 100%;
@@ -152,7 +152,7 @@ const CodeContain = styled.div`
 
 const ButtonContain = styled.div`
   width: 100%;
-  padding: 12px 24px;
+  padding: 10px 22px;
   display: flex;
   justify-content: flex-end;
   gap: 0.75rem;

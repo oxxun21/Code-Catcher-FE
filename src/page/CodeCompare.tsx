@@ -179,7 +179,7 @@ const Gutter = styled.div<{ orientation: "vertical" | "horizontal" }>`
 
 const ButtonContain = styled.div`
   width: 100%;
-  padding: 10px 28px;
+  padding: 10px 22px;
   display: flex;
   justify-content: flex-end;
   & > a {
