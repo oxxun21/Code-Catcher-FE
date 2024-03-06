@@ -1,15 +1,15 @@
 import { useEffect } from "react";
 import styled from "@emotion/styled";
 import icon_close from "../../assets/icon_close.svg";
-import modal_background_survey from "../../assets/modal_background_survey.svg";
 import { createPortal } from "react-dom";
 
 interface ModalProps {
   onClose: (e: React.MouseEvent<HTMLElement>) => void;
   children: React.ReactNode;
+  modalHeader: string;
 }
 
-export const Modal = ({ children, onClose }: ModalProps) => {
+export const Modal = ({ children, onClose, modalHeader }: ModalProps) => {
   useEffect(() => {
     const root = document.body;
     root.style.cssText = `
@@ -28,7 +28,7 @@ export const Modal = ({ children, onClose }: ModalProps) => {
     <BackgroundStyle onClick={onClose}>
       <BoxStyle onClick={e => e.stopPropagation()}>
         <ModalHeader>
-          <img src={modal_background_survey} alt="modal_background_survey" />
+          <p>{modalHeader}</p>
           <ButtonContainer onClick={onClose}>
             <img src={icon_close} alt="닫기 버튼" />
           </ButtonContainer>
@@ -70,6 +70,12 @@ const ModalHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  & > p {
+    font-family: var(--font--Galmuri);
+    font-size: 0.875rem;
+    color: #222;
+    font-weight: 500;
+  }
 `;
 
 const ButtonContainer = styled.button`

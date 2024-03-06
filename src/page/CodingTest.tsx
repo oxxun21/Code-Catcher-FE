@@ -7,6 +7,8 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { getQuestionAPI } from "../api";
 import { Question_I } from "../interface";
+import icon_test_complete from "../assets/icon_test_complete.svg";
+import icon_test_failed from "../assets/icon_test_failed.svg";
 
 const question = {
   title: "프린터 큐",
@@ -32,6 +34,8 @@ export const CodingTest = () => {
   const [codeValue, setCodeValue] = useState("");
   const [isMedia, setIsMedia] = useState(window.innerWidth <= 768);
   const navigate = useNavigate();
+
+  const testComplete = true;
 
   const {
     width: descWidth,
@@ -92,25 +96,32 @@ export const CodingTest = () => {
         <button onClick={handleSubmit}>제출 후 채점하기</button>
       </ButtonContain>
       {isModal && (
-        <Modal onClose={handleClose}>
+        <Modal onClose={handleClose} modalHeader={testComplete ? "Test Complete" : "Test Failed"}>
           <ModalContain>
-            <p>이미지 자리</p>
-            <strong>10 EXP 획득!</strong>
-            <p>오늘의 첫번째 테스트를 완료했어요</p>
+            <img
+              src={testComplete ? icon_test_complete : icon_test_failed}
+              alt={testComplete ? "테스트 통과" : "테스트 실패"}
+            />
+            <strong>{testComplete ? "10 EXP 획득!" : "EXP 획득 실패"}</strong>
+            <p>{testComplete ? "오늘의 첫번째 테스트를 완료했어요" : "다음 테스트엔 더 잘 할 수 있어요"}</p>
             <div>
               <Link to="/">홈으로</Link>
-              <button
-                onClick={() =>
-                  navigate("/CodeCompare", {
-                    state: {
-                      question: { title: question.title, subject: question.subject },
-                      myCode: codeValue,
-                    },
-                  })
-                }
-              >
-                Chat GPT 답안 보기
-              </button>
+              {testComplete ? (
+                <button
+                  onClick={() =>
+                    navigate("/CodeCompare", {
+                      state: {
+                        question: { title: question.title, subject: question.subject },
+                        myCode: codeValue,
+                      },
+                    })
+                  }
+                >
+                  Chat GPT 답안 보기
+                </button>
+              ) : (
+                <button onClick={() => setIsModal(false)}>다시 풀기</button>
+              )}
             </div>
           </ModalContain>
         </Modal>
