@@ -7,3 +7,4 @@ export * from "./codeCompare/ReadOnlyEditor.tsx";
 export * from "./common/Header";
 export * from "./carousel/SplashCarousel.tsx";
 export * from "./card/UserCard.tsx";
+export * from "./card/QuestionCard.tsx";
