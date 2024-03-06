@@ -53,10 +53,10 @@ const BackgroundStyle = styled.div`
 const BoxStyle = styled.div`
   background-color: #fff;
   color: #000;
-  padding: 24px;
+  padding: 24px 44px 50px;
   height: fit-content;
   min-width: 440px;
-  border-radius: 20px;
+  border-radius: 6px;
   position: fixed;
   top: 50%;
   left: 50%;
