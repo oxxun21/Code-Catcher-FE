@@ -7,6 +7,7 @@ import { KakaoRedirection } from "./page/KakaoRedirection";
 import { CodingTest } from "./page/CodingTest";
 import { CodeCompare } from "./page/CodeCompare";
 import { NotFound } from "./page/NotFound";
+import { QuestionSelect } from "./page/QuestionSelect";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/kakao/callback" element={<KakaoRedirection />} />
         <Route path="/CodingTest/:id" element={<CodingTest />} />
         <Route path="/CodeCompare" element={<CodeCompare />} />
+        <Route path="/CodingTest/select" element={<QuestionSelect />} />
         <Route path="/404" element={<NotFound />} />
         <Route path={"*"} element={<Navigate to="/404" />} />
       </Routes>
