@@ -215,6 +215,9 @@ const ModalContain = styled.div`
     font-weight: 600;
     margin-top: 12px;
   }
+  & > img {
+    margin-top: 50px;
+  }
 
   & > div {
     width: 100%;
