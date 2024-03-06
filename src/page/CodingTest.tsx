@@ -103,7 +103,7 @@ export const CodingTest = () => {
               alt={testComplete ? "테스트 통과" : "테스트 실패"}
             />
             <strong>{testComplete ? "10 EXP 획득!" : "EXP 획득 실패"}</strong>
-            <p>{testComplete ? "오늘의 첫번째 테스트를 완료했어요" : "다음 테스트엔 더 잘 할 수 있어요"}</p>
+            <p>{testComplete ? "축하합니다! 문제를 맞추셨어요" : "다음 테스트엔 더 잘 할 수 있어요"}</p>
             <div>
               <Link to="/">홈으로</Link>
               {testComplete ? (
@@ -209,13 +209,13 @@ const ModalContain = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 12px;
-  padding: 26px 20px;
   font-size: 1rem;
   & > strong {
     font-size: 1.375rem;
     font-weight: 600;
     margin-top: 12px;
   }
+
   & > div {
     width: 100%;
     margin-top: 24px;
