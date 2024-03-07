@@ -49,7 +49,7 @@ export const CodeCompare = () => {
         <section style={{ width: isMedia ? "100%" : `${100 - descWidth}%` }}>
           <div style={{ height: `${editorHeight}%` }}>
             <CompareHeader className="gptCode">
-              <strong>Chat GPT's Code</strong>
+              <strong>AI Code</strong>
               <button onClick={() => setIsbookmark(prev => !prev)}>
                 북마크에 추가하기
                 <img src={isbookmark ? icon_bookmark_true : icon_bookmark} alt="북마크 아이콘" />
@@ -60,7 +60,7 @@ export const CodeCompare = () => {
           <div style={{ height: `${100 - editorHeight}%` }} className="Feedback">
             <Gutter orientation="vertical" onMouseDown={startDragVertical} />
             <CompareHeader>
-              <strong>Chat GPT's Feedback</strong>
+              <strong>AI Feedback</strong>
             </CompareHeader>
             <p>어쩌구저쩌구</p>
           </div>
