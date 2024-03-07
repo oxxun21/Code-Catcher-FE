@@ -13,7 +13,7 @@ const ResultSection = styled.section`
   & > strong {
     display: block;
     font-size: 0.875rem;
-    padding: 0 24px 20px 24px;
+    padding: 0 22px 15px;
     color: var(--gray400-color);
     font-weight: 600;
   }
