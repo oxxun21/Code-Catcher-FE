@@ -4,6 +4,7 @@ interface ButtonProps {
   text?: string;
   backgroundColor?: string;
   color?: string;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 export const GalmuriButton = ({ text, ...props }: ButtonProps) => {

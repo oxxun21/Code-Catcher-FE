@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 interface ButtonProps {
   text?: string;
   white?: boolean;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 export const SquareButton = ({ text, ...props }: ButtonProps) => {

@@ -4,6 +4,7 @@ interface ButtonProps {
   text?: string;
   dark?: boolean;
   width?: string;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 export const RoundButton = ({ text, ...props }: ButtonProps) => {
