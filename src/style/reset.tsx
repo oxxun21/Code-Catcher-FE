@@ -5,6 +5,7 @@ const reset = css`
     --main-color: #32cd32;
     --light-color: #00e46c;
     --dark-color: #44b044;
+    --gray200-color: #dbdbdb;
     --gray300-color: #d3d3d3;
     --gray400-color: #989898;
     --gray500-color: #32323a;
