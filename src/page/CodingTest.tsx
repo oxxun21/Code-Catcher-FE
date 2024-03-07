@@ -117,7 +117,7 @@ export const CodingTest = () => {
                     })
                   }
                 >
-                  Chat GPT 답안 보기
+                  AI 설명 보기
                 </button>
               ) : (
                 <button onClick={() => setIsModal(false)}>다시 풀기</button>
