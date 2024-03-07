@@ -1,13 +1,23 @@
 import styled from "@emotion/styled";
+import { Link } from "react-router-dom";
 
 interface ButtonProps {
   text?: string;
   white?: boolean;
-  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => void;
+  to?: string;
 }
 
 export const SquareButton = ({ text, ...props }: ButtonProps) => {
   return <Button {...props}>{text}</Button>;
+};
+
+export const SquareLink = ({ text, to, ...props }: ButtonProps) => {
+  return (
+    <Button as={Link} to={to} {...props}>
+      {text}
+    </Button>
+  );
 };
 
 const Button = styled.button<ButtonProps>`
