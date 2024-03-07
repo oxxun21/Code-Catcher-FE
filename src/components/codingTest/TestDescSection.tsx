@@ -47,7 +47,7 @@ export const TestDescSection = ({ descWidth, question }: TestDescSectionProps) =
 };
 
 const DescSection = styled.section`
-  padding: 36px 28px;
+  padding: 22px;
   overflow: auto;
   ::-webkit-scrollbar {
     width: 5px;
@@ -72,10 +72,11 @@ const DescSection = styled.section`
 `;
 
 const DescArticle = styled.article`
-  font-size: 0.875rem;
+  font-size: 12px;
   line-height: 2;
-  margin-bottom: 2rem;
+  margin-bottom: 24px;
   white-space: pre-wrap;
+  word-wrap: break-word;
   &:last-of-type {
     margin-bottom: 0;
   }
