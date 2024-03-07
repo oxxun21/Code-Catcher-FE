@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { Link } from "react-router-dom";
+import { LinkProps } from "react-router-dom";
 
 interface ButtonProps {
   text?: string;
@@ -7,18 +7,11 @@ interface ButtonProps {
   color?: string;
   onClick?: (e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => void;
   to?: string;
+  as?: React.ForwardRefExoticComponent<LinkProps & React.RefAttributes<HTMLAnchorElement>>;
 }
 
 export const GalmuriButton = ({ text, ...props }: ButtonProps) => {
   return <Button {...props}>{text}</Button>;
-};
-
-export const GalmuriLink = ({ text, to, ...props }: ButtonProps) => {
-  return (
-    <Button as={Link} to={to} {...props}>
-      {text}
-    </Button>
-  );
 };
 
 const Button = styled.button<ButtonProps>`
