@@ -9,6 +9,7 @@ const reset = css`
     --gray300-color: #d3d3d3;
     --gray400-color: #989898;
     --gray500-color: #32323a;
+    --gray-600-color: #2a2a2a;
     --background-color: #17171b;
   }
 
