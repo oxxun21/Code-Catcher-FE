@@ -1,10 +1,11 @@
 import styled from "@emotion/styled";
-import loading from "../../assets/loading.svg";
+import loading_dot from "../../assets/loading_dot.gif";
 
 export const Loading = () => {
   return (
     <LoadingComponent>
-      <img src={loading} alt="로딩 화면" />
+      <span>Loading</span>
+      <img src={loading_dot} alt="로딩 화면" />
     </LoadingComponent>
   );
 };
@@ -15,4 +16,11 @@ const LoadingComponent = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  font-family: var(--font--Galmuri);
+  color: var(--light-color);
+  font-size: 2.25rem;
+  font-weight: 600;
+  & > img {
+    margin-top: 35px;
+  }
 `;
