@@ -4,8 +4,8 @@ import gutter_vertical from "../assets/gutter_vertical.svg";
 import icon_bookmark from "../assets/icon_bookmark.svg";
 import icon_bookmark_true from "../assets/icon_bookmark_true.svg";
 import { useDraggable } from "../hook";
-import { Header, ReadOnlyEditor } from "../components";
-import { Link, useLocation } from "react-router-dom";
+import { Header, ReadOnlyEditor, SquareLink } from "../components";
+import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 export const CodeCompare = () => {
@@ -67,7 +67,7 @@ export const CodeCompare = () => {
         </section>
       </Contain>
       <ButtonContain>
-        <Link to="/">나가기</Link>
+        <SquareLink to="/" text="나가기" />
       </ButtonContain>
     </>
   );
@@ -182,17 +182,6 @@ const ButtonContain = styled.div`
   padding: 10px 22px;
   display: flex;
   justify-content: flex-end;
-  & > a {
-    padding: 10px 24px;
-    font-size: 1rem;
-    background-color: var(--main-color);
-    color: #fff;
-    font-weight: 600;
-    border-radius: 4px;
-    &:disabled {
-      background-color: #757575;
-    }
-  }
   @media only screen and (max-width: 768px) {
     position: relative;
   }

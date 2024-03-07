@@ -1,10 +1,20 @@
-import { CodeEditor, Header, Modal, SelectLang, TestDescSection, TestResultSection } from "../components";
+import {
+  CodeEditor,
+  Header,
+  Modal,
+  RoundButton,
+  RoundLink,
+  SelectLang,
+  SquareButton,
+  TestDescSection,
+  TestResultSection,
+} from "../components";
 import styled from "@emotion/styled";
 import gutter_horizontal from "../assets/gutter_horizontal.svg";
 import gutter_vertical from "../assets/gutter_vertical.svg";
 import { useDraggable } from "../hook";
 import { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getQuestionAPI } from "../api";
 import { Question_I } from "../interface";
 import icon_test_complete from "../assets/icon_test_complete.svg";
@@ -92,8 +102,8 @@ export const CodingTest = () => {
         </CodeContain>
       </Contain>
       <ButtonContain>
-        <button>코드 실행</button>
-        <button onClick={handleSubmit}>제출 후 채점하기</button>
+        <SquareButton text="코드 실행" white />
+        <SquareButton text="제출 후 채점하기" onClick={handleSubmit} />
       </ButtonContain>
       {isModal && (
         <Modal onClose={handleClose} modalHeader={testComplete ? "Test Complete" : "Test Failed"}>
@@ -105,9 +115,10 @@ export const CodingTest = () => {
             <strong>{testComplete ? "10 EXP 획득!" : "EXP 획득 실패"}</strong>
             <p>{testComplete ? "축하합니다! 문제를 맞추셨어요" : "다음 테스트엔 더 잘 할 수 있어요"}</p>
             <div>
-              <Link to="/">홈으로</Link>
+              <RoundLink to="/" text="홈으로" width="50%" />
               {testComplete ? (
-                <button
+                <RoundButton
+                  text="AI 설명 보기"
                   onClick={() =>
                     navigate("/CodeCompare", {
                       state: {
@@ -116,11 +127,11 @@ export const CodingTest = () => {
                       },
                     })
                   }
-                >
-                  AI 설명 보기
-                </button>
+                  dark
+                  width="50%"
+                />
               ) : (
-                <button onClick={() => setIsModal(false)}>다시 풀기</button>
+                <RoundButton text="다시 풀기" onClick={() => setIsModal(false)} dark width="50%" />
               )}
             </div>
           </ModalContain>
@@ -167,22 +178,6 @@ const ButtonContain = styled.div`
   display: flex;
   justify-content: flex-end;
   gap: 0.75rem;
-  & > button {
-    cursor: pointer;
-    padding: 12px 24px;
-    font-size: 1rem;
-    background-color: #fff;
-    color: #000;
-    font-weight: 600;
-    border-radius: 4px;
-    &:disabled {
-      background-color: #757575;
-    }
-  }
-  & > button:last-of-type {
-    background-color: var(--main-color);
-    color: #fff;
-  }
   @media only screen and (max-width: 768px) {
     position: relative;
   }
@@ -224,22 +219,5 @@ const ModalContain = styled.div`
     margin-top: 24px;
     display: flex;
     gap: 20px;
-    & > a,
-    & > button {
-      width: 50%;
-      border-radius: 20px;
-      background-color: #f4f4f4;
-      border: 1px solid #dbdbdb;
-      color: #000;
-      padding: 16px;
-      font-size: 0.875rem;
-      text-align: center;
-    }
-    & > button {
-      cursor: pointer;
-      background-color: #222;
-      border: none;
-      color: #fff;
-    }
   }
 `;
