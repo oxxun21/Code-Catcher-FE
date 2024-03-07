@@ -22,6 +22,7 @@ const Button = styled.button<ButtonProps>`
   border: ${props => (props.dark ? "1px solid #222222" : "1px solid #DBDBDB")};
   border-radius: 20px;
   transition: all 0.3s;
+  text-align: center;
   &:hover {
     // 임시
     background-color: ${props => (props.dark ? "#122134" : "#DBDBDB")};

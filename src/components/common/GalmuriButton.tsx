@@ -21,6 +21,7 @@ const Button = styled.button<ButtonProps>`
   border-radius: 20px;
   font-weight: 600;
   transition: all 0.3s;
+  text-align: center;
   &:hover {
     background-color: var(--dark-color); // 임시
   }
