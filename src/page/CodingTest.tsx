@@ -3,7 +3,6 @@ import {
   Header,
   Modal,
   RoundButton,
-  RoundLink,
   SelectLang,
   SquareButton,
   TestDescSection,
@@ -14,7 +13,7 @@ import gutter_horizontal from "../assets/gutter_horizontal.svg";
 import gutter_vertical from "../assets/gutter_vertical.svg";
 import { useDraggable } from "../hook";
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { getQuestionAPI } from "../api";
 import { Question_I } from "../interface";
 import icon_test_complete from "../assets/icon_test_complete.svg";
@@ -115,7 +114,7 @@ export const CodingTest = () => {
             <strong>{testComplete ? "10 EXP 획득!" : "EXP 획득 실패"}</strong>
             <p>{testComplete ? "축하합니다! 문제를 맞추셨어요" : "다음 테스트엔 더 잘 할 수 있어요"}</p>
             <div>
-              <RoundLink to="/" text="홈으로" width="50%" />
+              <RoundButton as={Link} to="/" text="홈으로" width="50%" />
               {testComplete ? (
                 <RoundButton
                   text="AI 설명 보기"
