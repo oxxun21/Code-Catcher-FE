@@ -51,10 +51,11 @@ export const ReadOnlyEditor = ({ code }: { code: string }) => {
 };
 
 const CodeReadSection = styled.div`
-  height: 75%;
+  height: 80%;
   overflow: auto;
   background-color: #2a2a31;
   border-radius: 6px;
-  padding: 30px 0px;
+  padding: 20px 0px;
   margin: 0 22px;
+  white-space: pre-wrap;
 `;

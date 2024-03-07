@@ -1,12 +1,24 @@
-import { CodeEditor, Header, Modal, SelectLang, TestDescSection, TestResultSection } from "../components";
+import {
+  CodeEditor,
+  Header,
+  Modal,
+  RoundButton,
+  RoundLink,
+  SelectLang,
+  SquareButton,
+  TestDescSection,
+  TestResultSection,
+} from "../components";
 import styled from "@emotion/styled";
 import gutter_horizontal from "../assets/gutter_horizontal.svg";
 import gutter_vertical from "../assets/gutter_vertical.svg";
 import { useDraggable } from "../hook";
 import { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getQuestionAPI } from "../api";
 import { Question_I } from "../interface";
+import icon_test_complete from "../assets/icon_test_complete.svg";
+import icon_test_failed from "../assets/icon_test_failed.svg";
 
 const question = {
   title: "프린터 큐",
@@ -32,6 +44,8 @@ export const CodingTest = () => {
   const [codeValue, setCodeValue] = useState("");
   const [isMedia, setIsMedia] = useState(window.innerWidth <= 768);
   const navigate = useNavigate();
+
+  const testComplete = true;
 
   const {
     width: descWidth,
@@ -88,29 +102,37 @@ export const CodingTest = () => {
         </CodeContain>
       </Contain>
       <ButtonContain>
-        <button>코드 실행</button>
-        <button onClick={handleSubmit}>제출 후 채점하기</button>
+        <SquareButton text="코드 실행" white />
+        <SquareButton text="제출 후 채점하기" onClick={handleSubmit} />
       </ButtonContain>
       {isModal && (
-        <Modal onClose={handleClose}>
+        <Modal onClose={handleClose} modalHeader={testComplete ? "Test Complete" : "Test Failed"}>
           <ModalContain>
-            <p>이미지 자리</p>
-            <strong>10 EXP 획득!</strong>
-            <p>오늘의 첫번째 테스트를 완료했어요</p>
+            <img
+              src={testComplete ? icon_test_complete : icon_test_failed}
+              alt={testComplete ? "테스트 통과" : "테스트 실패"}
+            />
+            <strong>{testComplete ? "10 EXP 획득!" : "EXP 획득 실패"}</strong>
+            <p>{testComplete ? "축하합니다! 문제를 맞추셨어요" : "다음 테스트엔 더 잘 할 수 있어요"}</p>
             <div>
-              <Link to="/">홈으로</Link>
-              <button
-                onClick={() =>
-                  navigate("/CodeCompare", {
-                    state: {
-                      question: { title: question.title, subject: question.subject },
-                      myCode: codeValue,
-                    },
-                  })
-                }
-              >
-                Chat GPT 답안 보기
-              </button>
+              <RoundLink to="/" text="홈으로" width="50%" />
+              {testComplete ? (
+                <RoundButton
+                  text="AI 설명 보기"
+                  onClick={() =>
+                    navigate("/CodeCompare", {
+                      state: {
+                        question: { title: question.title, subject: question.subject },
+                        myCode: codeValue,
+                      },
+                    })
+                  }
+                  dark
+                  width="50%"
+                />
+              ) : (
+                <RoundButton text="다시 풀기" onClick={() => setIsModal(false)} dark width="50%" />
+              )}
             </div>
           </ModalContain>
         </Modal>
@@ -121,24 +143,24 @@ export const CodingTest = () => {
 
 const PageHeader = styled.div`
   background-color: #32323a;
-  padding: 22px 34px;
+  padding: 1rem 22px;
   font-weight: 600;
   border-bottom: 2px solid var(--background-color);
   & > h2 {
-    font-size: 1.375rem;
+    font-size: 1rem;
     display: inline-block;
-    margin-right: 1rem;
+    margin-right: 12px;
   }
   & > span {
     color: var(--gray400-color);
-    font-size: 1rem;
+    font-size: 14px;
   }
 `;
 
 const Contain = styled.div`
   display: flex;
   background-color: var(--gray500-color);
-  height: 72vh;
+  height: 77vh;
   @media only screen and (max-width: 768px) {
     flex-direction: column;
     height: 100%;
@@ -152,26 +174,10 @@ const CodeContain = styled.div`
 
 const ButtonContain = styled.div`
   width: 100%;
-  padding: 12px 24px;
+  padding: 10px 22px;
   display: flex;
   justify-content: flex-end;
   gap: 0.75rem;
-  & > button {
-    cursor: pointer;
-    padding: 12px 24px;
-    font-size: 1rem;
-    background-color: #fff;
-    color: #000;
-    font-weight: 600;
-    border-radius: 4px;
-    &:disabled {
-      background-color: #757575;
-    }
-  }
-  & > button:last-of-type {
-    background-color: var(--main-color);
-    color: #fff;
-  }
   @media only screen and (max-width: 768px) {
     position: relative;
   }
@@ -198,33 +204,20 @@ const ModalContain = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 12px;
-  padding: 26px 20px;
   font-size: 1rem;
   & > strong {
     font-size: 1.375rem;
     font-weight: 600;
     margin-top: 12px;
   }
+  & > img {
+    margin-top: 50px;
+  }
+
   & > div {
     width: 100%;
     margin-top: 24px;
     display: flex;
     gap: 20px;
-    & > a,
-    & > button {
-      width: 50%;
-      border-radius: 20px;
-      background-color: #f4f4f4;
-      border: 1px solid #dbdbdb;
-      color: #000;
-      padding: 16px;
-      font-size: 0.875rem;
-      text-align: center;
-    }
-    & > button {
-      background-color: #222;
-      border: none;
-      color: #fff;
-    }
   }
 `;

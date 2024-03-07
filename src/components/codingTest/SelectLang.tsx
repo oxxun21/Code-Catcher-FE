@@ -43,7 +43,7 @@ export const SelectLang = ({ language, setLanguage }: LangProps) => {
 
 const LangSelect = styled.article`
   width: 100%;
-  padding: 12px 16px;
+  padding: 10px 22px;
   border-bottom: 2px solid var(--background-color);
   position: relative;
   & > button {
@@ -60,8 +60,8 @@ const LangSelect = styled.article`
   }
   & > ul {
     position: absolute;
-    bottom: -75px;
-    left: 16px;
+    bottom: -78px;
+    left: 22px;
     width: 120px;
     color: #000;
     background: white;
