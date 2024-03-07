@@ -45,11 +45,14 @@ export const QuestionCard = ({
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
       >
-        <StyledRank>
-          {stars.map((star, index) => (
-            <img key={index} src={star} alt="별" />
-          ))}
-        </StyledRank>
+        <StyledSpan>
+          <span>{`#${questionId}`}</span>
+          <StyledRank>
+            {stars.map((star, index) => (
+              <img key={index} src={star} alt="별" />
+            ))}
+          </StyledRank>
+        </StyledSpan>
         <StyledDesc>
           <h2>{title}</h2>
           <h3>{subject}</h3>
@@ -93,9 +96,16 @@ const StyledCard = styled.article<StyledCardProps>`
     opacity: 1;
   }
 `;
-
+const StyledSpan = styled.span`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  & > span {
+    font-size: 1.25rem;
+    color: #a5a5a5;
+  }
+`;
 const StyledRank = styled.div`
-  text-align: right;
   & > img:not(:last-child) {
     margin-right: 0.375rem;
   }
@@ -128,8 +138,9 @@ const StyledDesc = styled.div`
   }
   & p {
     font-size: 0.875rem;
+    line-height: 145%;
     color: var(--gray200-color);
-    margin-top: 0.5.rem;
+    margin-top: 0.5rem;
     width: 19.5rem;
   }
 `;
