@@ -11,7 +11,7 @@ export const getUserAPI = async (code: string, navigate: NavigateFunction, setUs
       console.log(resData);
       const { jwt, userId, nickname } = response.data;
       setLoginCookie(jwt, { path: "/" });
-      setUserInfo(userId, nickname);
+      setUserInfo({ userId, nickname });
       navigate("/");
     } else {
       console.log("token 없음");

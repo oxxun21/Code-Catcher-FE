@@ -2,8 +2,10 @@ import styled from "@emotion/styled";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getLoginCookie, removeLoginCookie } from "../../utils/loginCookie";
+import { useUserStore } from "../../stores/useUserStore";
 
 export const Header = () => {
+  const { clearUserInfo } = useUserStore.getState();
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const navigate = useNavigate();
 
@@ -14,6 +16,8 @@ export const Header = () => {
 
   const handleLogout = () => {
     removeLoginCookie({ path: "/" });
+    clearUserInfo();
+    localStorage.removeItem("userStore");
     setIsLoggedIn(false);
     navigate("/splash");
   };
