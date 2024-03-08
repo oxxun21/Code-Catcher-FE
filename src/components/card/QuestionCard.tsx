@@ -122,18 +122,18 @@ const StyledDesc = styled.div`
   & h2 {
     font-size: 1.75rem;
     font-weight: bold;
-    color: var(--gray200-color);
+    color: #ffffff;
     margin-bottom: 0.75rem;
   }
   & h3 {
     font-size: 1.25rem;
-    font-weight: medium;
+    font-weight: 600;
     color: #a5a5a5;
     margin-bottom: 2.938rem;
   }
   & strong {
     font-size: 0.875rem;
-    font-weight: medium;
+    font-weight: 600;
     color: var(--gray400-color);
   }
   & p {
