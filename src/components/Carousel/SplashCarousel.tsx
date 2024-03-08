@@ -85,6 +85,10 @@ const StyledCarousel = styled.div`
   @media (max-width: 768px) {
     max-width: none;
   }
+
+  @media (max-width: 480px) {
+    display: none;
+  }
 `;
 
 const Slide = styled.div`
@@ -161,5 +165,9 @@ const CarouselControls = styled.div`
     top: -20%;
     transform: translateX(-50%);
     left: 50%;
+  }
+
+  @media (max-width: 480px) {
+    display: none;
   }
 `;
