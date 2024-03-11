@@ -17,9 +17,9 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/splash" element={<Splash />} />
         <Route path="/kakao/callback" element={<KakaoRedirection />} />
-        <Route path="/CodingTest/:id" element={<CodingTest />} />
-        <Route path="/CodeCompare" element={<CodeCompare />} />
-        <Route path="/CodingTest/select" element={<QuestionSelect />} />
+        <Route path="/codingTest/:id" element={<CodingTest />} />
+        <Route path="/codeCompare" element={<CodeCompare />} />
+        <Route path="/codingTest/select" element={<QuestionSelect />} />
         <Route path="/404" element={<NotFound />} />
         <Route path={"*"} element={<Navigate to="/404" />} />
       </Routes>
