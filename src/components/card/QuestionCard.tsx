@@ -45,11 +45,14 @@ export const QuestionCard = ({
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
       >
-        <StyledRank>
-          {stars.map((star, index) => (
-            <img key={index} src={star} alt="별" />
-          ))}
-        </StyledRank>
+        <StyledSpan>
+          <span>{`#${questionId}`}</span>
+          <StyledRank>
+            {stars.map((star, index) => (
+              <img key={index} src={star} alt="별" />
+            ))}
+          </StyledRank>
+        </StyledSpan>
         <StyledDesc>
           <h2>{title}</h2>
           <h3>{subject}</h3>
@@ -93,9 +96,16 @@ const StyledCard = styled.article<StyledCardProps>`
     opacity: 1;
   }
 `;
-
+const StyledSpan = styled.span`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  & > span {
+    font-size: 1.25rem;
+    color: #a5a5a5;
+  }
+`;
 const StyledRank = styled.div`
-  text-align: right;
   & > img:not(:last-child) {
     margin-right: 0.375rem;
   }
@@ -112,24 +122,25 @@ const StyledDesc = styled.div`
   & h2 {
     font-size: 1.75rem;
     font-weight: bold;
-    color: var(--gray200-color);
+    color: #ffffff;
     margin-bottom: 0.75rem;
   }
   & h3 {
     font-size: 1.25rem;
-    font-weight: medium;
+    font-weight: 600;
     color: #a5a5a5;
     margin-bottom: 2.938rem;
   }
   & strong {
     font-size: 0.875rem;
-    font-weight: medium;
+    font-weight: 600;
     color: var(--gray400-color);
   }
   & p {
     font-size: 0.875rem;
+    line-height: 145%;
     color: var(--gray200-color);
-    margin-top: 0.5.rem;
+    margin-top: 0.5rem;
     width: 19.5rem;
   }
 `;

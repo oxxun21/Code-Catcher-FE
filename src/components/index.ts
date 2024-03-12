@@ -11,3 +11,4 @@ export * from "./card/QuestionCard.tsx";
 export * from "./common/GalmuriButton.tsx";
 export * from "./common/SquareButton.tsx";
 export * from "./common/RoundButton.tsx";
+export * from "./common/MobilePopup.tsx";

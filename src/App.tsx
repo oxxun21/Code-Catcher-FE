@@ -8,22 +8,26 @@ import { CodingTest } from "./page/CodingTest";
 import { CodeCompare } from "./page/CodeCompare";
 import { NotFound } from "./page/NotFound";
 import { QuestionSelect } from "./page/QuestionSelect";
+import { MobilePopup } from "./components";
 
 function App() {
   return (
-    <BrowserRouter>
-      <Global styles={reset} />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/splash" element={<Splash />} />
-        <Route path="/kakao/callback" element={<KakaoRedirection />} />
-        <Route path="/codingTest/:id" element={<CodingTest />} />
-        <Route path="/codeCompare" element={<CodeCompare />} />
-        <Route path="/codingTest/select" element={<QuestionSelect />} />
-        <Route path="/404" element={<NotFound />} />
-        <Route path={"*"} element={<Navigate to="/404" />} />
-      </Routes>
-    </BrowserRouter>
+    <>
+      <BrowserRouter>
+        <Global styles={reset} />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/splash" element={<Splash />} />
+          <Route path="/kakao/callback" element={<KakaoRedirection />} />
+          <Route path="/codingTest/:id" element={<CodingTest />} />
+          <Route path="/codeCompare" element={<CodeCompare />} />
+          <Route path="/codingTest/select" element={<QuestionSelect />} />
+          <Route path="/404" element={<NotFound />} />
+          <Route path={"*"} element={<Navigate to="/404" />} />
+        </Routes>
+      </BrowserRouter>
+      <MobilePopup />
+    </>
   );
 }
 
