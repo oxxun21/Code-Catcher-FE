@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { useUserStore } from "../../stores/useUserStore";
 import styled from "@emotion/styled";
-import profileImage from "../../assets/profile_dummy_img.png";
+import catLv1Img from "../../assets/level/cat_lv1.jpg";
+import catLv2Img from "../../assets/level/cat_lv2.jpg";
+import catLv3Img from "../../assets/level/cat_lv3.jpg";
+import catLv4Img from "../../assets/level/cat_lv4.jpg";
 import editIcon from "../../assets/edit.svg";
 import { updateNicknameAPI } from "../../api";
 
@@ -9,6 +12,19 @@ export const UserCard = () => {
   const { nickname, email, level, setUserInfo } = useUserStore();
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editedNickname, setEditedNickname] = useState<string | null>(nickname);
+
+  type LevelImages = {
+    [key: number]: string;
+  };
+
+  const levelImages: LevelImages = {
+    1: catLv1Img,
+    2: catLv2Img,
+    3: catLv3Img,
+    4: catLv4Img,
+  };
+
+  const currentLevelImage = typeof level === "number" ? levelImages[level] : catLv1Img;
 
   const handleEditClick = async (): Promise<void> => {
     if (isEditing && editedNickname) {
@@ -62,7 +78,7 @@ export const UserCard = () => {
           </div>
           <StyledProgressBar value="90" max="160" />
         </StyledProgress>
-        <img src={profileImage} alt="사용자 캐릭터 이미지" />
+        <img src={currentLevelImage} alt="사용자 캐릭터 이미지" />
         <div>
           <StyledUserInfoGroup>
             <div>
@@ -92,6 +108,12 @@ export const UserCard = () => {
 };
 
 const StyledCard = styled.article`
+  & > img {
+    width: 246px;
+    height: 222px;
+    border-radius: 10px;
+  }
+
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -168,7 +190,7 @@ const StyledNicknameInput = styled.div`
 `;
 
 const StyledProgress = styled.div`
-  margin-bottom: 1.6875rem;
+  margin-bottom: 2.0625rem;
   & > div {
     display: flex;
     justify-content: space-between;
