@@ -15,7 +15,7 @@ import { useDraggable } from "../hook";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { getQuestionAPI } from "../api";
-import { Question_I, ScoreSubmit_I, TestScoreSubmit_I } from "../interface";
+import { Question_I, ScoreSubmit_I, SubmissionProps_I, TestScoreSubmit_I } from "../interface";
 import icon_test_complete from "../assets/icon_test_complete.svg";
 import icon_test_failed from "../assets/icon_test_failed.svg";
 import { AxiosError } from "axios";
@@ -68,14 +68,8 @@ export const CodingTest = () => {
     })();
   }, [id]);
 
-  interface SubmissionProps {
-    problemId: number;
-    codeType: string;
-    code: string;
-  }
-
   async function submissionFunc<T extends object>(
-    apiFunc: (props: SubmissionProps) => Promise<T>,
+    apiFunc: (props: SubmissionProps_I) => Promise<T>,
     updateStateCallback: React.Dispatch<React.SetStateAction<any>>,
     completeFlag = false
   ) {

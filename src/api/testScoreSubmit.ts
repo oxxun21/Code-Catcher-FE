@@ -1,17 +1,11 @@
 import { instance } from "./instance";
-import { TestScoreSubmit_I } from "../interface";
-
-interface SubmitProps {
-  problemId: number;
-  codeType: string;
-  code: string;
-}
+import { SubmissionProps_I, TestScoreSubmit_I } from "../interface";
 
 export const postTestScoreSubmitAPI = async ({
   problemId,
   codeType,
   code,
-}: SubmitProps): Promise<TestScoreSubmit_I> => {
+}: SubmissionProps_I): Promise<TestScoreSubmit_I> => {
   try {
     const response = await instance.post("/score/mock/testcase", {
       problemId,
