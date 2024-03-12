@@ -11,34 +11,34 @@ export const TestDescSection = ({ descWidth, question }: TestDescSectionProps) =
     <DescSection style={{ width: `${descWidth}%` }}>
       <DescArticle>
         <strong>문제 설명</strong>
-        <p>{question.script}</p>
+        <p>{question?.script}</p>
       </DescArticle>
       <DescArticle>
         <strong>입력</strong>
-        <p>{question.input_condition}</p>
+        <p>{question?.input_condition}</p>
       </DescArticle>
       <DescArticle>
         <strong>출력</strong>
-        <p>{question.output_condition}</p>
+        <p>{question?.output_condition}</p>
       </DescArticle>
       <DescArticle>
         <strong>입출력 예</strong>
         <InputAndOutput>
           <div>
             <p>예제 입력 1</p>
-            <p>{question.input_1}</p>
+            <p>{question?.input_1}</p>
           </div>
           <div>
             <p>예제 출력 1</p>
-            <p>{question.output_1}</p>
+            <p>{question?.output_1}</p>
           </div>
           <div>
             <p>예제 입력 2</p>
-            <p>{question.input_2}</p>
+            <p>{question?.input_2}</p>
           </div>
           <div>
             <p>예제 출력 2</p>
-            <p>{question.output_2}</p>
+            <p>{question?.output_2}</p>
           </div>
         </InputAndOutput>
       </DescArticle>
