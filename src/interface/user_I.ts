@@ -11,3 +11,4 @@ export interface UserState {
   }) => void;
   clearUserInfo: () => void;
 }
+

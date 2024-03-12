@@ -18,26 +18,11 @@ import { getQuestionAPI } from "../api";
 import { Question_I } from "../interface";
 import icon_test_complete from "../assets/icon_test_complete.svg";
 import icon_test_failed from "../assets/icon_test_failed.svg";
-
-const question = {
-  title: "프린터 큐",
-  subject: "큐",
-  script:
-    "여러분은 프린터의 작업 대기열을 관리하는 프로그램을 작성하고 있습니다. 각 프린트 작업에는 우선순위가 주어지며, 더 높은 우선순위의 작업을 먼저 인쇄해야 합니다. 우선순위는 1에서 9까지의 숫자로 표현되며, 숫자가 클수록 우선순위가 높습니다. 현재 대기열의 상태와 특정 작업의 위치가 주어졌을 때, 그 작업이 인쇄되기까지 얼마나 많은 시간이 걸리는지 계산하세요.",
-  input_condition:
-    "첫 번째 줄에는 작업의 개수와 참조하고자 하는 작업의 위치가 주어집니다. 두 번째 줄에는 대기열에 있는 각 작업의 우선순위가 주어집니다.",
-  output_condition: "주어진 작업이 인쇄될 때까지 걸리는 시간(대기열에서의 위치 변경 횟수)을 반환합니다.",
-  input_1: "3 0\n3 1 4\n",
-  output_1: "2",
-  input_2: "5 2\n1 1 9 1 1\n",
-  output_2: "1",
-  input_3: "4 2\n4 2 1 3\n",
-  output_3: "2",
-};
+import { AxiosError } from "axios";
 
 export const CodingTest = () => {
   const { id } = useParams();
-  // const [question, setQuestion] = useState<Question_I | undefined>();
+  const [question, setQuestion] = useState<Question_I | undefined>();
   const [language, setLanguage] = useState<"Java" | "Python">("Java");
   const [isModal, setIsModal] = useState(false);
   const [codeValue, setCodeValue] = useState("");
@@ -67,16 +52,18 @@ export const CodingTest = () => {
     setIsModal(prev => !prev);
   };
 
-  // useEffect(() => {
-  //   (async () => {
-  //     try {
-  //       const response = await getQuestionAPI(id);
-  //       setQuestion(response);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   })();
-  // }, [id]);
+  useEffect(() => {
+    (async () => {
+      try {
+        const response = await getQuestionAPI(id);
+        setQuestion(response);
+      } catch (error) {
+        const axiosError = error as AxiosError;
+        console.log(axiosError);
+        if (axiosError.response?.status === 404) navigate("/404");
+      }
+    })();
+  }, [id]);
 
   const handleSubmit = () => {
     console.log(codeValue);
@@ -87,11 +74,11 @@ export const CodingTest = () => {
     <>
       <Header />
       <PageHeader>
-        <h2>{question.title}</h2>
-        <span>{question.subject}</span>
+        <h2>{question?.title}</h2>
+        <span>{question?.subject}</span>
       </PageHeader>
       <Contain>
-        <TestDescSection descWidth={isMedia ? 100 : descWidth} question={question} />
+        <TestDescSection descWidth={isMedia ? 100 : descWidth} question={question as Question_I} />
         <Gutter orientation="horizontal" onMouseDown={startDragHorizontal} />
         <CodeContain style={{ width: isMedia ? "100%" : `${100 - descWidth}%` }}>
           <SelectLang language={language} setLanguage={setLanguage} />
@@ -121,7 +108,7 @@ export const CodingTest = () => {
                   onClick={() =>
                     navigate("/CodeCompare", {
                       state: {
-                        question: { title: question.title, subject: question.subject },
+                        question: { title: question?.title, subject: question?.subject },
                         myCode: codeValue,
                       },
                     })
@@ -159,7 +146,7 @@ const PageHeader = styled.div`
 const Contain = styled.div`
   display: flex;
   background-color: var(--gray500-color);
-  height: 77vh;
+  height: 76vh;
   @media only screen and (max-width: 768px) {
     flex-direction: column;
     height: 100%;
