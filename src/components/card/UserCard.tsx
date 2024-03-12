@@ -3,15 +3,20 @@ import { useUserStore } from "../../stores/useUserStore";
 import styled from "@emotion/styled";
 import profileImage from "../../assets/profile_dummy_img.png";
 import editIcon from "../../assets/edit.svg";
+import { updateNicknameAPI } from "../../api";
 
 export const UserCard = () => {
-  const { nickname, setUserInfo } = useUserStore();
+  const { nickname, email, level, setUserInfo } = useUserStore();
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editedNickname, setEditedNickname] = useState<string | null>(nickname);
 
-  const handleEditClick = (): void => {
-    if (isEditing) {
-      setUserInfo({ nickname: editedNickname });
+  const handleEditClick = async (): Promise<void> => {
+    if (isEditing && editedNickname) {
+      try {
+        await updateNicknameAPI(setUserInfo, editedNickname);
+      } catch (error) {
+        console.error("닉네임 변경 중 오류 발생:", error);
+      }
     }
     setIsEditing(!isEditing);
   };
@@ -54,10 +59,10 @@ export const UserCard = () => {
         <div>
           <StyledUserInfoGroup>
             <div>
-              <span>Lv 1</span>
+              <span>Lv {level}</span>
               {nicknameSpace}
             </div>
-            <h3>ohhm009@gmail.com</h3>
+            <h3>{email}</h3>
           </StyledUserInfoGroup>
           <StyledProgressGroup>
             <StyledProgress>
@@ -86,8 +91,7 @@ const StyledCard = styled.article`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  min-width: 19.875rem;
-  max-width: 23.125rem;
+  width: 23.125rem;
   background-color: #444444;
   border-radius: 0.625rem;
   padding: 2.125rem 2.25rem 2.625rem;
