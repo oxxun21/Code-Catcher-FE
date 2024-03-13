@@ -82,8 +82,6 @@ export const CodingTest = () => {
     try {
       const response = await apiFunc({ problemId: numericId, codeType: language, code: codeValue });
       updateStateCallback(response);
-      console.log(response);
-
       if (completeFlag) {
         if ("correct" in response && response.correct !== undefined) {
           testComplete = response?.correct;
@@ -117,7 +115,11 @@ export const CodingTest = () => {
           <SelectLang language={language} setLanguage={setLanguage} />
           <CodeEditor language={language} editorHeight={editorHeight} setCodeValue={setCodeValue} />
           <Gutter orientation="vertical" onMouseDown={startDragVertical} />
-          <TestResultSection editorHeight={editorHeight} />
+          <TestResultSection
+            editorHeight={editorHeight}
+            testValue={testValue as TestScoreSubmit_I}
+            submitValue={submitValue as ScoreSubmit_I}
+          />
         </CodeContain>
       </Contain>
       <ButtonContain>
