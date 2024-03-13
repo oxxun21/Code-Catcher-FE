@@ -19,7 +19,7 @@ export const Home = () => {
     <>
       <Header />
       <StyledMain>
-        <h1>START TEST ...</h1>
+        <h1>START TEST . . .</h1>
         <UserCard />
         <GalmuriButton to="CodingTest/select" text="오늘의 코테 시작하기" />
       </StyledMain>
@@ -32,12 +32,14 @@ const StyledMain = styled.main`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background-color: #ffffff;
   & > h1 {
     font-family: var(--font-Galmuri);
     font-weight: bold;
     font-size: 1.25rem;
+    color: #222222;
   }
   & > article {
-    margin: 2.25rem 0 3.625rem;
+    margin: 1.875rem 0 5.0625rem;
   }
 `;
