@@ -15,10 +15,12 @@ import { useDraggable } from "../hook";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { getQuestionAPI } from "../api";
-import { Question_I } from "../interface";
+import { Question_I, ScoreSubmit_I, SubmissionProps_I, TestScoreSubmit_I } from "../interface";
 import icon_test_complete from "../assets/icon_test_complete.svg";
 import icon_test_failed from "../assets/icon_test_failed.svg";
 import { AxiosError } from "axios";
+import { postScoreSubmitAPI } from "../api/scoreSubmit";
+import { postTestScoreSubmitAPI } from "../api/testScoreSubmit";
 
 export const CodingTest = () => {
   const { id } = useParams();
@@ -26,10 +28,11 @@ export const CodingTest = () => {
   const [language, setLanguage] = useState<"Java" | "Python">("Java");
   const [isModal, setIsModal] = useState(false);
   const [codeValue, setCodeValue] = useState("");
+  const [testValue, setTestValue] = useState<TestScoreSubmit_I | undefined>();
+  const [submitValue, setSubmitValue] = useState<ScoreSubmit_I | undefined>();
   const [isMedia, setIsMedia] = useState(window.innerWidth <= 768);
   const navigate = useNavigate();
-
-  const testComplete = true;
+  let testComplete;
 
   const {
     width: descWidth,
@@ -65,9 +68,39 @@ export const CodingTest = () => {
     })();
   }, [id]);
 
+  async function submissionFunc<T extends object>(
+    apiFunc: (props: SubmissionProps_I) => Promise<T>,
+    updateStateCallback: React.Dispatch<React.SetStateAction<any>>,
+    completeFlag = false
+  ) {
+    const numericId = Number(id);
+    if (isNaN(numericId)) {
+      console.error("ID 숫자 변환 실패");
+      return;
+    }
+
+    try {
+      const response = await apiFunc({ problemId: numericId, codeType: language, code: codeValue });
+      updateStateCallback(response);
+      console.log(response);
+
+      if (completeFlag) {
+        if ("correct" in response && response.correct !== undefined) {
+          testComplete = response?.correct;
+          setIsModal(true);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const handleTestSubmit = () => {
+    submissionFunc<TestScoreSubmit_I>(postTestScoreSubmitAPI, setTestValue);
+  };
+
   const handleSubmit = () => {
-    console.log(codeValue);
-    setIsModal(true);
+    submissionFunc<ScoreSubmit_I>(postScoreSubmitAPI, setSubmitValue, true);
   };
 
   return (
@@ -88,7 +121,7 @@ export const CodingTest = () => {
         </CodeContain>
       </Contain>
       <ButtonContain>
-        <SquareButton text="코드 실행" white />
+        <SquareButton text="코드 실행" white onClick={handleTestSubmit} />
         <SquareButton text="제출 후 채점하기" onClick={handleSubmit} />
       </ButtonContain>
       {isModal && (
