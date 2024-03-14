@@ -47,12 +47,14 @@ const lastData = [
 export const MyPage = ({}) => {
   return (
     <StyledMain>
-      <UserCard />
-      <div>
-        <MypageList data={dummyData} listType="bookmark" />
-        <MypageList data={lastData} listType="lastTests" />
-      </div>
-      <StyledGalmuriButton as={Link} to="CodingTest/select" text="오늘의 코테 시작하기" />
+      <section>
+        <UserCard />
+        <div>
+          <MypageList data={dummyData} listType="bookmark" />
+          <MypageList data={lastData} listType="lastTests" />
+        </div>
+      </section>
+      <GalmuriButton as={Link} to="CodingTest/select" text="오늘의 코테 시작하기" />
     </StyledMain>
   );
 };
@@ -60,20 +62,19 @@ export const MyPage = ({}) => {
 const StyledMain = styled.main`
   height: 100vh;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 2.1875rem;
-  position: relative;
   background-color: #ffffff;
 
-  & > div {
+  & > section {
     display: flex;
-    flex-direction: column;
-    gap: 1.3125rem;
+    gap: 2.1875rem;
+    margin-bottom: 4.875rem;
+    & > div {
+      display: flex;
+      flex-direction: column;
+      gap: 1.3125rem;
+    }
   }
-`;
-
-const StyledGalmuriButton = styled(GalmuriButton)`
-  position: absolute;
-  bottom: 9.5625rem;
 `;
