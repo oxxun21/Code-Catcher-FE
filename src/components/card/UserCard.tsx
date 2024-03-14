@@ -1,17 +1,38 @@
 import { useState } from "react";
 import { useUserStore } from "../../stores/useUserStore";
 import styled from "@emotion/styled";
-import profileImage from "../../assets/profile_dummy_img.png";
+import catLv1Img from "../../assets/level/cat_lv1.jpg";
+import catLv2Img from "../../assets/level/cat_lv2.jpg";
+import catLv3Img from "../../assets/level/cat_lv3.jpg";
+import catLv4Img from "../../assets/level/cat_lv4.jpg";
 import editIcon from "../../assets/edit.svg";
+import { updateNicknameAPI } from "../../api";
 
 export const UserCard = () => {
-  const { nickname, setUserInfo } = useUserStore();
+  const { nickname, email, level, setUserInfo } = useUserStore();
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editedNickname, setEditedNickname] = useState<string | null>(nickname);
 
-  const handleEditClick = (): void => {
-    if (isEditing) {
-      setUserInfo({ nickname: editedNickname });
+  type LevelImages = {
+    [key: number]: string;
+  };
+
+  const levelImages: LevelImages = {
+    1: catLv1Img,
+    2: catLv2Img,
+    3: catLv3Img,
+    4: catLv4Img,
+  };
+
+  const currentLevelImage = typeof level === "number" ? levelImages[level] : catLv1Img;
+
+  const handleEditClick = async (): Promise<void> => {
+    if (isEditing && editedNickname) {
+      try {
+        await updateNicknameAPI(setUserInfo, editedNickname);
+      } catch (error) {
+        console.error("닉네임 변경 중 오류 발생:", error);
+      }
     }
     setIsEditing(!isEditing);
   };
@@ -40,7 +61,7 @@ export const UserCard = () => {
     </StyledNicknameInput>
   ) : (
     <StyledNickname>
-      <h2>{nickname}</h2>
+      <strong>{nickname}</strong>
       <button onClick={handleEditClick}>
         <img src={editIcon} alt="닉네임 수정 아이콘" />
       </button>
@@ -50,31 +71,36 @@ export const UserCard = () => {
   return (
     <>
       <StyledCard>
-        <img src={profileImage} alt="사용자 캐릭터 이미지" />
+        <StyledProgress>
+          <div>
+            <span>Lv.{level}</span>
+            <span>EXP 90/160</span>
+          </div>
+          <StyledProgressBar value="90" max="160" />
+        </StyledProgress>
+        <img src={currentLevelImage} alt="사용자 캐릭터 이미지" />
         <div>
           <StyledUserInfoGroup>
             <div>
-              <span>Lv 1</span>
+              <span>Lv {level}</span>
               {nicknameSpace}
             </div>
-            <h3>ohhm009@gmail.com</h3>
+            <strong>{email}</strong>
           </StyledUserInfoGroup>
-          <StyledProgressGroup>
-            <StyledProgress>
-              <div>
-                <span>Lv.2까지</span>
-                <span>EXP 30/90</span>
-              </div>
-              <StyledProgressBar value="30" max="90" />
-            </StyledProgress>
-            <StyledProgress>
-              <div>
-                <span>Lv.2까지</span>
-                <span>20문제 남음</span>
-              </div>
-              <StyledProgressBar value="30" max="90" />
-            </StyledProgress>
-          </StyledProgressGroup>
+          <StyledStatistics>
+            <div>
+              <strong>Total</strong>
+              <span>9</span>
+            </div>
+            <div>
+              <strong>Complete</strong>
+              <span>8</span>
+            </div>
+            <div>
+              <strong>Bookmark</strong>
+              <span>3</span>
+            </div>
+          </StyledStatistics>
         </div>
       </StyledCard>
     </>
@@ -82,18 +108,23 @@ export const UserCard = () => {
 };
 
 const StyledCard = styled.article`
+  & > img {
+    width: 246px;
+    height: 222px;
+    border-radius: 10px;
+  }
+
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  min-width: 19.875rem;
-  max-width: 23.125rem;
-  background-color: #444444;
-  border-radius: 0.625rem;
-  padding: 2.125rem 2.25rem 2.625rem;
+  background-color: #fafafa;
+  border: 1px solid #d1d1d1;
+  border-radius: 1.25rem;
+  padding: 2.5rem 3.875rem 2.8125rem 3.625rem;
 `;
 const StyledUserInfoGroup = styled.div`
-  margin: 1.375rem 0 1.5rem;
+  margin: 1.25rem 0 1.6875rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -109,12 +140,12 @@ const StyledUserInfoGroup = styled.div`
     font-family: var(--font--Galmuri);
     font-size: 0.625rem;
     font-weight: bold;
-    color: var(--dark-color);
-    background-color: var(--gray-600-color);
+    color: #fafafa;
+    background-color: var(--main-color);
     border-radius: 62.4375rem;
     text-align: center;
   }
-  & > h3 {
+  & > strong {
     font-size: 0.75rem;
     color: var(--gray400-color);
     margin-top: 0.5rem;
@@ -122,9 +153,10 @@ const StyledUserInfoGroup = styled.div`
 `;
 
 const StyledNickname = styled.div`
+  color: #222222;
   display: flex;
   align-items: center;
-  & > h2 {
+  & > strong {
     font-family: var(--font--Pretendard);
     font-size: 1.125rem;
     font-weight: bold;
@@ -138,38 +170,35 @@ const StyledNickname = styled.div`
 `;
 
 const StyledNicknameInput = styled.div`
-  background-color: var(--gray-600-color);
-  padding: 0 0.125rem;
+  color: #222222;
+  background-color: #d4fed4;
   border-bottom: 1px var(--light-color) solid;
+
   & > input {
     all: unset;
     font-family: var(--font--Pretendard);
     font-size: 0.75rem;
-    color: #ffffff;
-    max-width: 4.1875rem;
-    line-height: 0.75rem;
+    width: 4.1875rem;
+    margin: 0 2px;
   }
   & > button {
     font-family: var(--font--Galmuri);
     font-size: 0.625rem;
-    padding: 8px 0;
-    margin-left: 0.125rem;
+    padding: 8px 2px;
     cursor: pointer;
   }
 `;
-const StyledProgressGroup = styled.div`
-  & > div:nth-of-type(1) {
-    margin-bottom: 2.5rem;
-  }
-`;
+
 const StyledProgress = styled.div`
+  margin-bottom: 2.0625rem;
   & > div {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 0.5625rem;
+    margin-bottom: 0.375rem;
   }
   & > div > span:nth-of-type(1) {
     font-size: 0.875rem;
+    color: #2a2a2a;
   }
   & > div > span:nth-of-type(2) {
     font-family: var(--font--Galmuri);
@@ -184,16 +213,66 @@ const StyledProgressBar = styled.progress`
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  width: 15.875rem;
+  width: 15.375rem;
   height: 0.5rem;
 
   &::-webkit-progress-bar {
-    background-color: var(--gray-600-color); /* 진행 바 배경 색상 */
+    background-color: #eaeaea; /* 진행 바 배경 색상 */
     border-radius: 10px;
   }
 
   &::-webkit-progress-value {
     background-color: var(--light-color); /* 진행된 부분의 색상 */
     border-radius: 10px;
+  }
+`;
+
+const StyledStatistics = styled.div`
+  display: flex;
+  border: 1px solid #b3b3b3;
+  border-radius: 18px;
+  padding: 1.3125rem 1.375rem 1.5rem 1.875rem;
+
+  & > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  & > div:nth-of-type(1) {
+    padding-right: 2rem;
+  }
+  & > div:nth-of-type(2) {
+    padding: 0 1rem 0;
+  }
+  & > div:nth-of-type(3) {
+    padding-left: 1.25rem;
+  }
+
+  & > div:not(:last-of-type) {
+    position: relative;
+    &::before {
+      content: "";
+      position: absolute;
+      right: 0;
+      top: -1px;
+      bottom: 0;
+      width: 1px;
+      height: 42px;
+      background-color: #dbdbdb;
+    }
+  }
+
+  & strong {
+    color: #555555;
+    font-size: 0.625rem;
+    font-weight: 500;
+    margin-bottom: 0.625rem;
+  }
+
+  & span {
+    color: #222222;
+    font-family: var(--font--Galmuri);
+    font-weight: bold;
+    font-size: 0.875rem;
   }
 `;

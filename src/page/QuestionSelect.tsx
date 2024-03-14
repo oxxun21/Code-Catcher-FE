@@ -1,42 +1,36 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
 import { Header } from "../components";
 import { QuestionCard } from "../components";
-
-const questionData = [
-  {
-    id: 1231235,
-    title: "두 수의 차",
-    subject: "사칙연산",
-    level: 1,
-    script:
-      "정수 num1과 num2가 주어질 때, num1에서 num2를 뺀 값을 return하도록 soltuion 함수를 완성해주세요...기타등등...",
-  },
-  {
-    id: 1231235,
-    title: "두 수의 차",
-    subject: "사칙연산",
-    level: 2,
-    script:
-      "정수 num1과 num2가 주어질 때, num1에서 num2를 뺀 값을 return하도록 soltuion 함수를 완성해주세요...기타등등...",
-  },
-  {
-    id: 1231235,
-    title: "두 수의 차",
-    subject: "사칙연산",
-    level: 3,
-    script:
-      "정수 num1과 num2가 주어질 때, num1에서 num2를 뺀 값을 return하도록 soltuion 함수를 완성해주세요...기타등등...",
-  },
-];
+import { QuestionOutline_I } from "../interface";
+import { getQuestionListAPI } from "../api";
 
 export const QuestionSelect = () => {
+  const [questions, setQuestions] = useState<QuestionOutline_I[]>([]);
   const [selectedCard, setSelectedCard] = useState<number | null>(null);
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const isAnyCardHovered = hoveredCard !== null;
   const [selectedQuestionId, setSelectedQuestionId] = useState<number | null>(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchQuestions = async () => {
+      try {
+        const data = await getQuestionListAPI();
+        if (data) {
+          setQuestions(Object.values(data));
+        } else {
+          navigate("/splash");
+        }
+      } catch (error) {
+        console.error("질문 목록을 가져오는 데 실패했습니다:", error);
+        navigate("/splash");
+      }
+    };
+
+    fetchQuestions();
+  }, [navigate]);
 
   const handleToCodingTest = () => {
     if (selectedQuestionId !== null) {
@@ -49,16 +43,17 @@ export const QuestionSelect = () => {
       <Header />
       <StyledMain>
         <StyledSection>
-          {questionData.map((question, index) => (
+          {questions.map((question, index) => (
             <QuestionCard
               key={index}
               questionId={question.id}
+              isSuccess={question.isSuccess}
               title={question.title}
               subject={question.subject}
               level={question.level}
               script={question.script}
               isSelected={selectedCard === index}
-              isHovered={isAnyCardHovered && selectedCard !== index} // 현재 카드가 선택되지 않았고, 어떤 카드라도 호버되었는지 확인
+              isHovered={hoveredCard === index}
               onClick={() => {
                 console.log(`Question ID: ${question.id}`);
                 setSelectedCard(selectedCard === index ? null : index);
@@ -69,8 +64,8 @@ export const QuestionSelect = () => {
             />
           ))}
         </StyledSection>
-        <StyledButton onClick={handleToCodingTest} isSelected={selectedQuestionId !== null}>
-          start now
+        <StyledButton onClick={handleToCodingTest} isSelected={selectedQuestionId !== null || isAnyCardHovered}>
+          시작하기
         </StyledButton>
       </StyledMain>
     </>
@@ -84,19 +79,21 @@ const StyledMain = styled.main`
   justify-content: center;
   align-items: center;
   gap: 4rem;
+  background-color: #ffffff;
 `;
 
 const StyledButton = styled.button<{ isSelected: boolean }>`
   width: 14.1875rem;
   line-height: 3.75rem;
   text-align: center;
-  background-color: ${props => (props.isSelected ? "var(--main-color)" : "#4b4b4b")};
-  color: ${props => (props.isSelected ? "#ffffff" : "#222222")};
+  background-color: ${props => (props.isSelected ? "var(--main-color)" : "var(--gray400-color)")};
+  color: #ffffff;
   font-family: var(--font--Galmuri);
   font-size: 1.25rem;
   font-weight: bold;
   border-radius: 1.25rem;
   cursor: pointer;
+  transition: border-color 0.3s, background-color 0.3s;
 `;
 
 const StyledSection = styled.section`

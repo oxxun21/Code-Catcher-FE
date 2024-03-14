@@ -14,7 +14,7 @@ const reset = css`
   }
 
   :root {
-    --font--Pretendard: "Pretendard-Regular";
+    --font--Pretendard: "Pretendard";
     --font--Galmuri: "Galmuri11";
   }
 

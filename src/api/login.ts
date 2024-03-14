@@ -9,9 +9,9 @@ export const getUserAPI = async (code: string, navigate: NavigateFunction, setUs
     if (response.data) {
       const resData = response.data;
       console.log(resData);
-      const { jwt, userId, nickname } = response.data;
+      const { jwt, userId, nickname, email, level } = response.data;
       setLoginCookie(jwt, { path: "/" });
-      setUserInfo({ userId, nickname });
+      setUserInfo({ userId, nickname, email, level });
       navigate("/");
     } else {
       console.log("token 없음");
