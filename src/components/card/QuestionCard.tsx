@@ -1,9 +1,10 @@
 import styled from "@emotion/styled";
 import StarFilled from "../../assets/star_green.svg";
-import StarEmpty from "../../assets/star_transparent.svg.svg";
+import StarEmpty from "../../assets/star_transparent.svg";
 
 interface QuestionCardProps {
   questionId: number;
+  isSuccess: boolean | null;
   title: string;
   subject: string;
   level: number;
@@ -22,6 +23,7 @@ interface StyledCardProps {
 
 export const QuestionCard = ({
   questionId,
+  isSuccess,
   title,
   subject,
   level,
@@ -54,6 +56,7 @@ export const QuestionCard = ({
           </StyledRank>
         </StyledSpan>
         <StyledDesc>
+          {isSuccess !== null && <span>{isSuccess ? "Complete" : "Failed"}</span>}
           <h2>{title}</h2>
           <h3>{subject}</h3>
           <div>
@@ -67,42 +70,38 @@ export const QuestionCard = ({
 };
 
 const StyledCard = styled.article<StyledCardProps>`
-  display: flex;
-  flex-direction: column;
+  position: relative;
   border-radius: 20px;
-  padding: 2.75rem 2.75rem 4.375rem;
-  background-color: var(--gray500-color);
+  padding: 2.75rem 2.75rem 5.6875rem;
+  width: 25rem;
+  height: 34.1875rem;
+  background-color: #fafafa;
   font-family: var(--font--Pretendard);
   cursor: pointer;
-  border: 4px solid transparent;
-  opacity: 1;
+  border: 4px solid #d1d1d1;
+  transition: border-color 0.3s, background-color 0.3s;
 
-  // hover 상태가 아닌 카드에 대한 스타일 조정
   ${({ isSelected, isHovered }) => {
-    if (isSelected) {
+    if (isSelected || isHovered) {
       return `
-        opacity: 1;
-        border: 4px #ffffff solid;
-      `;
-    } else if (isHovered) {
-      return `
-        opacity: 0.3; 
+        border-color: var(--light-color);
+        background-color: rgba(50, 205, 50, 0.2);
       `;
     }
   }}
 
-  &:hover {
-    border: 4px #ffffff solid;
-    opacity: 1;
+  @media (max-width: 768px) {
+    height: 22.5rem;
   }
 `;
 const StyledSpan = styled.span`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
   & > span {
     font-size: 1.25rem;
-    color: #a5a5a5;
+    color: #192e47;
   }
 `;
 const StyledRank = styled.div`
@@ -112,35 +111,62 @@ const StyledRank = styled.div`
 `;
 
 const StyledDesc = styled.div`
-  margin-top: 11.25rem;
+  position: absolute;
+  bottom: 5.6875rem;
+  max-width: 19.5rem;
+  align-self: flex-end;
+  word-break: keep-all;
   flex-shrink: 1;
 
   @media (max-width: 768px) {
-    margin-top: 0;
+    bottom: 2.5rem;
+  }
+
+  & > span {
+    font-size: 0.625rem;
+    font-weight: bold;
+    line-height: 1.625rem;
+    font-family: var(--font--Galmuri);
+    background-color: #192e47;
+    border-radius: 999px;
+    padding: 0.375rem 0.625rem;
   }
 
   & h2 {
     font-size: 1.75rem;
     font-weight: bold;
-    color: #ffffff;
-    margin-bottom: 0.75rem;
+    color: #222222;
+    margin: 0.75rem 0;
   }
   & h3 {
     font-size: 1.25rem;
     font-weight: 600;
-    color: #a5a5a5;
-    margin-bottom: 2.938rem;
+    color: #192e47;
+    margin-bottom: 3.17rem;
   }
+
+  & > div {
+    height: 6.125rem;
+    @media (max-width: 768px) {
+      top: 12.5rem;
+    }
+  }
+
   & strong {
     font-size: 0.875rem;
     font-weight: 600;
-    color: var(--gray400-color);
+    color: #8b8b8b;
   }
   & p {
     font-size: 0.875rem;
     line-height: 145%;
-    color: var(--gray200-color);
-    margin-top: 0.5rem;
-    width: 19.5rem;
+    color: var(--gray400-color);
+    margin-top: 0.75rem;
+    max-width: 19.5rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
   }
 `;
