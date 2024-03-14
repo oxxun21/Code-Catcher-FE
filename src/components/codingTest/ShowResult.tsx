@@ -14,11 +14,11 @@ export const ShowResult = ({ value }: { value: TestScoreSubmit_I | ScoreSubmit_I
         <tr>
           <td>{value.testCase_1.input}</td>
           <td>{value.testCase_1.expected_output}</td>
-          <td>
+          <CorrectnessIndicator correct={value.testCase_1.correct}>
             {value.testCase_1.correct
               ? "테스트를 통과하였습니다."
               : `실행한 결과값 ${value.testCase_1.actual_output}이 기대값 ${value.testCase_1.expected_output}과 다릅니다.`}
-          </td>
+          </CorrectnessIndicator>
         </tr>
       </TestResultSection>
       <TestResultSection>
@@ -31,11 +31,11 @@ export const ShowResult = ({ value }: { value: TestScoreSubmit_I | ScoreSubmit_I
         <tr>
           <td>{value.testCase_2.input}</td>
           <td>{value.testCase_2.expected_output}</td>
-          <td>
+          <CorrectnessIndicator correct={value.testCase_2.correct}>
             {value.testCase_2.correct
               ? "테스트를 통과하였습니다."
               : `실행한 결과값 ${value.testCase_2.actual_output}이 기대값 ${value.testCase_2.expected_output}과 다릅니다.`}
-          </td>
+          </CorrectnessIndicator>
         </tr>
       </TestResultSection>
       {"testCase_3" in value && (
@@ -49,11 +49,11 @@ export const ShowResult = ({ value }: { value: TestScoreSubmit_I | ScoreSubmit_I
           <tr>
             <td>???</td>
             <td>???</td>
-            <td>
-              {value.testCase_2.correct
+            <CorrectnessIndicator correct={value.testCase_3.correct}>
+              {value.testCase_3.correct
                 ? "테스트를 통과하였습니다."
                 : `실행한 결과값 ${value.testCase_3.actual_output}이 기대값 ${value.testCase_3.expected_output}과 다릅니다.`}
-            </td>
+            </CorrectnessIndicator>
           </tr>
         </TestResultSection>
       )}
@@ -99,4 +99,8 @@ const TestResultSection = styled.table`
       color: #fff;
     }
   }
+`;
+
+const CorrectnessIndicator = styled.td<{ correct: boolean }>`
+  color: ${props => (props.correct ? "var(--light-color)" : "#F53966")};
 `;
