@@ -1,35 +1,34 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Global } from "@emotion/react";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import reset from "./style/reset";
+import { Home } from "./page/Home";
+import { Splash } from "./page/Splash";
+import { KakaoRedirection } from "./page/KakaoRedirection";
+import { CodingTest } from "./page/CodingTest";
+import { CodeCompare } from "./page/CodeCompare";
+import { NotFound } from "./page/NotFound";
+import { QuestionSelect } from "./page/QuestionSelect";
+import { MobilePopup } from "./components";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <BrowserRouter>
+        <Global styles={reset} />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/splash" element={<Splash />} />
+          <Route path="/kakao/callback" element={<KakaoRedirection />} />
+          <Route path="/codingTest/:id" element={<CodingTest />} />
+          <Route path="/codeCompare" element={<CodeCompare />} />
+          <Route path="/codingTest/select" element={<QuestionSelect />} />
+          <Route path="/404" element={<NotFound />} />
+          <Route path={"*"} element={<Navigate to="/404" />} />
+        </Routes>
+      </BrowserRouter>
+      <MobilePopup />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
