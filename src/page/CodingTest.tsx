@@ -34,6 +34,8 @@ export const CodingTest = () => {
   const navigate = useNavigate();
   let testComplete;
 
+  console.log(testValue, submitValue);
+
   const {
     width: descWidth,
     height: editorHeight,

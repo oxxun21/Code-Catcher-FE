@@ -11,7 +11,7 @@ interface EditorProps {
 export const CodeEditor = ({ editorHeight, language, setCodeValue }: EditorProps) => {
   const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
 
-  const handleEditorChange: OnChange = useCallback((value?: string, event?: any) => {
+  const handleEditorChange: OnChange = useCallback((value?: string) => {
     setCodeValue(value);
   }, []);
 
