@@ -1,60 +1,55 @@
 import styled from "@emotion/styled";
-import { TestScoreSubmit_I, ScoreSubmit_I } from "../../interface";
+import { TestScoreSubmit_I, ScoreSubmit_I, TestCase } from "../../interface";
 
 export const ShowResult = ({ value }: { value: TestScoreSubmit_I | ScoreSubmit_I }) => {
-  return (
-    <TestResult>
+  const TestCaseComponent = ({ testCase, caption }: { testCase: TestCase; caption: string }) => {
+    if (!testCase) return null;
+
+    return (
       <TestResultSection>
-        <caption>테스트 1</caption>
-        <tr>
-          <th>입력값</th>
-          <th>기대값</th>
-          <th>실행결과</th>
-        </tr>
-        <tr>
-          <td>{value.testCase_1.input}</td>
-          <td>{value.testCase_1.expected_output}</td>
-          <CorrectnessIndicator correct={value.testCase_1.correct}>
-            {value.testCase_1.correct
-              ? "테스트를 통과하였습니다."
-              : `실행한 결과값 ${value.testCase_1.actual_output}이 기대값 ${value.testCase_1.expected_output}과 다릅니다.`}
-          </CorrectnessIndicator>
-        </tr>
-      </TestResultSection>
-      <TestResultSection>
-        <caption>테스트 2</caption>
-        <tr>
-          <th>입력값</th>
-          <th>기대값</th>
-          <th>실행결과</th>
-        </tr>
-        <tr>
-          <td>{value.testCase_2.input}</td>
-          <td>{value.testCase_2.expected_output}</td>
-          <CorrectnessIndicator correct={value.testCase_2.correct}>
-            {value.testCase_2.correct
-              ? "테스트를 통과하였습니다."
-              : `실행한 결과값 ${value.testCase_2.actual_output}이 기대값 ${value.testCase_2.expected_output}과 다릅니다.`}
-          </CorrectnessIndicator>
-        </tr>
-      </TestResultSection>
-      {"testCase_3" in value && (
-        <TestResultSection>
-          <caption>히든 케이스</caption>
+        <caption>{caption}</caption>
+        <tbody>
           <tr>
             <th>입력값</th>
             <th>기대값</th>
             <th>실행결과</th>
           </tr>
           <tr>
-            <td>???</td>
-            <td>???</td>
-            <CorrectnessIndicator correct={value.testCase_3.correct}>
-              {value.testCase_3.correct
+            <td>{testCase.input}</td>
+            <td>{testCase.expected_output}</td>
+            <CorrectnessIndicator correct={testCase.correct}>
+              {testCase.correct
                 ? "테스트를 통과하였습니다."
-                : `실행한 결과값 ${value.testCase_3.actual_output}이 기대값 ${value.testCase_3.expected_output}과 다릅니다.`}
+                : `실행한 결과값 ${testCase.actual_output}이 기대값 ${testCase.expected_output}과 다릅니다.`}
             </CorrectnessIndicator>
           </tr>
+        </tbody>
+      </TestResultSection>
+    );
+  };
+  return (
+    <TestResult>
+      <TestCaseComponent testCase={value.testCase_1} caption="테스트 1" />
+      <TestCaseComponent testCase={value.testCase_2} caption="테스트 2" />
+      {"testCase_3" in value && (
+        <TestResultSection>
+          <caption>히든 케이스</caption>
+          <tbody>
+            <tr>
+              <th>입력값</th>
+              <th>기대값</th>
+              <th>실행결과</th>
+            </tr>
+            <tr>
+              <td>???</td>
+              <td>???</td>
+              <CorrectnessIndicator correct={value.testCase_3.correct}>
+                {value.testCase_3.correct
+                  ? "테스트를 통과하였습니다."
+                  : `실행한 결과값 ${value.testCase_3.actual_output}이 기대값 ${value.testCase_3.expected_output}과 다릅니다.`}
+              </CorrectnessIndicator>
+            </tr>
+          </tbody>
         </TestResultSection>
       )}
       <strong>테스트 결과</strong>
@@ -80,22 +75,26 @@ const TestResultSection = styled.table`
   border-radius: 4px;
   color: #aaa;
   margin-bottom: 10px;
-  display: grid;
-  grid-template-rows: auto auto;
-  grid-template-columns: 7.5rem auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
   gap: 1rem;
   & > caption {
-    grid-column: 1 / 3;
     text-align: left;
   }
-  & > tr {
+  & > tbody {
+    display: flex;
+    gap: 1rem;
+  }
+  & > tbody > tr {
     display: flex;
     flex-direction: column;
     gap: 1rem;
   }
-  & > tr:first-of-type {
+  & > tbody > tr:first-of-type {
     text-align: right;
-    & > th:last-of-type {
+    margin-left: 70px;
+    & > tbody > th:last-of-type {
       color: #fff;
     }
   }
