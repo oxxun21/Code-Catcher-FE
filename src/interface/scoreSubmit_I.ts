@@ -1,27 +1,18 @@
-export interface ScoreSubmit_I {
-  testCase_1: {
-    error: boolean;
-    error_message: null;
-    input: string;
-    expected_output: string;
-    actual_output: string;
-    correct: boolean;
-  };
-  testCase_2: {
-    error: boolean;
-    error_message: null;
-    input: string;
-    expected_output: string;
-    actual_output: string;
-    correct: boolean;
-  };
-  testCase_3: {
-    error: boolean;
-    error_message: null;
-    input: string;
-    expected_output: string;
-    actual_output: string;
-    correct: boolean;
-  };
+export interface TestCase {
+  error: boolean;
+  error_message: null | string;
+  input: string;
+  expected_output: string;
+  actual_output: string;
   correct: boolean;
 }
+
+export interface TestScoreSubmit_I {
+  [key: string]: TestCase;
+}
+
+interface ScoreSubmitAdditionalProps {
+  correct: boolean;
+}
+
+export type ScoreSubmit_I = TestScoreSubmit_I & ScoreSubmitAdditionalProps;
