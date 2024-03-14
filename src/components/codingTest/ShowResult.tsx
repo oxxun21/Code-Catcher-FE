@@ -1,15 +1,7 @@
 import styled from "@emotion/styled";
 import { TestScoreSubmit_I, ScoreSubmit_I } from "../../interface";
 
-interface ShowResultProps {
-  testValue: TestScoreSubmit_I;
-  submitValue: ScoreSubmit_I;
-}
-
-export const ShowResult = ({ testValue, submitValue }: ShowResultProps) => {
-  console.log(testValue);
-  console.log(submitValue);
-
+export const ShowResult = ({ value }: { value: TestScoreSubmit_I | ScoreSubmit_I }) => {
   return (
     <TestResult>
       <TestResultSection>
@@ -20,9 +12,13 @@ export const ShowResult = ({ testValue, submitValue }: ShowResultProps) => {
           <th>실행결과</th>
         </tr>
         <tr>
-          <td>2, 3</td>
-          <td>-1</td>
-          <td>테스트를 통과하였습니다.</td>
+          <td>{value.testCase_1.input}</td>
+          <td>{value.testCase_1.expected_output}</td>
+          <td>
+            {value.testCase_1.correct
+              ? "테스트를 통과하였습니다."
+              : `실행한 결과값 ${value.testCase_1.actual_output}이 기대값 ${value.testCase_1.expected_output}과 다릅니다.`}
+          </td>
         </tr>
       </TestResultSection>
       <TestResultSection>
@@ -33,12 +29,16 @@ export const ShowResult = ({ testValue, submitValue }: ShowResultProps) => {
           <th>실행결과</th>
         </tr>
         <tr>
-          <td>2, 3</td>
-          <td>-1</td>
-          <td>테스트를 통과하였습니다.</td>
+          <td>{value.testCase_2.input}</td>
+          <td>{value.testCase_2.expected_output}</td>
+          <td>
+            {value.testCase_2.correct
+              ? "테스트를 통과하였습니다."
+              : `실행한 결과값 ${value.testCase_2.actual_output}이 기대값 ${value.testCase_2.expected_output}과 다릅니다.`}
+          </td>
         </tr>
       </TestResultSection>
-      {submitValue && (
+      {"testCase_3" in value && (
         <TestResultSection>
           <caption>히든 케이스</caption>
           <tr>
@@ -49,12 +49,16 @@ export const ShowResult = ({ testValue, submitValue }: ShowResultProps) => {
           <tr>
             <td>???</td>
             <td>???</td>
-            <td>테스트를 통과하였습니다.</td>
+            <td>
+              {value.testCase_2.correct
+                ? "테스트를 통과하였습니다."
+                : `실행한 결과값 ${value.testCase_3.actual_output}이 기대값 ${value.testCase_3.expected_output}과 다릅니다.`}
+            </td>
           </tr>
         </TestResultSection>
       )}
       <strong>테스트 결과</strong>
-      <p>2개 중 1개 성공</p>
+      {/* <p>개 중 1개 성공</p> */}
     </TestResult>
   );
 };

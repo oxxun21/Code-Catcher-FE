@@ -94,10 +94,12 @@ export const CodingTest = () => {
   }
 
   const handleTestSubmit = () => {
+    setSubmitValue(undefined);
     submissionFunc<TestScoreSubmit_I>(postTestScoreSubmitAPI, setTestValue);
   };
 
   const handleSubmit = () => {
+    setTestValue(undefined);
     submissionFunc<ScoreSubmit_I>(postScoreSubmitAPI, setSubmitValue, true);
   };
 

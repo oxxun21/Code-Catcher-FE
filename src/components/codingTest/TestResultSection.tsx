@@ -9,18 +9,34 @@ interface TestResultProps {
 }
 
 export const TestResultSection = ({ editorHeight, testValue, submitValue }: TestResultProps) => {
-  return (
-    <>
-      <ResultTitle>실행 결과</ResultTitle>
-      <ResultSection style={{ height: `${100 - editorHeight}%` }}>
-        {testValue || submitValue ? (
-          <ShowResult testValue={testValue} submitValue={submitValue} />
-        ) : (
+  if (testValue) {
+    return (
+      <>
+        <ResultTitle>실행 결과</ResultTitle>
+        <ResultSection style={{ height: `${100 - editorHeight}%` }}>
+          <ShowResult value={testValue} />
+        </ResultSection>
+      </>
+    );
+  } else if (submitValue) {
+    return (
+      <>
+        <ResultTitle>실행 결과</ResultTitle>
+        <ResultSection style={{ height: `${100 - editorHeight}%` }}>
+          <ShowResult value={submitValue} />
+        </ResultSection>
+      </>
+    );
+  } else {
+    return (
+      <>
+        <ResultTitle>실행 결과</ResultTitle>
+        <ResultSection style={{ height: `${100 - editorHeight}%` }}>
           <article>실행 결과가 여기에 표시됩니다.</article>
-        )}
-      </ResultSection>
-    </>
-  );
+        </ResultSection>
+      </>
+    );
+  }
 };
 
 const ResultSection = styled.section`
