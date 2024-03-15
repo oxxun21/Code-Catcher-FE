@@ -4,39 +4,20 @@ import { ShowResult } from "./ShowResult";
 
 interface TestResultProps {
   editorHeight: number;
-  testValue: TestScoreSubmit_I;
-  submitValue: ScoreSubmit_I;
+  testValue?: TestScoreSubmit_I;
+  submitValue?: ScoreSubmit_I;
 }
 
 export const TestResultSection = ({ editorHeight, testValue, submitValue }: TestResultProps) => {
-  if (testValue) {
-    return (
-      <>
-        <ResultTitle>실행 결과</ResultTitle>
-        <ResultSection style={{ height: `${100 - editorHeight}%` }}>
-          <ShowResult value={testValue} />
-        </ResultSection>
-      </>
-    );
-  } else if (submitValue) {
-    return (
-      <>
-        <ResultTitle>실행 결과</ResultTitle>
-        <ResultSection style={{ height: `${100 - editorHeight}%` }}>
-          <ShowResult value={submitValue} />
-        </ResultSection>
-      </>
-    );
-  } else {
-    return (
-      <>
-        <ResultTitle>실행 결과</ResultTitle>
-        <ResultSection style={{ height: `${100 - editorHeight}%` }}>
-          <article>실행 결과가 여기에 표시됩니다.</article>
-        </ResultSection>
-      </>
-    );
-  }
+  const resultValue = testValue || submitValue;
+  return (
+    <>
+      <ResultTitle>실행 결과</ResultTitle>
+      <ResultSection style={{ height: `${100 - editorHeight}%` }}>
+        {resultValue ? <ShowResult value={resultValue} /> : <article>실행 결과가 여기에 표시됩니다.</article>}
+      </ResultSection>
+    </>
+  );
 };
 
 const ResultSection = styled.section`
