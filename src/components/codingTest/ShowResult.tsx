@@ -1,60 +1,82 @@
 import styled from "@emotion/styled";
-import { TestScoreSubmit_I, ScoreSubmit_I } from "../../interface";
+import { TestScoreSubmit_I, ScoreSubmit_I, TestCase } from "../../interface";
 
-interface ShowResultProps {
-  testValue: TestScoreSubmit_I;
-  submitValue: ScoreSubmit_I;
-}
+export const ShowResult = ({ value }: { value: TestScoreSubmit_I | ScoreSubmit_I }) => {
+  const prepareObjectForCounting = (scoreSubmit: ScoreSubmit_I) => {
+    const { correct, ...testCasesOnly } = scoreSubmit;
+    return testCasesOnly;
+  };
+  let result = prepareObjectForCounting(value as ScoreSubmit_I);
+  const countCorrectTestCases = (testCases: TestScoreSubmit_I): string => {
+    let totalCount = 0;
+    let correctCount = 0;
+    for (const key of Object.keys(testCases)) {
+      totalCount++;
+      if (testCases[key].correct) {
+        correctCount++;
+      }
+    }
+    return `${totalCount}개 중 ${correctCount}개 성공`;
+  };
 
-export const ShowResult = ({ testValue, submitValue }: ShowResultProps) => {
-  console.log(testValue);
-  console.log(submitValue);
+  const resultShow = (testCase: TestCase) => {
+    if (testCase.error) {
+      return `${testCase.error_message}`;
+    } else if (testCase.correct) {
+      return "테스트를 통과하였습니다.";
+    } else {
+      return `실행한 결과값 ${testCase.actual_output}이 기대값 ${testCase.expected_output}과 다릅니다.`;
+    }
+  };
 
-  return (
-    <TestResult>
+  const TestCaseComponent = ({ testCase, caption }: { testCase: TestCase; caption: string }) => {
+    if (!testCase) return null;
+
+    return (
       <TestResultSection>
-        <caption>테스트 1</caption>
-        <tr>
-          <th>입력값</th>
-          <th>기대값</th>
-          <th>실행결과</th>
-        </tr>
-        <tr>
-          <td>2, 3</td>
-          <td>-1</td>
-          <td>테스트를 통과하였습니다.</td>
-        </tr>
-      </TestResultSection>
-      <TestResultSection>
-        <caption>테스트 2</caption>
-        <tr>
-          <th>입력값</th>
-          <th>기대값</th>
-          <th>실행결과</th>
-        </tr>
-        <tr>
-          <td>2, 3</td>
-          <td>-1</td>
-          <td>테스트를 통과하였습니다.</td>
-        </tr>
-      </TestResultSection>
-      {submitValue && (
-        <TestResultSection>
-          <caption>히든 케이스</caption>
+        <caption>{caption}</caption>
+        <tbody>
           <tr>
             <th>입력값</th>
             <th>기대값</th>
             <th>실행결과</th>
           </tr>
           <tr>
-            <td>???</td>
-            <td>???</td>
-            <td>테스트를 통과하였습니다.</td>
+            <td>{testCase.input}</td>
+            <td>{testCase.expected_output}</td>
+            <CorrectnessIndicator correct={testCase.correct}>{resultShow(testCase)}</CorrectnessIndicator>
           </tr>
+        </tbody>
+      </TestResultSection>
+    );
+  };
+
+  return (
+    <TestResult>
+      <TestCaseComponent testCase={value.testCase_1} caption="테스트 1" />
+      <TestCaseComponent testCase={value.testCase_2} caption="테스트 2" />
+      {"testCase_3" in value && (
+        <TestResultSection>
+          <caption>히든 케이스</caption>
+          <tbody>
+            <tr>
+              <th>입력값</th>
+              <th>기대값</th>
+              <th>실행결과</th>
+            </tr>
+            <tr>
+              <td>???</td>
+              <td>???</td>
+              <CorrectnessIndicator correct={value.testCase_3.correct}>
+                {resultShow(value.testCase_3)}
+              </CorrectnessIndicator>
+            </tr>
+          </tbody>
         </TestResultSection>
       )}
       <strong>테스트 결과</strong>
-      <p>2개 중 1개 성공</p>
+      <p>{"correct" in value ? countCorrectTestCases(result) : countCorrectTestCases(value)}</p>
+      {"correct" in value ? <p>10 EXP 획득에 {value.correct ? "성공" : "실패"}하였습니다.</p> : undefined}
     </TestResult>
   );
 };
@@ -67,6 +89,9 @@ const TestResult = styled.article`
   }
   & > p {
     color: #fff;
+    &:first-of-type {
+      margin-bottom: 12px;
+    }
   }
 `;
 
@@ -76,23 +101,31 @@ const TestResultSection = styled.table`
   border-radius: 4px;
   color: #aaa;
   margin-bottom: 10px;
-  display: grid;
-  grid-template-rows: auto auto;
-  grid-template-columns: 7.5rem auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
   gap: 1rem;
   & > caption {
-    grid-column: 1 / 3;
     text-align: left;
   }
-  & > tr {
+  & > tbody {
+    display: flex;
+    gap: 1rem;
+  }
+  & > tbody > tr {
     display: flex;
     flex-direction: column;
     gap: 1rem;
-  }
-  & > tr:first-of-type {
-    text-align: right;
     & > th:last-of-type {
       color: #fff;
     }
   }
+  & > tbody > tr:first-of-type {
+    width: 140px;
+    text-align: right;
+  }
+`;
+
+const CorrectnessIndicator = styled.td<{ correct: boolean }>`
+  color: ${props => (props.correct ? "var(--light-color)" : "#F53966")};
 `;

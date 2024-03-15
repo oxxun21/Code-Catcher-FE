@@ -3,7 +3,7 @@ import { ScoreSubmit_I, SubmissionProps_I } from "../interface";
 
 export const postScoreSubmitAPI = async ({ problemId, codeType, code }: SubmissionProps_I): Promise<ScoreSubmit_I> => {
   try {
-    const response = await instance.post("/score/mock/submit", {
+    const response = await instance.post("/score/submit/today", {
       problemId,
       codeType,
       code,

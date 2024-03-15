@@ -4,20 +4,17 @@ import { ShowResult } from "./ShowResult";
 
 interface TestResultProps {
   editorHeight: number;
-  testValue: TestScoreSubmit_I;
-  submitValue: ScoreSubmit_I;
+  testValue?: TestScoreSubmit_I;
+  submitValue?: ScoreSubmit_I;
 }
 
 export const TestResultSection = ({ editorHeight, testValue, submitValue }: TestResultProps) => {
+  const resultValue = testValue || submitValue;
   return (
     <>
       <ResultTitle>실행 결과</ResultTitle>
       <ResultSection style={{ height: `${100 - editorHeight}%` }}>
-        {testValue || submitValue ? (
-          <ShowResult testValue={testValue} submitValue={submitValue} />
-        ) : (
-          <article>실행 결과가 여기에 표시됩니다.</article>
-        )}
+        {resultValue ? <ShowResult value={resultValue} /> : <article>실행 결과가 여기에 표시됩니다.</article>}
       </ResultSection>
     </>
   );

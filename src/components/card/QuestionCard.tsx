@@ -34,10 +34,8 @@ export const QuestionCard = ({
   onMouseEnter,
   onMouseLeave,
 }: QuestionCardProps) => {
-  const stars = [
-    ...Array(level).fill(StarFilled), // 레벨 수만큼 StarFilled로 채우기
-    ...Array(3 - level).fill(StarEmpty), // 나머지는 StarEmpty로 두기
-  ];
+  const validLevel = Math.min(3, Math.max(0, level));
+  const stars = [...Array(validLevel).fill(StarFilled), ...Array(3 - validLevel).fill(StarEmpty)];
   return (
     <>
       <StyledCard
