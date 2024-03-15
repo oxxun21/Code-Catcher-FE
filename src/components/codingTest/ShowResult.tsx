@@ -2,9 +2,25 @@ import styled from "@emotion/styled";
 import { TestScoreSubmit_I, ScoreSubmit_I, TestCase } from "../../interface";
 
 export const ShowResult = ({ value }: { value: TestScoreSubmit_I | ScoreSubmit_I }) => {
+  const prepareObjectForCounting = (scoreSubmit: ScoreSubmit_I) => {
+    const { correct, ...testCasesOnly } = scoreSubmit;
+    return testCasesOnly;
+  };
+  let result = prepareObjectForCounting(value as ScoreSubmit_I);
+  const countCorrectTestCases = (testCases: TestScoreSubmit_I): string => {
+    let totalCount = 0;
+    let correctCount = 0;
+    for (const key of Object.keys(testCases)) {
+      totalCount++;
+      if (testCases[key].correct) {
+        correctCount++;
+      }
+    }
+    return `${totalCount}개 중 ${correctCount}개 성공`;
+  };
+
   const TestCaseComponent = ({ testCase, caption }: { testCase: TestCase; caption: string }) => {
     if (!testCase) return null;
-
     return (
       <TestResultSection>
         <caption>{caption}</caption>
@@ -27,6 +43,7 @@ export const ShowResult = ({ value }: { value: TestScoreSubmit_I | ScoreSubmit_I
       </TestResultSection>
     );
   };
+
   return (
     <TestResult>
       <TestCaseComponent testCase={value.testCase_1} caption="테스트 1" />
@@ -53,7 +70,7 @@ export const ShowResult = ({ value }: { value: TestScoreSubmit_I | ScoreSubmit_I
         </TestResultSection>
       )}
       <strong>테스트 결과</strong>
-      {/* <p>개 중 1개 성공</p> */}
+      <p>{"correct" in value ? countCorrectTestCases(result) : countCorrectTestCases(value)}</p>
     </TestResult>
   );
 };
