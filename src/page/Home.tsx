@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { getLoginCookie } from "../utils/loginCookie";
 import styled from "@emotion/styled";
 import { Header, GalmuriButton } from "../components";
@@ -21,7 +21,7 @@ export const Home = () => {
       <StyledMain>
         <h1>START TEST . . .</h1>
         <UserCard />
-        <GalmuriButton to="CodingTest/select" text="오늘의 코테 시작하기" />
+        <GalmuriButton as={Link} to="CodingTest/select" text="오늘의 코테 시작하기" />
       </StyledMain>
     </>
   );
