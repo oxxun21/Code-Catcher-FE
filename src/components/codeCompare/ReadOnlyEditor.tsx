@@ -3,7 +3,7 @@ import { useCallback, useRef } from "react";
 import { editor } from "monaco-editor";
 import styled from "@emotion/styled";
 
-export const ReadOnlyEditor = ({ code }: { code: string }) => {
+export const ReadOnlyEditor = ({ code, language }: { code: string; language: string }) => {
   const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
 
   const handleEditorDidMount: OnMount = useCallback((editor: editor.IStandaloneCodeEditor, monacoInstance) => {
@@ -31,7 +31,7 @@ export const ReadOnlyEditor = ({ code }: { code: string }) => {
     <CodeReadSection>
       <Editor
         value={code}
-        language="java"
+        language={language}
         options={{
           readOnly: true,
           fontSize: 14,
