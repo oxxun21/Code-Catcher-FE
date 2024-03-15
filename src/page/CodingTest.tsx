@@ -33,8 +33,6 @@ export const CodingTest = () => {
   const [isMedia, setIsMedia] = useState(window.innerWidth <= 768);
   const navigate = useNavigate();
 
-  console.log(testValue, submitValue);
-
   const {
     width: descWidth,
     height: editorHeight,
@@ -141,14 +139,13 @@ export const CodingTest = () => {
                 <RoundButton
                   text="AI 설명 보기"
                   onClick={() =>
-                    navigate("/CodeCompare", {
+                    navigate(`/CodeCompare/${id}`, {
                       state: {
                         question: {
                           title: question?.title,
                           subject: question?.subject,
-                          javaSubmitCode: question?.javaSubmitCode,
-                          pythonSubmitCode: question?.pythonSubmitCode,
                         },
+                        language: language.toLowerCase(),
                         myCode: codeValue,
                       },
                     })

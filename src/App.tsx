@@ -21,7 +21,7 @@ function App() {
           <Route path="/splash" element={<Splash />} />
           <Route path="/kakao/callback" element={<KakaoRedirection />} />
           <Route path="/codingTest/:id" element={<CodingTest />} />
-          <Route path="/codeCompare" element={<CodeCompare />} />
+          <Route path="/codeCompare/:id" element={<CodeCompare />} />
           <Route path="/codingTest/select" element={<QuestionSelect />} />
           <Route path="/myPage" element={<MyPage />} />
           <Route path="/404" element={<NotFound />} />
