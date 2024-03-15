@@ -21,11 +21,11 @@ export const ShowResult = ({ value }: { value: TestScoreSubmit_I | ScoreSubmit_I
 
   const resultShow = (testCase: TestCase) => {
     if (testCase.error) {
-      return `${value.error_message}`;
+      return `${testCase.error_message}`;
     } else if (testCase.correct) {
       return "테스트를 통과하였습니다.";
     } else {
-      return `실행한 결과값 ${value.actual_output}이 기대값 ${value.expected_output}과 다릅니다.`;
+      return `실행한 결과값 ${testCase.actual_output}이 기대값 ${testCase.expected_output}과 다릅니다.`;
     }
   };
 
@@ -44,9 +44,7 @@ export const ShowResult = ({ value }: { value: TestScoreSubmit_I | ScoreSubmit_I
           <tr>
             <td>{testCase.input}</td>
             <td>{testCase.expected_output}</td>
-            <CorrectnessIndicator correct={testCase.correct || testCase.error}>
-              {resultShow(testCase)}
-            </CorrectnessIndicator>
+            <CorrectnessIndicator correct={testCase.correct}>{resultShow(testCase)}</CorrectnessIndicator>
           </tr>
         </tbody>
       </TestResultSection>
@@ -69,7 +67,7 @@ export const ShowResult = ({ value }: { value: TestScoreSubmit_I | ScoreSubmit_I
             <tr>
               <td>???</td>
               <td>???</td>
-              <CorrectnessIndicator correct={value.testCase_3.correct || value.testCase_3.error}>
+              <CorrectnessIndicator correct={value.testCase_3.correct}>
                 {resultShow(value.testCase_3)}
               </CorrectnessIndicator>
             </tr>
@@ -78,7 +76,7 @@ export const ShowResult = ({ value }: { value: TestScoreSubmit_I | ScoreSubmit_I
       )}
       <strong>테스트 결과</strong>
       <p>{"correct" in value ? countCorrectTestCases(result) : countCorrectTestCases(value)}</p>
-      <p>10 EXP 획득에 {value.correct ? "성공" : "실패"}하였습니다.</p>
+      {"correct" in value ? <p>10 EXP 획득에 {value.correct ? "성공" : "실패"}하였습니다.</p> : undefined}
     </TestResult>
   );
 };
@@ -91,6 +89,9 @@ const TestResult = styled.article`
   }
   & > p {
     color: #fff;
+    &:first-of-type {
+      margin-bottom: 12px;
+    }
   }
 `;
 
@@ -115,13 +116,13 @@ const TestResultSection = styled.table`
     display: flex;
     flex-direction: column;
     gap: 1rem;
-  }
-  & > tbody > tr:first-of-type {
-    text-align: right;
-    margin-left: 70px;
-    & > tbody > th:last-of-type {
+    & > th:last-of-type {
       color: #fff;
     }
+  }
+  & > tbody > tr:first-of-type {
+    width: 140px;
+    text-align: right;
   }
 `;
 
