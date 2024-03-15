@@ -19,8 +19,19 @@ export const ShowResult = ({ value }: { value: TestScoreSubmit_I | ScoreSubmit_I
     return `${totalCount}개 중 ${correctCount}개 성공`;
   };
 
+  const resultShow = (testCase: TestCase) => {
+    if (testCase.error) {
+      return `${value.error_message}`;
+    } else if (testCase.correct) {
+      return "테스트를 통과하였습니다.";
+    } else {
+      return `실행한 결과값 ${value.actual_output}이 기대값 ${value.expected_output}과 다릅니다.`;
+    }
+  };
+
   const TestCaseComponent = ({ testCase, caption }: { testCase: TestCase; caption: string }) => {
     if (!testCase) return null;
+
     return (
       <TestResultSection>
         <caption>{caption}</caption>
@@ -33,10 +44,8 @@ export const ShowResult = ({ value }: { value: TestScoreSubmit_I | ScoreSubmit_I
           <tr>
             <td>{testCase.input}</td>
             <td>{testCase.expected_output}</td>
-            <CorrectnessIndicator correct={testCase.correct}>
-              {testCase.correct
-                ? "테스트를 통과하였습니다."
-                : `실행한 결과값 ${testCase.actual_output}이 기대값 ${testCase.expected_output}과 다릅니다.`}
+            <CorrectnessIndicator correct={testCase.correct || testCase.error}>
+              {resultShow(testCase)}
             </CorrectnessIndicator>
           </tr>
         </tbody>
@@ -60,10 +69,8 @@ export const ShowResult = ({ value }: { value: TestScoreSubmit_I | ScoreSubmit_I
             <tr>
               <td>???</td>
               <td>???</td>
-              <CorrectnessIndicator correct={value.testCase_3.correct}>
-                {value.testCase_3.correct
-                  ? "테스트를 통과하였습니다."
-                  : `실행한 결과값 ${value.testCase_3.actual_output}이 기대값 ${value.testCase_3.expected_output}과 다릅니다.`}
+              <CorrectnessIndicator correct={value.testCase_3.correct || value.testCase_3.error}>
+                {resultShow(value.testCase_3)}
               </CorrectnessIndicator>
             </tr>
           </tbody>
@@ -71,6 +78,7 @@ export const ShowResult = ({ value }: { value: TestScoreSubmit_I | ScoreSubmit_I
       )}
       <strong>테스트 결과</strong>
       <p>{"correct" in value ? countCorrectTestCases(result) : countCorrectTestCases(value)}</p>
+      <p>10 EXP 획득에 {value.correct ? "성공" : "실패"}하였습니다.</p>
     </TestResult>
   );
 };
