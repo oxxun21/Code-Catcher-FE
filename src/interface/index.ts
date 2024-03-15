@@ -4,3 +4,4 @@ export * from "./questionOutline_I";
 export * from "./testScoreSubmit_I";
 export * from "./scoreSubmit_I";
 export * from "./submissionProps_I";
+export * from "./mypageListItem_I";

@@ -122,6 +122,7 @@ const StyledCard = styled.article`
   border: 1px solid #d1d1d1;
   border-radius: 1.25rem;
   padding: 2.5rem 3.875rem 2.8125rem 3.625rem;
+  height: 34.1875rem;
 `;
 const StyledUserInfoGroup = styled.div`
   margin: 1.25rem 0 1.6875rem;
