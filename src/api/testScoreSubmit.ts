@@ -7,7 +7,7 @@ export const postTestScoreSubmitAPI = async ({
   code,
 }: SubmissionProps_I): Promise<TestScoreSubmit_I> => {
   try {
-    const response = await instance.post("/score/mock/testcase", {
+    const response = await instance.post("/score/testcase", {
       problemId,
       codeType,
       code,

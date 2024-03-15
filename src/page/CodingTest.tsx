@@ -32,9 +32,6 @@ export const CodingTest = () => {
   const [submitValue, setSubmitValue] = useState<ScoreSubmit_I | undefined>();
   const [isMedia, setIsMedia] = useState(window.innerWidth <= 768);
   const navigate = useNavigate();
-  let testComplete;
-
-  console.log(testValue, submitValue);
 
   const {
     width: descWidth,
@@ -82,15 +79,10 @@ export const CodingTest = () => {
     }
 
     try {
-      const response = await apiFunc({ problemId: numericId, codeType: language, code: codeValue });
+      const response = await apiFunc({ problemId: numericId, codeType: language.toLocaleLowerCase(), code: codeValue });
       updateStateCallback(response);
-      console.log(response);
-
       if (completeFlag) {
-        if ("correct" in response && response.correct !== undefined) {
-          testComplete = response?.correct;
-          setIsModal(true);
-        }
+        setIsModal(true);
       }
     } catch (error) {
       console.log(error);
@@ -98,10 +90,12 @@ export const CodingTest = () => {
   }
 
   const handleTestSubmit = () => {
+    setSubmitValue(undefined);
     submissionFunc<TestScoreSubmit_I>(postTestScoreSubmitAPI, setTestValue);
   };
 
   const handleSubmit = () => {
+    setTestValue(undefined);
     submissionFunc<ScoreSubmit_I>(postScoreSubmitAPI, setSubmitValue, true);
   };
 
@@ -119,7 +113,11 @@ export const CodingTest = () => {
           <SelectLang language={language} setLanguage={setLanguage} />
           <CodeEditor language={language} editorHeight={editorHeight} setCodeValue={setCodeValue} />
           <Gutter orientation="vertical" onMouseDown={startDragVertical} />
-          <TestResultSection editorHeight={editorHeight} />
+          <TestResultSection
+            editorHeight={editorHeight}
+            testValue={testValue as TestScoreSubmit_I}
+            submitValue={submitValue as ScoreSubmit_I}
+          />
         </CodeContain>
       </Contain>
       <ButtonContain>
@@ -127,23 +125,27 @@ export const CodingTest = () => {
         <SquareButton text="제출 후 채점하기" onClick={handleSubmit} />
       </ButtonContain>
       {isModal && (
-        <Modal onClose={handleClose} modalHeader={testComplete ? "Test Complete" : "Test Failed"}>
+        <Modal onClose={handleClose} modalHeader={submitValue?.correct ? "Test Complete" : "Test Failed"}>
           <ModalContain>
             <img
-              src={testComplete ? icon_test_complete : icon_test_failed}
-              alt={testComplete ? "테스트 통과" : "테스트 실패"}
+              src={submitValue?.correct ? icon_test_complete : icon_test_failed}
+              alt={submitValue?.correct ? "테스트 통과" : "테스트 실패"}
             />
-            <strong>{testComplete ? "10 EXP 획득!" : "EXP 획득 실패"}</strong>
-            <p>{testComplete ? "축하합니다! 문제를 맞추셨어요" : "다음 테스트엔 더 잘 할 수 있어요"}</p>
+            <strong>{submitValue?.correct ? "10 EXP 획득!" : "EXP 획득 실패"}</strong>
+            <p>{submitValue?.correct ? "축하합니다! 문제를 맞추셨어요" : "다음 테스트엔 더 잘 할 수 있어요"}</p>
             <div>
               <RoundButton as={Link} to="/" text="홈으로" width="50%" />
-              {testComplete ? (
+              {submitValue?.correct ? (
                 <RoundButton
                   text="AI 설명 보기"
                   onClick={() =>
-                    navigate("/CodeCompare", {
+                    navigate(`/CodeCompare/${id}`, {
                       state: {
-                        question: { title: question?.title, subject: question?.subject },
+                        question: {
+                          title: question?.title,
+                          subject: question?.subject,
+                        },
+                        language: language.toLowerCase(),
                         myCode: codeValue,
                       },
                     })
