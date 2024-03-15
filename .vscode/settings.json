@@ -2,5 +2,8 @@
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "editor.formatOnSave": true
+  "editor.formatOnSave": true,
+  "appService.zipIgnorePattern": ["node_modules{,/**}", ".vscode{,/**}"],
+  "appService.defaultWebAppToDeploy": "/subscriptions/d48a1684-a734-4cb9-a127-1ab36b0b0284/resourceGroups/멋쟁이빌더1기_코드캐쳐/providers/Microsoft.Web/sites/Code-Catcher-FE",
+  "appService.deploySubpath": "."
 }

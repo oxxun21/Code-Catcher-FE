@@ -33,6 +33,8 @@ export const CodingTest = () => {
   const [isMedia, setIsMedia] = useState(window.innerWidth <= 768);
   const navigate = useNavigate();
 
+  console.log(testValue, submitValue);
+
   const {
     width: descWidth,
     height: editorHeight,
