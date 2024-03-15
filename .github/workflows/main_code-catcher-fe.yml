@@ -26,10 +26,6 @@ jobs:
           npm install
           npm run build --if-present
           npm run test --if-present
-        env:
-          VITE_KAKAO_REST_API: ${{ secrets.VITE_KAKAO_REST_API }}
-          VITE_KAKAO_REDIRECT_URI: ${{ secrets.VITE_KAKAO_REDIRECT_URI }} 
-          BASE_URL_BACK: ${{ secrets.BASE_URL_BACK }} 
 
       - name: Zip artifact for deployment
         run: zip release.zip ./* -r
@@ -46,7 +42,7 @@ jobs:
     environment:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-
+    
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v3
@@ -55,16 +51,12 @@ jobs:
 
       - name: Unzip artifact for deployment
         run: unzip release.zip
-
+      
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
           app-name: 'Code-Catcher-FE'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_8174623B58E8470AA965FB3A6E1EFA88 }}
           package: .
-        env:
-          VITE_KAKAO_REST_API: ${{ secrets.VITE_KAKAO_REST_API }}
-          VITE_KAKAO_REDIRECT_URI: ${{ secrets.VITE_KAKAO_REDIRECT_URI }} 
-          BASE_URL_BACK: ${{ secrets.BASE_URL_BACK }} 
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_A913C2DDF5AC4E4087BBF20678FAB477 }}
