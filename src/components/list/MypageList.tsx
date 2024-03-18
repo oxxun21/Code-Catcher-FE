@@ -34,7 +34,7 @@ export const MypageList = ({ listType, data }: MyPageListProps) => {
       ) : (
         <StyledLastEmpty>
           <img src={LastEmptyImage} alt="지난 테스트 내역 데이터 없음" />
-          <button onClick={() => navigate("/CodingTest/select")}>
+          <button onClick={() => navigate("/question/select")}>
             테스트하러가기
             <img src={ArrowRightIcon} alt="테스트하러가기" />
           </button>

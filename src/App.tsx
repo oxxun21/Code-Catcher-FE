@@ -30,7 +30,7 @@ function App() {
           <Route path="/kakao/callback" element={<KakaoRedirection />} />
           <Route path="/codingTest/:id" element={<CodingTest />} />
           <Route path="/codeCompare" element={<CodeCompare />} />
-          <Route path="/codingTest/select" element={<QuestionSelect />} />
+          <Route path="question/select" element={<QuestionSelect />} />
           <Route path="/myPage" element={<MyPage />} />
           <Route path="/bookmarkList" element={<BookmarkList />} />
           <Route path="/lastQuestionList" element={<LastQuestionList />} />

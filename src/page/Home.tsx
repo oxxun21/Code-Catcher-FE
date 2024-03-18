@@ -21,7 +21,7 @@ export const Home = () => {
       <StyledMain>
         <h1>START TEST . . .</h1>
         <UserCard />
-        <GalmuriButton as={Link} to="CodingTest/select" text="오늘의 코테 시작하기" />
+        <GalmuriButton as={Link} to="question/select" text="오늘의 코테 시작하기" />
       </StyledMain>
     </>
   );

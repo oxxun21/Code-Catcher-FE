@@ -37,7 +37,7 @@ export const MyPage = ({}) => {
           </div>
           <MonthlyAchieve data={myInfo.achieveInfo} />
         </section>
-        <GalmuriButton as={Link} to="/CodingTest/select" text="오늘의 코테 시작하기" />
+        <GalmuriButton as={Link} to="/question/select" text="오늘의 코테 시작하기" />
       </StyledMain>
     </>
   );
