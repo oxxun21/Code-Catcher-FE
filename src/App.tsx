@@ -1,6 +1,7 @@
-import { Global } from "@emotion/react";
+import { Global, css } from "@emotion/react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import reset from "./style/reset";
+import datePicker from "./style/datepicker";
 import { Home } from "./page/Home";
 import { Splash } from "./page/Splash";
 import { KakaoRedirection } from "./page/KakaoRedirection";
@@ -15,7 +16,12 @@ function App() {
   return (
     <>
       <BrowserRouter>
-        <Global styles={reset} />
+        <Global
+          styles={css`
+            ${reset}
+            ${datePicker}
+          `}
+        />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/splash" element={<Splash />} />
