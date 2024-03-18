@@ -7,8 +7,7 @@ import { useDraggable } from "../hook";
 import { Header, ReadOnlyEditor, SquareButton } from "../components";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getAiFeedbackAPI } from "../api";
-import { AxiosError } from "axios";
+import { deleteBookmarkAPI, getAiFeedbackAPI, postBookmarkAPI } from "../api";
 import { AiFeedback_I } from "../interface";
 
 export const CodeCompare = () => {
@@ -43,12 +42,39 @@ export const CodeCompare = () => {
         });
         setAiRes(response);
       } catch (error) {
-        const axiosError = error as AxiosError;
-        console.log(axiosError);
-        // if (axiosError.response?.status === 404) navigate("/404");
+        console.log(error);
       }
     })();
   }, [id]);
+
+  const handleBookmarkSave = async () => {
+    let bookmarkId;
+    setIsbookmark(prev => !prev);
+
+    if (!isbookmark) {
+      try {
+        const response = await postBookmarkAPI({
+          problemId: Number(id),
+          codeType: location.state?.language,
+          code: location.state.myCode,
+        });
+        console.log(response);
+        bookmarkId = response;
+        setIsbookmark(true);
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      // 수정
+      try {
+        const response = await deleteBookmarkAPI(bookmarkId);
+        console.log(response);
+        setIsbookmark(false);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
 
   return (
     <>
@@ -69,14 +95,13 @@ export const CodeCompare = () => {
           <div style={{ height: `${editorHeight}%` }}>
             <CompareHeader className="gptCode">
               <strong>AI Code</strong>
-              <button onClick={() => setIsbookmark(prev => !prev)}>
+              <button onClick={handleBookmarkSave}>
                 북마크에 추가하기
                 <img src={isbookmark ? icon_bookmark_true : icon_bookmark} alt="북마크 아이콘" />
               </button>
             </CompareHeader>
             <ReadOnlyEditor code={aiRes?.gptCode as string} language={location.state?.language} />
           </div>
-          {/* 스크롤로 인한 구조 수정 필요 */}
           <div style={{ height: `${100 - editorHeight}%` }} className="Feedback">
             <Gutter orientation="vertical" onMouseDown={startDragVertical} />
             <CompareHeader>
@@ -115,7 +140,7 @@ const CompareHeader = styled.div`
     display: block;
     font-family: var(--font--Galmuri);
     font-size: 12px;
-    color: #989898;
+    color: #fff;
     font-weight: 600;
   }
 `;
@@ -153,6 +178,7 @@ const Contain = styled.div`
 
   .Feedback {
     background-color: #3f3f47;
+    font-size: 0.75rem;
     overflow: auto;
     ::-webkit-scrollbar {
       width: 5px;
@@ -177,15 +203,9 @@ const Contain = styled.div`
     & > div:last-of-type {
       padding-top: 0;
       border-bottom: 2px solid var(--background-color);
-      @media only screen and (max-width: 768px) {
-        margin-top: 20px;
-        padding-top: 24px;
-      }
     }
-
     & > p {
       padding: 24px 22px;
-      font-size: 0.75rem;
       line-height: 2;
     }
   }
@@ -209,11 +229,12 @@ const Gutter = styled.div<{ orientation: "vertical" | "horizontal" }>`
   background: ${props =>
     props.orientation === "horizontal"
       ? `url(${gutter_horizontal}) no-repeat center`
-      : `url(${gutter_vertical}) no-repeat center`};
+      : `url(${gutter_vertical}) #3F3F47 no-repeat center`};
   background-size: ${props => (props.orientation === "horizontal" ? "auto/40px" : "40px/auto")};
   border-right: ${props => props.orientation === "horizontal" && "2px solid var(--background-color)"};
   border-top: ${props => props.orientation === "vertical" && "2px solid var(--background-color)"};
   cursor: ${props => (props.orientation === "horizontal" ? "e-resize" : "n-resize")};
+  z-index: 1;
   @media only screen and (max-width: 768px) {
     display: none;
   }
