@@ -10,6 +10,7 @@ import { NotFound } from "./page/NotFound";
 import { QuestionSelect } from "./page/QuestionSelect";
 import { MyPage } from "./page/MyPage";
 import { MobilePopup } from "./components";
+import { Bookmark } from "./page/Bookmark";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path="/kakao/callback" element={<KakaoRedirection />} />
           <Route path="/codingTest/:id" element={<CodingTest />} />
           <Route path="/codeCompare/:id" element={<CodeCompare />} />
+          <Route path="/bookmark/:id" element={<Bookmark />} />
           <Route path="/codingTest/select" element={<QuestionSelect />} />
           <Route path="/myPage" element={<MyPage />} />
           <Route path="/404" element={<NotFound />} />
