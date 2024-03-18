@@ -5,8 +5,11 @@ import icon_bookmark from "../assets/icon_bookmark.svg";
 import icon_bookmark_true from "../assets/icon_bookmark_true.svg";
 import { useDraggable } from "../hook";
 import { Header, ReadOnlyEditor, SquareButton } from "../components";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { getAiFeedbackAPI } from "../api";
+import { AxiosError } from "axios";
+import { AiFeedback_I } from "../interface";
 
 export const CodeCompare = () => {
   const [isMedia, setIsMedia] = useState(window.innerWidth <= 768);
@@ -18,6 +21,8 @@ export const CodeCompare = () => {
   } = useDraggable({ initialWidth: 40, initialHeight: 60 });
   const location = useLocation();
   const [isbookmark, setIsbookmark] = useState(false);
+  const [aiRes, setAiRes] = useState<AiFeedback_I | undefined>();
+  const { id } = useParams();
 
   useEffect(() => {
     const handleResize = () => {
@@ -29,7 +34,21 @@ export const CodeCompare = () => {
     };
   }, []);
 
-  const code = `import java.util.Arrays;\nimport java.util.Scanner;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner scanner = new Scanner(System.in);\n        int amount = scanner.nextInt();\n        String[] coinStr = scanner.nextLine().split(\" \");\n        int[] coins = new int[coinStr.length];\n        for (int i = 0; i < coinStr.length; i++) {\n            coins[i] = Integer.parseInt(coinStr[i]);\n        }\n        \n        int[] dp = new int[amount + 1];\n        Arrays.fill(dp, amount + 1);\n        dp[0] = 0;\n        for (int a = 1; a <= amount; a++) {\n            for (int coin : coins) {\n                if (a >= coin) {\n                    dp[a] = Math.min(dp[a], dp[a - coin] + 1);\n                }\n            }\n        }\n        System.out.println(dp[amount] != amount + 1 ? dp[amount] : -1);\n        scanner.close();\n    }\n}`;
+  useEffect(() => {
+    (async () => {
+      try {
+        const response = await getAiFeedbackAPI({
+          problemId: Number(id),
+          codeType: location.state?.language,
+        });
+        setAiRes(response);
+      } catch (error) {
+        const axiosError = error as AxiosError;
+        console.log(axiosError);
+        // if (axiosError.response?.status === 404) navigate("/404");
+      }
+    })();
+  }, [id]);
 
   return (
     <>
@@ -43,7 +62,7 @@ export const CodeCompare = () => {
           <CompareHeader>
             <strong>My Code</strong>
           </CompareHeader>
-          <ReadOnlyEditor code={location.state.myCode} />
+          <ReadOnlyEditor code={location.state.myCode} language={location.state?.language} />
         </section>
         <Gutter orientation="horizontal" onMouseDown={startDragHorizontal} />
         <section style={{ width: isMedia ? "100%" : `${100 - descWidth}%` }}>
@@ -55,14 +74,15 @@ export const CodeCompare = () => {
                 <img src={isbookmark ? icon_bookmark_true : icon_bookmark} alt="북마크 아이콘" />
               </button>
             </CompareHeader>
-            <ReadOnlyEditor code={code} />
+            <ReadOnlyEditor code={aiRes?.gptCode as string} language={location.state?.language} />
           </div>
+          {/* 스크롤로 인한 구조 수정 필요 */}
           <div style={{ height: `${100 - editorHeight}%` }} className="Feedback">
             <Gutter orientation="vertical" onMouseDown={startDragVertical} />
             <CompareHeader>
               <strong>AI Feedback</strong>
             </CompareHeader>
-            <p>어쩌구저쩌구</p>
+            <p>{aiRes?.gptCodeExplain}</p>
           </div>
         </section>
       </Contain>
@@ -133,6 +153,27 @@ const Contain = styled.div`
 
   .Feedback {
     background-color: #3f3f47;
+    overflow: auto;
+    ::-webkit-scrollbar {
+      width: 5px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #555;
+      border-radius: 6px;
+    }
+    ::-webkit-scrollbar-button:vertical:start:decrement,
+    ::-webkit-scrollbar-button:vertical:start:increment,
+    ::-webkit-scrollbar-button:vertical:end:decrement {
+      display: block;
+      height: 5px;
+    }
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: #555 transparent;
+    }
     & > div:last-of-type {
       padding-top: 0;
       border-bottom: 2px solid var(--background-color);
@@ -144,7 +185,8 @@ const Contain = styled.div`
 
     & > p {
       padding: 24px 22px;
-      font-size: 0.875rem;
+      font-size: 0.75rem;
+      line-height: 2;
     }
   }
   & > section:first-of-type > div:last-of-type {

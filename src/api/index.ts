@@ -7,3 +7,4 @@ export * from "./monthlyAcheive";
 export * from "./bookmarkList";
 export * from "./lastQuestionList";
 export * from "./user";
+export * from "./aiFeedback";

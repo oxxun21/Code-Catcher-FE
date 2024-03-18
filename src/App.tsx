@@ -29,11 +29,11 @@ function App() {
           <Route path="/splash" element={<Splash />} />
           <Route path="/kakao/callback" element={<KakaoRedirection />} />
           <Route path="/codingTest/:id" element={<CodingTest />} />
-          <Route path="/codeCompare" element={<CodeCompare />} />
-          <Route path="question/select" element={<QuestionSelect />} />
+          <Route path="/codeCompare/:id" element={<CodeCompare />} />
+          <Route path="/question/select" element={<QuestionSelect />} />
           <Route path="/myPage" element={<MyPage />} />
           <Route path="/bookmarkList" element={<BookmarkList />} />
-          <Route path="/lastQuestionList" element={<LastQuestionList />} />
+          <Route path="/lastQuestionList" element={<LastQuestionList />} />   
           <Route path="/404" element={<NotFound />} />
           <Route path={"*"} element={<Navigate to="/404" />} />
         </Routes>

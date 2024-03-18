@@ -19,7 +19,7 @@ export const Home = () => {
     <>
       <Header />
       <StyledMain>
-        <h1>START TEST . . .</h1>
+        <strong>START TEST . . .</strong>
         <UserCard />
         <GalmuriButton as={Link} to="question/select" text="오늘의 코테 시작하기" />
       </StyledMain>
@@ -33,7 +33,7 @@ const StyledMain = styled.main`
   justify-content: center;
   align-items: center;
   background-color: #ffffff;
-  & > h1 {
+  & > strong {
     font-family: var(--font-Galmuri);
     font-weight: bold;
     font-size: 1.25rem;
