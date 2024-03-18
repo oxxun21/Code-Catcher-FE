@@ -25,3 +25,12 @@ export const getBookmarkAPI = async (id: string | undefined): Promise<Bookmark_I
     throw error;
   }
 };
+
+export const deleteBookmarkAPI = async (id: string | undefined) => {
+  try {
+    const response = await instance.delete(`/bookmark/one?id=${id}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

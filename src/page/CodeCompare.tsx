@@ -7,7 +7,7 @@ import { useDraggable } from "../hook";
 import { Header, ReadOnlyEditor, SquareButton } from "../components";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getAiFeedbackAPI, postBookmarkAPI } from "../api";
+import { deleteBookmarkAPI, getAiFeedbackAPI, postBookmarkAPI } from "../api";
 import { AiFeedback_I } from "../interface";
 
 export const CodeCompare = () => {
@@ -48,16 +48,31 @@ export const CodeCompare = () => {
   }, [id]);
 
   const handleBookmarkSave = async () => {
+    let bookmarkId;
     setIsbookmark(prev => !prev);
-    try {
-      const response = await postBookmarkAPI({
-        problemId: Number(id),
-        codeType: location.state?.language,
-        code: location.state.myCode,
-      });
-      console.log(response);
-    } catch (error) {
-      console.log(error);
+
+    if (!isbookmark) {
+      try {
+        const response = await postBookmarkAPI({
+          problemId: Number(id),
+          codeType: location.state?.language,
+          code: location.state.myCode,
+        });
+        console.log(response);
+        bookmarkId = response;
+        setIsbookmark(true);
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      // 수정
+      try {
+        const response = await deleteBookmarkAPI(bookmarkId);
+        console.log(response);
+        setIsbookmark(false);
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
