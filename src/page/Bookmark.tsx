@@ -67,6 +67,7 @@ export const Bookmark = () => {
     <>
       <Header />
       <PageHeader>
+        <span>마이페이지 &gt; 북마크 &gt; </span>
         <h2>{getBookmark?.title}</h2>
         <span>{getBookmark?.subject}</span>
       </PageHeader>
@@ -104,14 +105,18 @@ const PageHeader = styled.div`
   padding: 1rem 22px;
   font-weight: 600;
   border-bottom: 2px solid var(--background-color);
-  & > h2 {
-    font-size: 1rem;
-    display: inline-block;
-    margin-right: 12px;
-  }
+  display: flex;
+  gap: 12px;
+  justify-content: flex-start;
+  align-items: center;
+  font-size: 1rem;
   & > span {
-    color: var(--gray400-color);
-    font-size: 14px;
+    font-family: var(--font--Galmuri);
+    &:last-of-type {
+      color: var(--gray400-color);
+      font-size: 14px;
+      font-family: var(--font--Pretendard);
+    }
   }
 `;
 
@@ -153,7 +158,7 @@ const CodeContain = styled.section`
       scrollbar-color: #555 transparent;
     }
     & > strong {
-      padding: 1rem;
+      padding: 1rem 1.375rem;
       padding-top: 0;
       display: block;
       font-family: var(--font--Galmuri);
