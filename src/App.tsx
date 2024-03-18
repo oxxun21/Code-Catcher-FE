@@ -11,6 +11,8 @@ import { NotFound } from "./page/NotFound";
 import { QuestionSelect } from "./page/QuestionSelect";
 import { MyPage } from "./page/MyPage";
 import { MobilePopup } from "./components";
+import { BookmarkList } from "./page/BookmarkList";
+import { LastQuestionList } from "./page/LastQuestionList";
 
 function App() {
   return (
@@ -30,6 +32,8 @@ function App() {
           <Route path="/codeCompare" element={<CodeCompare />} />
           <Route path="/codingTest/select" element={<QuestionSelect />} />
           <Route path="/myPage" element={<MyPage />} />
+          <Route path="/bookmarkList" element={<BookmarkList />} />
+          <Route path="/lastQuestionList" element={<LastQuestionList />} />
           <Route path="/404" element={<NotFound />} />
           <Route path={"*"} element={<Navigate to="/404" />} />
         </Routes>

@@ -1,61 +1,45 @@
 import styled from "@emotion/styled";
-import { UserCard, MypageList, GalmuriButton } from "../components";
+import { UserCard, MypageList, GalmuriButton, MonthlyAchieve, Header } from "../components";
 import { Link } from "react-router-dom";
-
-const dummyData = [
-  {
-    id: 1,
-    title: "두 수의 차",
-    level: 1,
-    date: "2024.02.05",
-  },
-  {
-    id: 2,
-    title: "미로 주행 테스트",
-    level: 2,
-    date: "2023.01.02",
-  },
-  {
-    id: 3,
-    title: "몫 구하기",
-    level: 3,
-    date: "2019.05.12",
-  },
-];
-
-const lastData = [
-  {
-    id: 3,
-    title: "두 수의 차",
-    level: 1,
-    date: "2025.02.03",
-  },
-  {
-    id: 2,
-    title: "미로 주행 테스트",
-    level: 2,
-    date: "2025.02.03",
-  },
-  {
-    id: 2,
-    title: "몫 구하기",
-    level: 3,
-    date: "2025.02.03",
-  },
-];
+import { useEffect, useState } from "react";
+import { getMyPageInfoAPI } from "../api";
+import { MyPageInfo_I } from "../interface";
 
 export const MyPage = ({}) => {
+  const [myInfo, setMyInfo] = useState<MyPageInfo_I>({
+    bookmarkInfo: [],
+    problemInfo: [],
+    achieveInfo: [],
+  });
+
+  useEffect(() => {
+    const fetchMyInfo = async () => {
+      try {
+        const data = await getMyPageInfoAPI();
+        if (data) {
+          setMyInfo(data);
+        }
+      } catch (error) {}
+    };
+
+    fetchMyInfo();
+  }, []);
+  console.log("이거 useState myInfo임", myInfo);
   return (
-    <StyledMain>
-      <section>
-        <UserCard />
-        <div>
-          <MypageList data={dummyData} listType="bookmark" />
-          <MypageList data={lastData} listType="lastTests" />
-        </div>
-      </section>
-      <GalmuriButton as={Link} to="CodingTest/select" text="오늘의 코테 시작하기" />
-    </StyledMain>
+    <>
+      <Header />
+      <StyledMain>
+        <section>
+          <UserCard />
+          <div>
+            <MypageList data={myInfo.bookmarkInfo} listType="bookmark" />
+            <MypageList data={myInfo.problemInfo} listType="lastTests" />
+          </div>
+          <MonthlyAchieve data={myInfo.achieveInfo} />
+        </section>
+        <GalmuriButton as={Link} to="/CodingTest/select" text="오늘의 코테 시작하기" />
+      </StyledMain>
+    </>
   );
 };
 
