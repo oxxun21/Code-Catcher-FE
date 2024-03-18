@@ -8,7 +8,7 @@ import LogoDark from "../../assets/Logo_dark.svg";
 
 export const Header = () => {
   const location = useLocation();
-  const isDarkMode = location.pathname.startsWith("/codingTest") || location.pathname === "/codeCompare";
+  const isDarkMode = location.pathname.startsWith("/CodingTest") || location.pathname === "/codeCompare";
   const logoImage = isDarkMode ? LogoDark : LogoLight;
   const { clearUserInfo } = useUserStore.getState();
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
