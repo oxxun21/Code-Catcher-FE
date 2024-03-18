@@ -6,3 +6,4 @@ export * from "./mypageInfo";
 export * from "./monthlyAcheive";
 export * from "./bookmarkList";
 export * from "./lastQuestionList";
+export * from "./user";
