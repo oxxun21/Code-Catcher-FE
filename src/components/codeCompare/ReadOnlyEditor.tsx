@@ -3,7 +3,12 @@ import { useCallback, useRef } from "react";
 import { editor } from "monaco-editor";
 import styled from "@emotion/styled";
 
-export const ReadOnlyEditor = ({ code, language }: { code: string; language: string }) => {
+interface ReadOnlyEditorProps {
+  code: string;
+  language: string;
+}
+
+export const ReadOnlyEditor = ({ code, language }: ReadOnlyEditorProps) => {
   const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
 
   const handleEditorDidMount: OnMount = useCallback((editor: editor.IStandaloneCodeEditor, monacoInstance) => {

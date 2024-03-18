@@ -1,4 +1,5 @@
 export interface Bookmark_I {
+  codeType: string;
   myCode: string;
   title: string;
   subject: string;
