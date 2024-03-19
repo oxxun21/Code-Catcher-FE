@@ -3,15 +3,16 @@ import { instance } from "./instance";
 import { UserState } from "../interface";
 import { setLoginCookie } from "../utils/loginCookie";
 
-export const getUserAPI = async (code: string, navigate: NavigateFunction, setUserInfo: UserState["setUserInfo"]) => {
+export const getLoginAPI = async (code: string, navigate: NavigateFunction, setUserInfo: UserState["setUserInfo"]) => {
   try {
     const response = await instance.get(`kakao/callback?code=${code}`);
-    if (response.data) {
-      const resData = response.data;
+    const resData = response.data;
+    if (resData) {
       console.log(resData);
-      const { jwt, userId, nickname, email, level } = response.data;
+      const { jwt, ...userInfo } = resData;
       setLoginCookie(jwt, { path: "/" });
-      setUserInfo({ userId, nickname, email, level });
+      setUserInfo(userInfo);
+
       navigate("/");
     } else {
       console.log("token 없음");

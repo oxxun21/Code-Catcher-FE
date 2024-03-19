@@ -9,16 +9,29 @@ export const useUserStore = create(
       nickname: null,
       email: null,
       level: null,
-      setUserInfo: ({ userId, nickname, email, level }) => {
+      exp: null,
+      expUpper: null,
+      totalCnt: null,
+      completeCnt: null,
+      bookmarkCnt: null,
+      setUserInfo: userInfo => {
         set(state => ({
-          // 선택적으로 userId와 nickname을 업데이트. 값이 제공되지 않으면 기존 값 유지
-          userId: userId !== undefined ? userId : state.userId,
-          nickname: nickname !== undefined ? nickname : state.nickname,
-          email: email !== undefined ? email : state.email,
-          level: level !== undefined ? level : state.level,
+          ...state,
+          ...userInfo,
         }));
       },
-      clearUserInfo: () => set({ userId: null, nickname: null }),
+      clearUserInfo: () =>
+        set({
+          userId: null,
+          nickname: null,
+          email: null,
+          level: null,
+          exp: null,
+          expUpper: null,
+          totalCnt: null,
+          completeCnt: null,
+          bookmarkCnt: null,
+        }),
     }),
     {
       name: "userStore",
@@ -26,4 +39,3 @@ export const useUserStore = create(
     }
   )
 );
-

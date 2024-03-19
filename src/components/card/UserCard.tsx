@@ -9,7 +9,7 @@ import editIcon from "../../assets/edit.svg";
 import { updateNicknameAPI } from "../../api";
 
 export const UserCard = () => {
-  const { nickname, email, level, setUserInfo } = useUserStore();
+  const { nickname, email, level, exp, expUpper, totalCnt, completeCnt, bookmarkCnt, setUserInfo } = useUserStore();
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editedNickname, setEditedNickname] = useState<string | null>(nickname);
 
@@ -74,9 +74,11 @@ export const UserCard = () => {
         <StyledProgress>
           <div>
             <span>Lv.{level}</span>
-            <span>EXP 90/160</span>
+            <span>
+              EXP {exp}/{expUpper}
+            </span>
           </div>
-          <StyledProgressBar value="90" max="160" />
+          <StyledProgressBar value={exp?.toString()} max={expUpper?.toString()} />
         </StyledProgress>
         <img src={currentLevelImage} alt="사용자 캐릭터 이미지" />
         <div>
@@ -90,15 +92,15 @@ export const UserCard = () => {
           <StyledStatistics>
             <div>
               <strong>Total</strong>
-              <span>9</span>
+              <span>{totalCnt}</span>
             </div>
             <div>
               <strong>Complete</strong>
-              <span>8</span>
+              <span>{completeCnt}</span>
             </div>
             <div>
               <strong>Bookmark</strong>
-              <span>3</span>
+              <span>{bookmarkCnt}</span>
             </div>
           </StyledStatistics>
         </div>
@@ -167,6 +169,10 @@ const StyledNickname = styled.div`
     background-color: transparent;
     padding: 0.3125rem;
     cursor: pointer;
+    &:hover {
+      filter: brightness(0) saturate(100%) invert(43%) sepia(94%) saturate(1357%) hue-rotate(78deg) brightness(119%)
+        contrast(91%);
+    }
   }
 `;
 
@@ -187,6 +193,9 @@ const StyledNicknameInput = styled.div`
     font-size: 0.625rem;
     padding: 8px 2px;
     cursor: pointer;
+    &:hover {
+      color: var(--dark-color);
+    }
   }
 `;
 

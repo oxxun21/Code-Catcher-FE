@@ -1,7 +1,7 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useEffect } from "react";
 import { useUserStore } from "../stores/useUserStore";
-import { getUserAPI } from "../api";
+import { getLoginAPI } from "../api";
 import { Loading } from "../components/common/Loading";
 
 export const KakaoRedirection = () => {
@@ -12,7 +12,7 @@ export const KakaoRedirection = () => {
 
   useEffect(() => {
     if (code) {
-      getUserAPI(code, navigate, setUserInfo).catch(console.error);
+      getLoginAPI(code, navigate, setUserInfo).catch(console.error);
     }
   }, [code, navigate, setUserInfo]);
 
