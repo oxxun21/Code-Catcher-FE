@@ -36,6 +36,8 @@ export const QuestionCard = ({
 }: QuestionCardProps) => {
   const validLevel = Math.min(3, Math.max(0, level));
   const stars = [...Array(validLevel).fill(StarFilled), ...Array(3 - validLevel).fill(StarEmpty)];
+  const formattedQuestionId = `#${questionId.toString().padStart(4, "0")}`;
+
   return (
     <>
       <StyledCard
@@ -46,7 +48,7 @@ export const QuestionCard = ({
         onMouseLeave={onMouseLeave}
       >
         <StyledSpan>
-          <span>{`#${questionId}`}</span>
+          <span>{formattedQuestionId}</span>
           <StyledRank>
             {stars.map((star, index) => (
               <img key={index} src={star} alt="별" />
