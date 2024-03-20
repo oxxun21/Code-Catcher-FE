@@ -5,13 +5,25 @@ import { getLoginCookie, removeLoginCookie } from "../../utils/loginCookie";
 import { useUserStore } from "../../stores/useUserStore";
 import LogoLight from "../../assets/Logo_light.svg";
 import LogoDark from "../../assets/Logo_dark.svg";
+import { Modal } from "..";
+import { withdrawAPI } from "../../api";
+
+type ModalContentType = "logout" | "withdraw" | "";
 
 export const Header = () => {
   const location = useLocation();
-  const isDarkMode = location.pathname.startsWith("/CodingTest") || location.pathname === "/codeCompare";
+  const isDarkMode =
+    location.pathname.startsWith("/codingTest/") ||
+    location.pathname.startsWith("/codeCompare/") ||
+    location.pathname.startsWith("/bookmark/");
   const logoImage = isDarkMode ? LogoDark : LogoLight;
+
+  const isMyPage = location.pathname === "/myPage";
+  const [modalContent, setModalContent] = useState<ModalContentType>("");
+
   const { clearUserInfo } = useUserStore.getState();
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -34,6 +46,51 @@ export const Header = () => {
     navigate("/splash");
   };
 
+  const handleWithdraw = async () => {
+    try {
+      const status = await withdrawAPI();
+      if (status === 200) {
+        alert("회원 탈퇴가 성공적으로 처리되었습니다.");
+      }
+    } catch (error) {
+      console.error("회원 탈퇴 처리 중 오류가 발생했습니다.", error);
+    }
+  };
+
+  const openModal = (type: ModalContentType) => {
+    setModalContent(type);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => setIsModalOpen(false);
+
+  const modalContents = () => {
+    if (modalContent === "logout") {
+      return (
+        <>
+          <strong>로그아웃</strong>
+          <p>접속 중인 계정에서 로그아웃 하시겠어요?</p>
+          <div>
+            <button onClick={closeModal}>취소</button>
+            <button onClick={handleLogout}>로그아웃</button>
+          </div>
+        </>
+      );
+    } else if (modalContent === "withdraw") {
+      return (
+        <>
+          <strong>정말 탈퇴 하시겠어요?</strong>
+          <p>탈퇴 버튼 선택 시, 계정은 삭제되며 복구할 수 없습니다</p>
+          <div>
+            <button onClick={handleWithdraw}>탈퇴</button>
+            <button onClick={closeModal}>취소</button>
+          </div>
+        </>
+      );
+    }
+    return null;
+  };
+
   return (
     <StyledHeader isDarkMode={isDarkMode}>
       <h1>
@@ -43,9 +100,18 @@ export const Header = () => {
         <StyledLoginBtn onClick={handleKakaoLogin}>로그인</StyledLoginBtn>
       ) : (
         <StyledBtnGroup>
-          <button onClick={handleLogout}>로그아웃</button>
-          <button onClick={() => navigate("/myPage")}>마이페이지</button>
+          <button onClick={() => openModal("logout")}>로그아웃</button>
+          {isMyPage ? (
+            <button onClick={() => openModal("withdraw")}>회원탈퇴</button>
+          ) : (
+            <button onClick={() => navigate("/myPage")}>마이페이지</button>
+          )}
         </StyledBtnGroup>
+      )}
+      {isModalOpen && (
+        <Modal onClose={closeModal} modalHeader="Want to Leave">
+          <ModalContents>{modalContents()}</ModalContents>
+        </Modal>
       )}
     </StyledHeader>
   );
@@ -87,5 +153,46 @@ const StyledBtnGroup = styled.div`
 
   & > button:not(:first-child) {
     margin-left: 1.25rem;
+  }
+`;
+
+const ModalContents = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 1rem;
+  & > strong {
+    font-size: 1.375rem;
+    font-weight: bold;
+    margin-bottom: 0.75rem;
+  }
+
+  & > p {
+    font-size: 1rem;
+    font-weight: 400;
+    margin-bottom: 1.875rem;
+  }
+
+  & > div {
+    display: flex;
+    gap: 20px;
+
+    & button {
+      font-size: 1rem;
+      font-weight: 500;
+      border-radius: 20px;
+      padding: 1rem 4.3125rem;
+      cursor: pointer;
+    }
+    & button:nth-child(1) {
+      color: #222222;
+      border: 2px solid #dbdbdb;
+      background-color: #f4f4f4;
+    }
+    & button:nth-child(2) {
+      color: #ffffff;
+      background-color: #192e47;
+    }
   }
 `;
