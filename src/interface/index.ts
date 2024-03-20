@@ -7,4 +7,3 @@ export * from "./mypageInfo_I";
 export * from "./mypageListItem_I";
 export * from "./aiFeedback_I";
 export * from "./bookmark_I";
-export * from "./aiFeedback_I";

@@ -32,7 +32,6 @@ function App() {
           <Route path="/codingTest/:id" element={<CodingTest />} />
           <Route path="/codeCompare/:id" element={<CodeCompare />} />
           <Route path="/bookmark/:id" element={<Bookmark />} />
-          <Route path="/codingTest/select" element={<QuestionSelect />} />
           <Route path="/question/select" element={<QuestionSelect />} />
           <Route path="/myPage" element={<MyPage />} />
           <Route path="/bookmarkList" element={<BookmarkList />} />
