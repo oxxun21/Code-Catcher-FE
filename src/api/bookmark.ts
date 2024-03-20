@@ -1,7 +1,7 @@
-import { Bookmark_I, ScoreSubmit_I, SubmissionProps_I } from "../interface";
+import { Bookmark_I, SubmissionProps_I } from "../interface";
 import { instance } from "./instance";
 
-export const postBookmarkAPI = async ({ problemId, codeType, code }: SubmissionProps_I): Promise<ScoreSubmit_I> => {
+export const postBookmarkAPI = async ({ problemId, codeType, code }: SubmissionProps_I) => {
   try {
     const response = await instance.post("/bookmark", {
       problemId,

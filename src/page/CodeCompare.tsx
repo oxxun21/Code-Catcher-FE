@@ -4,7 +4,7 @@ import gutter_vertical from "../assets/gutter_vertical.svg";
 import icon_bookmark from "../assets/icon_bookmark.svg";
 import icon_bookmark_true from "../assets/icon_bookmark_true.svg";
 import { useDraggable } from "../hook";
-import { Header, ReadOnlyEditor, SquareButton } from "../components";
+import { Header, Modal, ReadOnlyEditor, RoundButton, SquareButton } from "../components";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { deleteBookmarkAPI, getAiFeedbackAPI, postBookmarkAPI } from "../api";
@@ -20,6 +20,8 @@ export const CodeCompare = () => {
   } = useDraggable({ initialWidth: 40, initialHeight: 60 });
   const location = useLocation();
   const [isbookmark, setIsbookmark] = useState(false);
+  const [bookmarkId, setBookmarkId] = useState();
+  const [isModal, setIsModal] = useState(false);
   const [aiRes, setAiRes] = useState<AiFeedback_I | undefined>();
   const { id } = useParams();
 
@@ -48,32 +50,35 @@ export const CodeCompare = () => {
   }, [id]);
 
   const handleBookmarkSave = async () => {
-    let bookmarkId;
-    setIsbookmark(prev => !prev);
-
-    if (!isbookmark) {
-      try {
-        const response = await postBookmarkAPI({
-          problemId: Number(id),
-          codeType: location.state?.language,
-          code: location.state.myCode,
-        });
-        console.log(response);
-        bookmarkId = response;
-        setIsbookmark(true);
-      } catch (error) {
-        console.log(error);
-      }
-    } else {
-      // 수정
-      try {
-        const response = await deleteBookmarkAPI(bookmarkId);
-        console.log(response);
-        setIsbookmark(false);
-      } catch (error) {
-        console.log(error);
-      }
+    if (isbookmark) {
+      setIsModal(true);
+      return;
     }
+    try {
+      const response = await postBookmarkAPI({
+        problemId: Number(id),
+        codeType: location.state?.language,
+        code: location.state.myCode,
+      });
+      setBookmarkId(response);
+      setIsbookmark(true);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleBookmarkOff = async () => {
+    try {
+      await deleteBookmarkAPI(bookmarkId);
+      setIsbookmark(false);
+      setIsModal(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleClose = () => {
+    setIsModal(prev => !prev);
   };
 
   return (
@@ -114,6 +119,17 @@ export const CodeCompare = () => {
       <ButtonContain>
         <SquareButton as={Link} to="/" text="나가기" />
       </ButtonContain>
+      {isModal && (
+        <Modal onClose={handleClose} modalHeader="Cancel">
+          <ModalContain>
+            <p>북마크를 삭제하시겠습니까?</p>
+            <div>
+              <RoundButton text="아니오" width="50%" onClick={() => setIsModal(false)} />
+              <RoundButton text="예" width="50%" onClick={handleBookmarkOff} dark />
+            </div>
+          </ModalContain>
+        </Modal>
+      )}
     </>
   );
 };
@@ -247,5 +263,24 @@ const ButtonContain = styled.div`
   justify-content: flex-end;
   @media only screen and (max-width: 768px) {
     position: relative;
+  }
+`;
+
+const ModalContain = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  font-size: 1rem;
+  & > p {
+    font-weight: 600;
+    margin-top: 12px;
+  }
+  & > div {
+    width: 100%;
+    margin-top: 24px;
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
   }
 `;
