@@ -34,7 +34,7 @@ const StyledMain = styled.main`
   align-items: center;
   background-color: #ffffff;
   & > strong {
-    font-family: var(--font-Galmuri);
+    font-family: var(--font--Galmuri);
     font-weight: bold;
     font-size: 1.25rem;
     color: #222222;
