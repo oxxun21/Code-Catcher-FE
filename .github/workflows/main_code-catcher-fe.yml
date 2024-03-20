@@ -11,7 +11,6 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch:
 
 jobs:
   build:
@@ -51,25 +50,9 @@ jobs:
           name: node-app
 
       - name: 'Login to Azure'
-        uses: azure/login@v2
+        uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-          enable-AzPSSession: true
-    
-      - name: Azure CLI script
-        uses: azure/CLI@v1
-        with:
-          azcliversion: latest
-          inlineScript: |
-            az account show
-
-      - name: Azure PowerShell script
-        uses: azure/powershell@v1
-        with:
-          azPSVersion: "latest"
-          inlineScript: |
-            Get-AzWebApp
-
           
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
