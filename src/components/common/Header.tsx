@@ -94,7 +94,7 @@ export const Header = () => {
   return (
     <StyledHeader isDarkMode={isDarkMode}>
       <h1>
-        <img src={logoImage} alt="로고 이미지" />
+        <img src={logoImage} alt="로고 이미지" onClick={() => navigate("/")} />
       </h1>
       {!isLoggedIn ? (
         <StyledLoginBtn onClick={handleKakaoLogin}>로그인</StyledLoginBtn>
@@ -125,6 +125,10 @@ const StyledHeader = styled.header<{ isDarkMode: boolean }>`
   align-items: center;
   background-color: ${({ isDarkMode }) => (isDarkMode ? "#17171B" : "#ffffff")};
   color: ${({ isDarkMode }) => (isDarkMode ? "#ffffff" : "#222222")};
+
+  & h1 {
+    cursor: pointer;
+  }
 
   & button {
     font-size: 1rem;
