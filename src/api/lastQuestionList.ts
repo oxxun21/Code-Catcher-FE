@@ -1,10 +1,18 @@
 import { instance } from "./instance";
-import { ProblemInfo_I } from "../interface";
+import { ProblemInfo_I, ProblemListAll_I } from "../interface";
+import { formatDate } from "../utils/formatDate";
 
-export const getLastQuestionListAPI = async (page: number): Promise<ProblemInfo_I> => {
+export const getLastQuestionListAPI = async (page: number): Promise<ProblemListAll_I> => {
   try {
     const response = await instance.get(`/my-page/question?page=${page}`);
-    return response.data;
+    const formattedData = {
+      ...response.data,
+      questionData: response.data.questionData.map((question: ProblemInfo_I) => ({
+        ...question,
+        createdAt: formatDate(question.createdAt),
+      })),
+    };
+    return formattedData;
   } catch (error) {
     throw error;
   }
