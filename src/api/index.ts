@@ -8,3 +8,4 @@ export * from "./bookmarkList";
 export * from "./lastQuestionList";
 export * from "./user";
 export * from "./aiFeedback";
+export * from "./bookmark";
