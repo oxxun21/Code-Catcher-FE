@@ -158,6 +158,7 @@ const StyledUserInfoGroup = styled.div`
 `;
 
 const StyledNickname = styled.div`
+  height: 1.625rem;
   color: #222222;
   display: flex;
   align-items: center;
@@ -179,9 +180,10 @@ const StyledNickname = styled.div`
 `;
 
 const StyledNicknameInput = styled.div`
+  height: 1.625rem;
   color: #222222;
   background-color: #d4fed4;
-  border-bottom: 1px var(--light-color) solid;
+  border-bottom: 1px #00e46c solid;
 
   & > input {
     all: unset;
@@ -243,7 +245,7 @@ const StyledProgressBar = styled.progress`
   }
 
   &::-webkit-progress-value {
-    background-color: var(--light-color); /* 진행된 부분의 색상 */
+    background-color: #00e46c; /* 진행된 부분의 색상 */
     border-radius: 10px;
   }
 `;

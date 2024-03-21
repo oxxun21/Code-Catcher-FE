@@ -3,14 +3,25 @@ import { css } from "@emotion/react";
 const reset = css`
   :root {
     --main-color: #32cd32;
-    --light-color: #00e46c;
+    --point-color: #00e46c;
     --dark-color: #44b044;
+    --light-color: #d4fed4;
+    --hover-color: #8ce28c;
+    --secondary-color: #192e47;
+    --secondary-light-color: #27466b;
     --gray200-color: #dbdbdb;
     --gray300-color: #d3d3d3;
     --gray400-color: #989898;
-    --gray500-color: #32323a;
-    --gray-600-color: #2a2a2a;
+    --gray500-color: #8b8b8b;
+    --gray-600-color: #777777;
+    --gray-700-color: #545454;
+    --gray-800-color: #454545;
+    --gray--900-color: #363738;
+    --black-color: #222222;
+    --system-negative-color: #f53966;
+    --system-positivie-color: #398ff5;
     --background-color: #17171b;
+    --light-background-color: #ffffff;
   }
 
   :root {

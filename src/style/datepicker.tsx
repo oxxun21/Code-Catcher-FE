@@ -101,7 +101,6 @@ const datePicker = css`
     font-family: var(--font--Galmuri);
     font-size: 0.9375rem;
     font-weight: bold;
-    transition: background-color 0.3s ease-in-out;
   }
 
   //오늘 day

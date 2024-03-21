@@ -102,7 +102,6 @@ const StyledButton = styled.button<{ isCurrent: boolean }>`
   color: ${({ isCurrent }) => (isCurrent ? "#ffffff" : "#000000")};
   background-color: ${({ isCurrent }) => (isCurrent ? "var(--main-color)" : "transparent")};
   &:hover {
-    color: #ffffff;
-    background-color: var(--main-color);
+    background-color: ${({ isCurrent }) => (isCurrent ? "var(--main-color)" : "#d4fed4")};
   }
 `;

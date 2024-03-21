@@ -127,5 +127,5 @@ const TestResultSection = styled.table`
 `;
 
 const CorrectnessIndicator = styled.td<{ correct: boolean }>`
-  color: ${props => (props.correct ? "var(--light-color)" : "#F53966")};
+  color: ${props => (props.correct ? "#00E46C" : "#F53966")};
 `;

@@ -122,7 +122,7 @@ const CompareHeader = styled.div`
 
 const Contain = styled.div`
   display: flex;
-  background-color: var(--gray500-color);
+  background-color: #32323a;
   height: 76vh;
 
   .gptCode {

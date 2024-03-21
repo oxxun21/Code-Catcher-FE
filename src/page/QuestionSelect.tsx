@@ -10,7 +10,7 @@ export const QuestionSelect = () => {
   const [questions, setQuestions] = useState<QuestionOutline_I[]>([]);
   const [selectedCard, setSelectedCard] = useState<number | null>(null);
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
-  const isAnyCardHovered = hoveredCard !== null;
+
   const [selectedQuestionId, setSelectedQuestionId] = useState<number | null>(null);
   const navigate = useNavigate();
 
@@ -61,7 +61,11 @@ export const QuestionSelect = () => {
             />
           ))}
         </StyledSection>
-        <StyledButton onClick={handleToCodingTest} isSelected={selectedQuestionId !== null || isAnyCardHovered}>
+        <StyledButton
+          onClick={handleToCodingTest}
+          isSelected={selectedQuestionId !== null}
+          disabled={selectedQuestionId === null}
+        >
           시작하기
         </StyledButton>
       </StyledMain>
@@ -91,6 +95,17 @@ const StyledButton = styled.button<{ isSelected: boolean }>`
   border-radius: 1.25rem;
   cursor: pointer;
   transition: border-color 0.3s, background-color 0.3s;
+  &:hover {
+    background-color: #8ce28c;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    background-color: var(--gray400-color);
+    &:hover {
+      background-color: var(--gray400-color);
+    }
+  }
 `;
 
 const StyledSection = styled.section`

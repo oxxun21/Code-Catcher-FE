@@ -78,15 +78,26 @@ const StyledCard = styled.article<StyledCardProps>`
   background-color: #fafafa;
   font-family: var(--font--Pretendard);
   cursor: pointer;
-  border: 4px solid #d1d1d1;
+  border: 1px solid #d1d1d1;
   transition: border-color 0.3s, background-color 0.3s;
 
   ${({ isSelected, isHovered }) => {
-    if (isSelected || isHovered) {
+    if (isSelected) {
+      if (isHovered) {
+        return `
+        border: 4px solid #00E46C;
+        background-color: rgba(50, 205, 50, 0.2);
+    `;
+      }
       return `
-        border-color: var(--light-color);
+        border: 4px solid #00E46C;
         background-color: rgba(50, 205, 50, 0.2);
       `;
+    }
+    if (isHovered) {
+      return `
+        background-color: #EAEAEA;
+    `;
     }
   }}
 
@@ -127,8 +138,8 @@ const StyledDesc = styled.div<{ isSuccess: boolean | null }>`
     font-weight: bold;
     line-height: 1.625rem;
     font-family: var(--font--Galmuri);
-    background-color: ${({ isSuccess }) =>
-      isSuccess === true ? "#398FF5" : isSuccess === false ? "#F53966" : "#192e47"};
+    color: ${({ isSuccess }) => (isSuccess === true ? "#398FF5" : "#F53966")};
+    background-color: ${({ isSuccess }) => (isSuccess === true ? "rgba(57,143,245, 0.25)" : "rgba(245,57,102,0.2)")};
     border-radius: 999px;
     padding: 0.375rem 0.625rem;
   }
@@ -138,10 +149,11 @@ const StyledDesc = styled.div<{ isSuccess: boolean | null }>`
     font-weight: bold;
     color: #222222;
     margin: 0.75rem 0;
+    line-height: 122%;
   }
   & h3 {
     font-size: 1.25rem;
-    font-weight: 600;
+    font-weight: 500;
     color: #192e47;
     margin-bottom: 3.17rem;
   }

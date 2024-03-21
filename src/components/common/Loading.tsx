@@ -17,7 +17,7 @@ const LoadingComponent = styled.div`
   justify-content: center;
   align-items: center;
   font-family: var(--font--Galmuri);
-  color: var(--light-color);
+  color: #00e46c;
   font-size: 2.25rem;
   font-weight: 600;
   & > img {

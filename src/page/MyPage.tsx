@@ -62,4 +62,3 @@ const StyledMain = styled.main`
     }
   }
 `;
-

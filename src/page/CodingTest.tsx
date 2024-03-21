@@ -182,7 +182,7 @@ const PageHeader = styled.div`
 
 const Contain = styled.div`
   display: flex;
-  background-color: var(--gray500-color);
+  background-color: #32323a;
   height: 76vh;
   @media only screen and (max-width: 768px) {
     flex-direction: column;

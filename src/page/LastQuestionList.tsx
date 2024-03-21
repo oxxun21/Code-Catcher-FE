@@ -39,7 +39,7 @@ export const LastQuestionList = () => {
       return {
         text: "Complete",
         textColor: "#222222",
-        indicatorColor: "var(--light-color)",
+        indicatorColor: "#00E46C",
       };
     } else if (status === false) {
       return {
@@ -181,8 +181,14 @@ const StyledTableBody = styled.tbody`
   & > tr {
     border-bottom: 1px solid #dbdbdb;
     cursor: pointer;
+    &:hover {
+      background-color: #f5f5f5;
+    }
     &:nth-child(even) {
       background-color: #f4f4f4;
+      &:hover {
+        background-color: #ececec;
+      }
     }
   }
 
@@ -245,6 +251,5 @@ const StatusIndicator = styled.div<{ status: boolean }>`
   width: 0.25rem;
   height: 0.25rem;
   border-radius: 999px;
-  background-color: ${({ status }) =>
-    status === true ? "var(--light-color)" : status === false ? "#F53966" : "#DBDBDB"};
+  background-color: ${({ status }) => (status === true ? "#00E46C" : status === false ? "#F53966" : "#DBDBDB")};
 `;

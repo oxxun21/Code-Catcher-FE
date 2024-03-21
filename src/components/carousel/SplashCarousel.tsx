@@ -59,7 +59,6 @@ export const SplashCarousel = ({ currentSlide, setCurrentSlide }: SplashCarousel
               <h2>{slide.title}</h2>
               <p>{slide.desc}</p>
             </div>
-
             <img src={slide.imgUrl} alt={`Slide ${index + 1}`} />
           </Slide>
         ))}
@@ -143,7 +142,7 @@ const CarouselControls = styled.div`
   align-items: center;
   position: absolute;
   top: 0;
-  background-color: rgba(34, 34, 34, 0.2);
+  background-color: rgba(34, 34, 34, 0.1);
   border-radius: 799.2px;
   width: 100px;
   height: 35px;

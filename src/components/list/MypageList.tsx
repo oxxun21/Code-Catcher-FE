@@ -146,9 +146,16 @@ const StyledTableBody = styled.tbody`
 
   & > tr {
     border-bottom: 1px solid #dbdbdb;
+    background-color: #ffffff;
     cursor: pointer;
+    &:hover {
+      background-color: #f5f5f5;
+    }
     &:nth-child(even) {
       background-color: #f4f4f4;
+      &:hover {
+        background-color: #ececec;
+      }
     }
   }
 
@@ -193,7 +200,8 @@ const StyledTableBody = styled.tbody`
 const StyledEmptyComponent = styled.div`
   width: 21.875rem;
   height: 9.875rem;
-  background-color: #eeeeee;
+  background-color: #f4f4f4;
+  border-radius: 10px;
 `;
 
 const StyledBookmarkEmpty = styled.div`
@@ -219,7 +227,7 @@ const StyledLastEmpty = styled.div`
     }
     &:hover,
     & > img:hover {
-      color: var(--light-color);
+      color: #00e46c;
       filter: brightness(0) saturate(100%) invert(43%) sepia(85%) saturate(1352%) hue-rotate(80deg) brightness(119%)
         contrast(89%);
     }
