@@ -26,6 +26,6 @@ const Button = styled.button<ButtonProps>`
   transition: all 0.3s;
   text-align: center;
   &:hover {
-    background-color: #8ce28c;
+    background-color: var(--hover-color);
   }
 `;

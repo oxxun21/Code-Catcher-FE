@@ -70,7 +70,7 @@ const StyledNav = styled.nav`
 
     font-weight: 500;
     cursor: pointer;
-    color: #222222;
+    color: var(--black-color);
     &:first-child {
       margin-right: 0.875rem;
     }
@@ -102,6 +102,6 @@ const StyledButton = styled.button<{ isCurrent: boolean }>`
   color: ${({ isCurrent }) => (isCurrent ? "#ffffff" : "#000000")};
   background-color: ${({ isCurrent }) => (isCurrent ? "var(--main-color)" : "transparent")};
   &:hover {
-    background-color: ${({ isCurrent }) => (isCurrent ? "var(--main-color)" : "#d4fed4")};
+    background-color: ${({ isCurrent }) => (isCurrent ? "var(--main-color)" : "var(--light-color)")};
   }
 `;

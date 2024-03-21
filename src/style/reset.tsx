@@ -136,7 +136,7 @@ const reset = css`
   body {
     line-height: 1;
     font-weight: 400;
-    background-color: var(--background-color);
+    background-color: var(--light-background-color);
     font-family: var(--font--Pretendard);
     color: #fff;
   }

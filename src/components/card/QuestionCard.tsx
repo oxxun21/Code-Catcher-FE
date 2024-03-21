@@ -85,12 +85,12 @@ const StyledCard = styled.article<StyledCardProps>`
     if (isSelected) {
       if (isHovered) {
         return `
-        border: 4px solid #00E46C;
+        border: 4px solid var(--point-color);
         background-color: rgba(50, 205, 50, 0.2);
     `;
       }
       return `
-        border: 4px solid #00E46C;
+        border: 4px solid var(--point-color);
         background-color: rgba(50, 205, 50, 0.2);
       `;
     }
@@ -112,7 +112,7 @@ const StyledSpan = styled.span`
 
   & > span {
     font-size: 1.25rem;
-    color: #192e47;
+    color: var(--secondary-color);
   }
 `;
 const StyledRank = styled.div`
@@ -138,7 +138,8 @@ const StyledDesc = styled.div<{ isSuccess: boolean | null }>`
     font-weight: bold;
     line-height: 1.625rem;
     font-family: var(--font--Galmuri);
-    color: ${({ isSuccess }) => (isSuccess === true ? "#398FF5" : "#F53966")};
+    color: ${({ isSuccess }) =>
+      isSuccess === true ? "var(--system-positivie-color)" : "var(--system-negative-color)"};
     background-color: ${({ isSuccess }) => (isSuccess === true ? "rgba(57,143,245, 0.25)" : "rgba(245,57,102,0.2)")};
     border-radius: 999px;
     padding: 0.375rem 0.625rem;
@@ -147,14 +148,14 @@ const StyledDesc = styled.div<{ isSuccess: boolean | null }>`
   & h2 {
     font-size: 1.75rem;
     font-weight: bold;
-    color: #222222;
+    color: var(--black-color);
     margin: 0.75rem 0;
     line-height: 122%;
   }
   & h3 {
     font-size: 1.25rem;
     font-weight: 500;
-    color: #192e47;
+    color: var(--secondary-color);
     margin-bottom: 3.17rem;
   }
 
@@ -168,7 +169,7 @@ const StyledDesc = styled.div<{ isSuccess: boolean | null }>`
   & strong {
     font-size: 0.875rem;
     font-weight: 600;
-    color: #8b8b8b;
+    color: var(--gray500-color);
   }
   & p {
     font-size: 0.875rem;

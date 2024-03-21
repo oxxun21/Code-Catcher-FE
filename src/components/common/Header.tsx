@@ -123,8 +123,8 @@ const StyledHeader = styled.header<{ isDarkMode: boolean }>`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: ${({ isDarkMode }) => (isDarkMode ? "#17171B" : "#ffffff")};
-  color: ${({ isDarkMode }) => (isDarkMode ? "#ffffff" : "#454545")};
+  background-color: ${({ isDarkMode }) => (isDarkMode ? "var(--background-color)" : "#ffffff")};
+  color: ${({ isDarkMode }) => (isDarkMode ? "#ffffff" : "var(--gray-800-color)")};
 
   & h1 {
     cursor: pointer;
@@ -134,7 +134,7 @@ const StyledHeader = styled.header<{ isDarkMode: boolean }>`
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
-    color: ${({ isDarkMode }) => (isDarkMode ? "#EAEAEA" : "#454545")};
+    color: ${({ isDarkMode }) => (isDarkMode ? "#EAEAEA" : "var(--gray-800-color)")};
     background-color: ${({ isDarkMode }) => (isDarkMode ? "transparent" : "#ffffff")};
   }
 `;
@@ -142,9 +142,9 @@ const StyledHeader = styled.header<{ isDarkMode: boolean }>`
 const StyledLoginBtn = styled.button`
   padding: 0.75rem 1.6563rem;
   background-color: #ffffff;
-  color: #222222;
+  color: var(--black-color);
   border-radius: 999px;
-  border: 1px solid #222222;
+  border: 1px solid var(--black-color);
   background-color: #ffffff;
   &:hover {
     background-color: #f4f4f4;
@@ -193,8 +193,8 @@ const ModalContents = styled.div`
       cursor: pointer;
     }
     & button:nth-child(1) {
-      color: #222222;
-      border: 2px solid #dbdbdb;
+      color: var(--black-color);
+      border: 2px solid var(--gray200-color);
       background-color: #f4f4f4;
       &:hover {
         background-color: #eaeaea;
@@ -202,9 +202,9 @@ const ModalContents = styled.div`
     }
     & button:nth-child(2) {
       color: #ffffff;
-      background-color: #192e47;
+      background-color: var(--secondary-color);
       &:hover {
-        background-color: #27466b;
+        background-color: var(--secondary-color);
       }
     }
   }

@@ -113,7 +113,7 @@ const Slide = styled.div`
     font-weight: bold;
     margin-bottom: 1rem;
     white-space: pre-wrap;
-    color: #222222;
+    color: var(--black-color);
     line-height: 130%;
   }
 
@@ -121,7 +121,7 @@ const Slide = styled.div`
     width: fit-content;
     font-size: 1rem;
     white-space: pre-wrap;
-    color: #545454;
+    color: var(--gray-700-color);
     line-height: 156%;
   }
 
@@ -150,7 +150,7 @@ const CarouselControls = styled.div`
   button {
     border: none;
     background: none;
-    color: #222222;
+    color: var(--black-color);
     cursor: pointer;
     user-select: none;
 
@@ -162,7 +162,7 @@ const CarouselControls = styled.div`
   span {
     margin: 0 10px;
     font-size: 14px;
-    color: #222222;
+    color: var(--black-color);
   }
 
   @media (max-width: 768px) {

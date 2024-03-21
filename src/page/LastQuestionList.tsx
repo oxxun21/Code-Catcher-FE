@@ -38,20 +38,20 @@ export const LastQuestionList = () => {
     if (status === true) {
       return {
         text: "Complete",
-        textColor: "#222222",
-        indicatorColor: "#00E46C",
+        textColor: "var(--black-color)",
+        indicatorColor: "var(--point-color)",
       };
     } else if (status === false) {
       return {
         text: "Failed",
-        textColor: "#222222",
-        indicatorColor: "#F53966",
+        textColor: "var(--black-color)",
+        indicatorColor: "var(--system-negative-color)",
       };
     } else {
       return {
         text: "No recorded",
         textColor: "#BDBDBD",
-        indicatorColor: "#DBDBDB",
+        indicatorColor: "#var(--gray200-color)",
       };
     }
   };
@@ -116,7 +116,6 @@ const StyledMain = styled.main`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #ffffff;
 
   & > section {
     position: relative;
@@ -131,7 +130,7 @@ const StyledMain = styled.main`
       & > h2 {
         font-family: var(--font--Galmuri);
         font-size: 1.25rem;
-        color: #222222;
+        color: var(--black-color);
         font-weight: bold;
       }
       & > p {
@@ -151,8 +150,8 @@ const StyledTable = styled.table`
 `;
 const StyledTableHead = styled.thead`
   & > tr > th {
-    color: #192e47;
-    border-bottom: 1px solid #dbdbdb;
+    color: var(--secondary-color);
+    border-bottom: 1px solid var(--gray200-color);
     font-family: var(--font--Galmuri);
     font-weight: bold;
     font-size: 0.625rem;
@@ -175,11 +174,11 @@ const StyledTableHead = styled.thead`
   }
 `;
 const StyledTableBody = styled.tbody`
-  color: #222222;
+  color: var(--black-color);
   font-family: var(--font-Pretendard);
 
   & > tr {
-    border-bottom: 1px solid #dbdbdb;
+    border-bottom: 1px solid var(--gray200-color);
     cursor: pointer;
     &:hover {
       background-color: #f5f5f5;
@@ -194,14 +193,14 @@ const StyledTableBody = styled.tbody`
 
   & > tr > td {
     padding: 0.625rem 0;
-    color: #222222;
+    color: var(--black-color);
     &:nth-child(1) {
       width: 3rem;
       & img {
         vertical-align: middle;
       }
       padding-left: 0.875rem;
-      color: #192e47;
+      color: var(--secondary-color);
     }
     &:nth-child(2) {
       display: flex;
@@ -217,7 +216,7 @@ const StyledTableBody = styled.tbody`
       & strong {
         font-size: 0.875rem;
         font-weight: 600;
-        color: #222222;
+        color: var(--black-color);
         line-height: 0.875rem;
         white-space: nowrap;
         overflow: hidden;
@@ -251,5 +250,10 @@ const StatusIndicator = styled.div<{ status: boolean }>`
   width: 0.25rem;
   height: 0.25rem;
   border-radius: 999px;
-  background-color: ${({ status }) => (status === true ? "#00E46C" : status === false ? "#F53966" : "#DBDBDB")};
+  background-color: ${({ status }) =>
+    status === true
+      ? "var(--point-color)"
+      : status === false
+      ? "var(--system-negative-color)"
+      : "var(--gray200-color)"};
 `;
