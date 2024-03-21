@@ -49,7 +49,6 @@ const StyledMain = styled.main`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #ffffff;
 
   & > section {
     display: flex;

@@ -80,7 +80,6 @@ const StyledMain = styled.main`
   justify-content: center;
   align-items: center;
   gap: 4rem;
-  background-color: #ffffff;
 `;
 
 const StyledButton = styled.button<{ isSelected: boolean }>`
@@ -96,7 +95,7 @@ const StyledButton = styled.button<{ isSelected: boolean }>`
   cursor: pointer;
   transition: border-color 0.3s, background-color 0.3s;
   &:hover {
-    background-color: #8ce28c;
+    background-color: var(--hover-color);
   }
 
   &:disabled {

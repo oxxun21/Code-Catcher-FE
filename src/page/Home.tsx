@@ -32,12 +32,12 @@ const StyledMain = styled.main`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #ffffff;
+
   & > strong {
     font-family: var(--font--Galmuri);
     font-weight: bold;
     font-size: 1.25rem;
-    color: #222222;
+    color: var(--black-color);
   }
   & > article {
     margin: 1.875rem 0 5.0625rem;

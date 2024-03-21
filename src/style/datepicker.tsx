@@ -95,7 +95,7 @@ const datePicker = css`
     width: 40px;
     height: 40px;
     border-radius: 4px;
-    border: 1px solid #dbdbdb;
+    border: 1px solid var(--gray200-color);
     background-color: #f4f4f4;
     margin: 0;
     font-family: var(--font--Galmuri);
@@ -105,7 +105,7 @@ const datePicker = css`
 
   //오늘 day
   .react-datepicker__day--selected.react-datepicker__day--today {
-    border: 2px solid #dbdbdb;
+    border: 2px solid var(--gray200-color);
     background-color: #ffffff;
   }
 
@@ -129,7 +129,7 @@ const datePicker = css`
 
   .react-datepicker__day--selected,
   .react-datepicker__day--today {
-    border: 2px solid #dbdbdb !important;
+    border: 2px solid var(--gray200-color) !important;
   }
 `;
 

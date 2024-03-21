@@ -159,7 +159,7 @@ const StyledUserInfoGroup = styled.div`
 
 const StyledNickname = styled.div`
   height: 1.625rem;
-  color: #222222;
+  color: var(--black-color);
   display: flex;
   align-items: center;
   & > strong {
@@ -181,9 +181,9 @@ const StyledNickname = styled.div`
 
 const StyledNicknameInput = styled.div`
   height: 1.625rem;
-  color: #222222;
-  background-color: #d4fed4;
-  border-bottom: 1px #00e46c solid;
+  color: var(--black-color);
+  background-color: var(--light-color);
+  border-bottom: 1px var(--point-color) solid;
 
   & > input {
     all: unset;
@@ -214,7 +214,7 @@ const StyledProgress = styled.div`
     & span {
       & > strong {
         font-size: 0.875rem;
-        color: #222222;
+        color: var(--black-color);
         font-weight: 500;
       }
       & > img {
@@ -226,7 +226,7 @@ const StyledProgress = styled.div`
       font-family: var(--font--Galmuri);
       font-size: 0.75rem;
       font-weight: bold;
-      color: #989898;
+      color: var(--gray400-color);
     }
   }
 `;
@@ -245,7 +245,7 @@ const StyledProgressBar = styled.progress`
   }
 
   &::-webkit-progress-value {
-    background-color: #00e46c; /* 진행된 부분의 색상 */
+    background-color: var(--point-color); /* 진행된 부분의 색상 */
     border-radius: 10px;
   }
 `;
@@ -281,7 +281,7 @@ const StyledStatistics = styled.div`
       bottom: 0;
       width: 1px;
       height: 42px;
-      background-color: #dbdbdb;
+      background-color: var(--gray200-color);
     }
   }
 
@@ -293,7 +293,7 @@ const StyledStatistics = styled.div`
   }
 
   & span {
-    color: #222222;
+    color: var(--black-color);
     font-family: var(--font--Galmuri);
     font-weight: bold;
     font-size: 0.875rem;
