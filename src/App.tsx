@@ -11,6 +11,7 @@ import { NotFound } from "./page/NotFound";
 import { QuestionSelect } from "./page/QuestionSelect";
 import { MyPage } from "./page/MyPage";
 import { MobilePopup } from "./components";
+import { Bookmark } from "./page/Bookmark";
 import { BookmarkList } from "./page/BookmarkList";
 import { LastQuestionList } from "./page/LastQuestionList";
 
@@ -30,10 +31,11 @@ function App() {
           <Route path="/kakao/callback" element={<KakaoRedirection />} />
           <Route path="/codingTest/:id" element={<CodingTest />} />
           <Route path="/codeCompare/:id" element={<CodeCompare />} />
+          <Route path="/bookmark/:id" element={<Bookmark />} />
           <Route path="/question/select" element={<QuestionSelect />} />
           <Route path="/myPage" element={<MyPage />} />
           <Route path="/bookmarkList" element={<BookmarkList />} />
-          <Route path="/lastQuestionList" element={<LastQuestionList />} />   
+          <Route path="/lastQuestionList" element={<LastQuestionList />} />
           <Route path="/404" element={<NotFound />} />
           <Route path={"*"} element={<Navigate to="/404" />} />
         </Routes>

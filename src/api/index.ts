@@ -9,3 +9,4 @@ export * from "./lastQuestionList";
 export * from "./user";
 export * from "./aiFeedback";
 export * from "./withdraw";
+export * from "./bookmark";
