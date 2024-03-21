@@ -36,6 +36,8 @@ export const QuestionCard = ({
 }: QuestionCardProps) => {
   const validLevel = Math.min(3, Math.max(0, level));
   const stars = [...Array(validLevel).fill(StarFilled), ...Array(3 - validLevel).fill(StarEmpty)];
+  const formattedQuestionId = `#${questionId.toString().padStart(4, "0")}`;
+
   return (
     <>
       <StyledCard
@@ -46,14 +48,14 @@ export const QuestionCard = ({
         onMouseLeave={onMouseLeave}
       >
         <StyledSpan>
-          <span>{`#${questionId}`}</span>
+          <span>{formattedQuestionId}</span>
           <StyledRank>
             {stars.map((star, index) => (
               <img key={index} src={star} alt="별" />
             ))}
           </StyledRank>
         </StyledSpan>
-        <StyledDesc>
+        <StyledDesc isSuccess={isSuccess}>
           {isSuccess !== null && <span>{isSuccess ? "Complete" : "Failed"}</span>}
           <h2>{title}</h2>
           <h3>{subject}</h3>
@@ -108,7 +110,7 @@ const StyledRank = styled.div`
   }
 `;
 
-const StyledDesc = styled.div`
+const StyledDesc = styled.div<{ isSuccess: boolean | null }>`
   position: absolute;
   bottom: 5.6875rem;
   max-width: 19.5rem;
@@ -125,7 +127,8 @@ const StyledDesc = styled.div`
     font-weight: bold;
     line-height: 1.625rem;
     font-family: var(--font--Galmuri);
-    background-color: #192e47;
+    background-color: ${({ isSuccess }) =>
+      isSuccess === true ? "#398FF5" : isSuccess === false ? "#F53966" : "#192e47"};
     border-radius: 999px;
     padding: 0.375rem 0.625rem;
   }

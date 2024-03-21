@@ -9,6 +9,7 @@ export interface BookmarkInfo_I {
   level: number;
   problemId: number;
   title: string;
+  subject?: string;
   createdAt: string;
 }
 
@@ -16,7 +17,9 @@ export interface ProblemInfo_I {
   level: number;
   problemId: number;
   title: string;
+  subject?: string;
   createdAt: string;
+  status?: boolean | null;
 }
 
 export interface AchieveInfo_I {

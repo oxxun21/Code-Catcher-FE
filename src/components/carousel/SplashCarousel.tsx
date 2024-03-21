@@ -1,35 +1,38 @@
-import { useState, useEffect } from "react";
+import { useEffect, Dispatch, SetStateAction } from "react";
 import styled from "@emotion/styled";
-import carouselImage from "../../assets/carousel_dummy_img.png";
-import arrowNext from "../../assets/arrow_next.svg";
-import arrowPrev from "../../assets/arrow_prev.svg";
+import * as images from "../../assets/carousel";
+import arrowNext from "../../assets/arrow_slide_next.svg";
+import arrowPrev from "../../assets/arrow_slide_prev.svg";
 
 const carouselData = [
   {
     title: "초보자도 쉽게 하는\n코딩 테스트",
     desc: "하루 딱 세 문제, 코딩 테스트 연습하고\n나만의 캐릭터를 키워봐요!",
-    imgUrl: carouselImage,
+    imgUrl: images.carouselImg1,
   },
   {
     title: "맞춤 설문을 통해\n문제 난이도를 설정해요",
     desc: "나의 레벨에 맞는 문제를 받기 위해\n10초만 투자해보세요!",
-    imgUrl: carouselImage,
+    imgUrl: images.carouselImg2,
   },
   {
     title: "하루에 세문제!\n습관처럼 풀어보세요",
     desc: "로그인이 완료되었다면 세 문제 중 한 문제를 골라\n오늘의 코딩 테스트를 시작해주세요.",
-    imgUrl: carouselImage,
+    imgUrl: images.carouselImg3,
   },
   {
     title: "GPT 답안과\n비교해보세요",
     desc: "GPT 답안과 비교해 나의 정답을 확인하면서\n오늘도 한 단계 성장한 자신을 느껴보세요!",
-    imgUrl: carouselImage,
+    imgUrl: images.carouselImg4,
   },
 ];
 
-// TODO: 캐러셀 슬라이드 넘길 수 있는 커스텀 버튼 필요
-export const SplashCarousel = () => {
-  const [currentSlide, setCurrentSlide] = useState(0);
+interface SplashCarouselProps {
+  currentSlide: number;
+  setCurrentSlide: Dispatch<SetStateAction<number>>;
+}
+
+export const SplashCarousel = ({ currentSlide, setCurrentSlide }: SplashCarouselProps) => {
   const totalSlides = carouselData.length;
 
   const nextSlide = () => {
@@ -39,7 +42,6 @@ export const SplashCarousel = () => {
   const prevSlide = () => {
     setCurrentSlide(prev => (prev - 1 + totalSlides) % totalSlides);
   };
-
   useEffect(() => {
     const slideInterval = setInterval(() => {
       nextSlide();
@@ -110,18 +112,21 @@ const Slide = styled.div`
     width: fit-content;
     font-size: 2rem;
     font-weight: bold;
-    margin-bottom: 0.5rem;
+    margin-bottom: 1rem;
     white-space: pre-wrap;
+    color: #222222;
+    line-height: 130%;
   }
 
   & p {
     width: fit-content;
     font-size: 1rem;
     white-space: pre-wrap;
+    color: #545454;
+    line-height: 156%;
   }
 
   & img {
-    flex-grow: 1;
     max-width: 400px;
     height: auto;
   }
@@ -138,7 +143,7 @@ const CarouselControls = styled.div`
   align-items: center;
   position: absolute;
   top: 0;
-  background-color: rgba(34, 34, 34, 0.8);
+  background-color: rgba(34, 34, 34, 0.2);
   border-radius: 799.2px;
   width: 100px;
   height: 35px;
@@ -146,7 +151,7 @@ const CarouselControls = styled.div`
   button {
     border: none;
     background: none;
-    color: white;
+    color: #222222;
     cursor: pointer;
     user-select: none;
 
@@ -158,7 +163,7 @@ const CarouselControls = styled.div`
   span {
     margin: 0 10px;
     font-size: 14px;
-    color: white;
+    color: #222222;
   }
 
   @media (max-width: 768px) {

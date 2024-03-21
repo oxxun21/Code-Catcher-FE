@@ -1,12 +1,10 @@
 import { useState } from "react";
 import { useUserStore } from "../../stores/useUserStore";
-import styled from "@emotion/styled";
-import catLv1Img from "../../assets/level/cat_lv1.jpg";
-import catLv2Img from "../../assets/level/cat_lv2.jpg";
-import catLv3Img from "../../assets/level/cat_lv3.jpg";
-import catLv4Img from "../../assets/level/cat_lv4.jpg";
-import editIcon from "../../assets/edit.svg";
 import { updateNicknameAPI } from "../../api";
+import styled from "@emotion/styled";
+import * as images from "../../assets/level";
+import editIcon from "../../assets/edit.svg";
+import TooltipIcon from "../../assets/icon_tooltip.svg";
 
 export const UserCard = () => {
   const { nickname, email, level, exp, expUpper, totalCnt, completeCnt, bookmarkCnt, setUserInfo } = useUserStore();
@@ -18,13 +16,14 @@ export const UserCard = () => {
   };
 
   const levelImages: LevelImages = {
-    1: catLv1Img,
-    2: catLv2Img,
-    3: catLv3Img,
-    4: catLv4Img,
+    1: images.catLevel1,
+    2: images.catLevel2,
+    3: images.catLevel3,
+    4: images.catLevel4,
+    5: images.catLevel5,
   };
 
-  const currentLevelImage = typeof level === "number" ? levelImages[level] : catLv1Img;
+  const currentLevelImage = typeof level === "number" ? levelImages[level] : images.catLevel1;
 
   const handleEditClick = async (): Promise<void> => {
     if (isEditing && editedNickname) {
@@ -73,10 +72,13 @@ export const UserCard = () => {
       <StyledCard>
         <StyledProgress>
           <div>
-            <span>Lv.{level}</span>
             <span>
-              EXP {exp}/{expUpper}
+              <strong>Lv.{level}</strong>
+              <img src={TooltipIcon} alt="레벨 규정 설명" />
             </span>
+            <strong>
+              EXP {exp}/{expUpper}
+            </strong>
           </div>
           <StyledProgressBar value={exp?.toString()} max={expUpper?.toString()} />
         </StyledProgress>
@@ -201,20 +203,29 @@ const StyledNicknameInput = styled.div`
 
 const StyledProgress = styled.div`
   margin-bottom: 2.0625rem;
+
   & > div {
     display: flex;
     justify-content: space-between;
     margin-bottom: 0.375rem;
-  }
-  & > div > span:nth-of-type(1) {
-    font-size: 0.875rem;
-    color: #2a2a2a;
-  }
-  & > div > span:nth-of-type(2) {
-    font-family: var(--font--Galmuri);
-    font-size: 0.75rem;
-    font-weight: bold;
-    color: #898989;
+
+    & span {
+      & > strong {
+        font-size: 0.875rem;
+        color: #222222;
+        font-weight: 500;
+      }
+      & > img {
+        margin-left: 2px;
+        cursor: pointer;
+      }
+    }
+    & > strong {
+      font-family: var(--font--Galmuri);
+      font-size: 0.75rem;
+      font-weight: bold;
+      color: #989898;
+    }
   }
 `;
 
