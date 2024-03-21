@@ -3,7 +3,7 @@ import { TestScoreSubmit_I, ScoreSubmit_I, TestCase } from "../../interface";
 
 export const ShowResult = ({ value }: { value: TestScoreSubmit_I | ScoreSubmit_I }) => {
   const prepareObjectForCounting = (scoreSubmit: ScoreSubmit_I) => {
-    const { correct, ...testCasesOnly } = scoreSubmit;
+    const { first, correct, ...testCasesOnly } = scoreSubmit;
     return testCasesOnly;
   };
   let result = prepareObjectForCounting(value as ScoreSubmit_I);
@@ -25,7 +25,9 @@ export const ShowResult = ({ value }: { value: TestScoreSubmit_I | ScoreSubmit_I
     } else if (testCase.correct) {
       return "테스트를 통과하였습니다.";
     } else {
-      return `실행한 결과값 ${testCase.actual_output}이 기대값 ${testCase.expected_output}과 다릅니다.`;
+      return `실행한 결과값 ${testCase.actual_output === "" ? "Null" : testCase.actual_output}이 기대값 ${
+        testCase.expected_output
+      }과 다릅니다.`;
     }
   };
 

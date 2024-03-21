@@ -19,7 +19,7 @@ import { Question_I, ScoreSubmit_I, SubmissionProps_I, TestScoreSubmit_I } from 
 import icon_test_complete from "../assets/icon_test_complete.svg";
 import icon_test_failed from "../assets/icon_test_failed.svg";
 import { AxiosError } from "axios";
-import { postScoreSubmitAPI } from "../api/scoreSubmit";
+import { postRetryScoreSubmitAPI, postScoreSubmitAPI } from "../api/scoreSubmit";
 import { postTestScoreSubmitAPI } from "../api/testScoreSubmit";
 
 export const CodingTest = () => {
@@ -79,7 +79,11 @@ export const CodingTest = () => {
     }
 
     try {
-      const response = await apiFunc({ problemId: numericId, codeType: language.toLocaleLowerCase(), code: codeValue });
+      const response = await apiFunc({
+        problemId: numericId,
+        codeType: language.toLocaleLowerCase(),
+        code: codeValue,
+      });
       updateStateCallback(response);
       if (completeFlag) {
         setIsModal(true);
@@ -96,8 +100,19 @@ export const CodingTest = () => {
 
   const handleSubmit = () => {
     setTestValue(undefined);
+    if (!submitValue?.first) {
+      submissionFunc<ScoreSubmit_I>(postRetryScoreSubmitAPI, setSubmitValue, true);
+    }
     submissionFunc<ScoreSubmit_I>(postScoreSubmitAPI, setSubmitValue, true);
   };
+
+  let message = "";
+
+  if (submitValue?.first) {
+    message = submitValue?.correct ? "10 EXP 획득!" : "EXP 획득 실패";
+  } else {
+    message = submitValue?.correct ? "정답입니다!" : "틀렸습니다";
+  }
 
   return (
     <>
@@ -127,11 +142,14 @@ export const CodingTest = () => {
       {isModal && (
         <Modal onClose={handleClose} modalHeader={submitValue?.correct ? "Test Complete" : "Test Failed"}>
           <ModalContain>
-            <img
-              src={submitValue?.correct ? icon_test_complete : icon_test_failed}
-              alt={submitValue?.correct ? "테스트 통과" : "테스트 실패"}
-            />
-            <strong>{submitValue?.correct ? "10 EXP 획득!" : "EXP 획득 실패"}</strong>
+            {submitValue?.first ? (
+              <img
+                src={submitValue?.correct ? icon_test_complete : icon_test_failed}
+                alt={submitValue?.correct ? "테스트 통과" : "테스트 실패"}
+              />
+            ) : undefined}
+
+            <strong>{message}</strong>
             <p>{submitValue?.correct ? "축하합니다! 문제를 맞추셨어요" : "다음 테스트엔 더 잘 할 수 있어요"}</p>
             <div>
               <RoundButton as={Link} to="/" text="홈으로" width="50%" />

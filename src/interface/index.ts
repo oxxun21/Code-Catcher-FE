@@ -6,3 +6,4 @@ export * from "./submissionProps_I";
 export * from "./mypageInfo_I";
 export * from "./mypageListAll_I";
 export * from "./aiFeedback_I";
+export * from "./bookmark_I";

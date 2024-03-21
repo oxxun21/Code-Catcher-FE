@@ -13,6 +13,7 @@ export interface TestScoreSubmit_I {
 
 interface ScoreSubmitAdditionalProps {
   correct: boolean;
+  first: boolean;
 }
 
 export type ScoreSubmit_I = TestScoreSubmit_I & ScoreSubmitAdditionalProps;
