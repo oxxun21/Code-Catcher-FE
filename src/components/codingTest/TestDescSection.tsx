@@ -78,6 +78,8 @@ const DescArticle = styled.article`
   margin-bottom: 24px;
   white-space: pre-wrap;
   word-wrap: break-word;
+  color: var(--gray200-color);
+  font-weight: 300;
   &:last-of-type {
     margin-bottom: 0;
   }

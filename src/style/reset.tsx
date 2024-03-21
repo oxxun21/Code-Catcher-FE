@@ -9,6 +9,7 @@ const reset = css`
     --hover-color: #8ce28c;
     --secondary-color: #192e47;
     --secondary-light-color: #27466b;
+    --gray100-color: #eaeaea;
     --gray200-color: #dbdbdb;
     --gray300-color: #d3d3d3;
     --gray400-color: #989898;

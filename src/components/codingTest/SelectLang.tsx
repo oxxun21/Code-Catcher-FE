@@ -51,6 +51,7 @@ const LangSelect = styled.article`
     color: #fff;
     padding: 10px 50px 10px 20px;
     border-radius: 6px;
+    font-size: 0.875rem;
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
@@ -59,11 +60,12 @@ const LangSelect = styled.article`
     background-size: 10px/5px;
   }
   & > ul {
+    font-size: 0.875rem;
     position: absolute;
-    bottom: -78px;
+    bottom: -68px;
     left: 22px;
     width: 120px;
-    color: #000;
+    color: #222;
     background: white;
     border-radius: 4px;
     z-index: 1;
