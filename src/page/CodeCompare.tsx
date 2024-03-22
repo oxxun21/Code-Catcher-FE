@@ -120,9 +120,14 @@ export const CodeCompare = () => {
         <SquareButton as={Link} to="/" text="나가기" />
       </ButtonContain>
       {isModal && (
-        <Modal onClose={handleClose} modalHeader="Cancel">
+        <Modal onClose={handleClose} modalHeader="Want to Cancel">
           <ModalContain>
-            <p>북마크를 삭제하시겠습니까?</p>
+            <strong>북마크를 해제 하시겠어요?</strong>
+            <p>
+              해제하기 버튼을 누르시면
+              <br />
+              북마크 목록에 저장되지 않습니다
+            </p>
             <div>
               <RoundButton text="아니오" width="50%" onClick={() => setIsModal(false)} />
               <RoundButton text="예" width="50%" onClick={handleBookmarkOff} dark />
@@ -272,13 +277,21 @@ const ModalContain = styled.div`
   align-items: center;
   gap: 12px;
   font-size: 1rem;
-  & > p {
+  & > strong {
+    display: block;
     font-weight: 600;
     margin-top: 12px;
+    font-size: 1.125rem;
   }
+  & > p {
+    text-align: center;
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+
   & > div {
     width: 100%;
-    margin-top: 24px;
+    margin-top: 20px;
     display: flex;
     justify-content: space-between;
     gap: 20px;
