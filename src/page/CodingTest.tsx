@@ -114,6 +114,8 @@ export const CodingTest = () => {
     message = submitValue?.correct ? "정답입니다!" : "틀렸습니다";
   }
 
+  console.log(submitValue);
+
   return (
     <>
       <Header />
@@ -142,13 +144,12 @@ export const CodingTest = () => {
       {isModal && (
         <Modal onClose={handleClose} modalHeader={submitValue?.correct ? "Test Complete" : "Test Failed"}>
           <ModalContain>
-            {submitValue?.first ? (
+            {submitValue?.first && (
               <img
                 src={submitValue?.correct ? icon_test_complete : icon_test_failed}
                 alt={submitValue?.correct ? "테스트 통과" : "테스트 실패"}
               />
-            ) : undefined}
-
+            )}
             <strong>{message}</strong>
             <p>{submitValue?.correct ? "축하합니다! 문제를 맞추셨어요" : "다음 테스트엔 더 잘 할 수 있어요"}</p>
             <div>
@@ -201,7 +202,7 @@ const PageHeader = styled.div`
 const Contain = styled.div`
   display: flex;
   background-color: #32323a;
-  height: 76vh;
+  height: 75vh;
   @media only screen and (max-width: 768px) {
     flex-direction: column;
     height: 100%;

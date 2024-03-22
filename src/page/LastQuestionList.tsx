@@ -51,7 +51,7 @@ export const LastQuestionList = () => {
       return {
         text: "No recorded",
         textColor: "#BDBDBD",
-        indicatorColor: "#var(--gray200-color)",
+        indicatorColor: "var(--gray200-color)",
       };
     }
   };
@@ -116,7 +116,7 @@ const StyledMain = styled.main`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
+  
   & > section {
     position: relative;
     background-color: #fff;
