@@ -130,6 +130,10 @@ const StyledHeader = styled.header<{ isDarkMode: boolean }>`
     cursor: pointer;
   }
 
+  & h1 {
+    cursor: pointer;
+  }
+
   & button {
     font-size: 1rem;
     font-weight: 600;
