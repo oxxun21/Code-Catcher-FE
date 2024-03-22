@@ -15,10 +15,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-          VITE_KAKAO_REST_API: ${{ secrets.VITE_KAKAO_REST_API }}
-          VITE_KAKAO_REDIRECT_URI: ${{ secrets.VITE_KAKAO_REDIRECT_URI }} 
-          VITE_BASE_URL_BACK: ${{ secrets.VITE_BASE_URL_BACK }} 
 
     steps:
       - uses: actions/checkout@v4
@@ -27,6 +23,12 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '20.x'
+
+      - name: .env setting
+        run: |
+            echo "VITE_KAKAO_REST_API=${VITE_KAKAO_REST_API}"  >> .env
+            echo "VITE_KAKAO_REDIRECT_URI=${VITE_KAKAO_REDIRECT_URI}" >> .env
+            echo "VITE_BASE_URL_BACK=${VITE_BASE_URL_BACK}" >> .env
 
       - name: npm install, build, and test
         run: |
@@ -39,6 +41,7 @@ jobs:
         with:
           name: node-app
           path: build
+    
 
   deploy:
     runs-on: ubuntu-latest
