@@ -20,12 +20,9 @@ export const QuestionSelect = () => {
         const data = await getQuestionListAPI();
         if (data) {
           setQuestions(Object.values(data));
-        } else {
-          navigate("/splash");
         }
       } catch (error) {
         console.error("질문 목록을 가져오는 데 실패했습니다:", error);
-        navigate("/splash");
       }
     };
 
@@ -34,7 +31,7 @@ export const QuestionSelect = () => {
 
   const handleToCodingTest = () => {
     if (selectedQuestionId !== null) {
-      navigate(`/CodingTest/${selectedQuestionId}`);
+      navigate(`/codingTest/${selectedQuestionId}`);
     }
   };
 

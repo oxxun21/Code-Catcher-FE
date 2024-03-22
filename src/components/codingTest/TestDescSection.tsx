@@ -1,9 +1,10 @@
 import styled from "@emotion/styled";
 import { Question_I } from "./../../interface/question_I";
+import { Bookmark_I } from "../../interface";
 
 interface TestDescSectionProps {
   descWidth: number;
-  question: Question_I;
+  question: Question_I | Bookmark_I;
 }
 
 export const TestDescSection = ({ descWidth, question }: TestDescSectionProps) => {

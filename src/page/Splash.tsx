@@ -1,8 +1,13 @@
+import { useState } from "react";
 import styled from "@emotion/styled";
 import { Header, SplashCarousel } from "../components";
 import KakaoImg from "../assets/kakao_logo.svg";
 
 export const Splash = () => {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const backgroundColors = ["#F5D3D3", "#D3E7F5", "#F5E9D3", "#D9F5D3"];
+  const currentBgColor = backgroundColors[currentSlide];
+
   const handleKakaoLogin = () => {
     const kakaoRestApi = import.meta.env.VITE_KAKAO_REST_API;
     const rediretUri = import.meta.env.VITE_KAKAO_REDIRECT_URI;
@@ -13,9 +18,9 @@ export const Splash = () => {
     <>
       <Header />
       <StyledMain>
-        <StyledSection>
+        <StyledSection style={{ backgroundColor: currentBgColor }}>
           <div>
-            <SplashCarousel />
+            <SplashCarousel currentSlide={currentSlide} setCurrentSlide={setCurrentSlide} />
             <StyledButton onClick={handleKakaoLogin}>
               <img src={KakaoImg} alt="카카오 소셜 로고" />
               카카오 로그인
@@ -32,11 +37,12 @@ const StyledMain = styled.main`
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: #ffffff;
 `;
 
 const StyledSection = styled.section`
   width: 100%;
-  padding: 132px 0 187px 0;
+  padding: 8.25rem 0 11.6875rem 0;
   background-color: #444444;
   display: flex;
   justify-content: center;
@@ -45,9 +51,9 @@ const StyledSection = styled.section`
   & > div {
     position: relative;
     width: 100%;
-    max-width: 1185px;
+    max-width: 74.0625rem;
     overflow: hidden;
-    margin: 0 10px;
+    margin: 0 0.625rem;
     @media (max-width: 768px) {
       height: auto;
       overflow: visible;
@@ -61,17 +67,17 @@ const StyledButton = styled.button`
   display: flex;
   align-items: center;
   align-self: flex-start;
-  padding: 0 16px 0 16px;
+  padding: 0 1rem;
   border: none;
   background-color: #fee500;
   color: #000000;
-  font-size: 16px;
-  width: 174px;
-  height: 50px;
+  font-size: 1rem;
+  width: 10.875rem;
+  height: 3.125rem;
   border-radius: 6px;
   cursor: pointer;
   & > img {
-    margin-right: 38px;
+    margin-right: 2.375rem;
   }
 
   @media (max-width: 768px) {
