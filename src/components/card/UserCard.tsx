@@ -5,11 +5,13 @@ import styled from "@emotion/styled";
 import * as images from "../../assets/level";
 import editIcon from "../../assets/edit.svg";
 import TooltipIcon from "../../assets/icon_tooltip.svg";
+import LevelInfoImage from "../../assets/tooltip_level.svg";
 
 export const UserCard = () => {
   const { nickname, email, level, exp, expUpper, totalCnt, completeCnt, bookmarkCnt, setUserInfo } = useUserStore();
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editedNickname, setEditedNickname] = useState<string | null>(nickname);
+  const [isVisible, setIsVisible] = useState(false);
 
   type LevelImages = {
     [key: number]: string;
@@ -74,7 +76,19 @@ export const UserCard = () => {
           <div>
             <span>
               <strong>Lv.{level}</strong>
-              <img src={TooltipIcon} alt="레벨 규정 설명" />
+              <StyledTooltip>
+                <img
+                  src={TooltipIcon}
+                  alt="tooltip"
+                  onMouseEnter={() => setIsVisible(true)}
+                  onMouseLeave={() => setIsVisible(false)}
+                />
+                {isVisible && (
+                  <StyledLevelInfoImage>
+                    <img src={LevelInfoImage} alt="레벨 규정 설명" />
+                  </StyledLevelInfoImage>
+                )}
+              </StyledTooltip>
             </span>
             <strong>
               EXP {exp}/{expUpper}
@@ -229,6 +243,23 @@ const StyledProgress = styled.div`
       color: var(--gray400-color);
     }
   }
+`;
+
+const StyledTooltip = styled.div`
+  position: relative;
+  display: inline-block;
+  & > img {
+    cursor: pointer;
+  }
+`;
+
+const StyledLevelInfoImage = styled.div`
+  position: absolute;
+  top: 100%;
+  left: -38px;
+  max-width: 350.73px;
+  max-height: 240px;
+  z-index: 10;
 `;
 
 const StyledProgressBar = styled.progress`
