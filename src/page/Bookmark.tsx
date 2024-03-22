@@ -4,9 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import { getBookmarkAPI } from "../api";
 import { Bookmark_I } from "../interface";
 import { useDraggable } from "../hook";
-import { Header, ReadOnlyEditor, SquareButton, TestDescSection } from "../components";
-import gutter_horizontal from "../assets/gutter_horizontal.svg";
-import gutter_vertical from "../assets/gutter_vertical.svg";
+import { Gutter, Header, ReadOnlyEditor, SquareButton, TestDescSection } from "../components";
 
 export const Bookmark = () => {
   const { id } = useParams();
@@ -86,7 +84,7 @@ export const Bookmark = () => {
             </TabContainer>
             {renderTabContent()}
           </div>
-          <Gutter orientation="vertical" onMouseDown={startDragVertical} />
+          <Gutter orientation="vertical" onMouseDown={startDragVertical} changeBackColor={false} />
           <div style={{ height: `${100 - editorHeight}%` }} className="feedback">
             <strong>AI Feedback</strong>
             <p>{getBookmark?.gptExplain}</p>
@@ -200,22 +198,4 @@ const TabButton = styled.button<{ isActive: boolean }>`
   font-size: 0.875rem;
   font-weight: 600;
   cursor: pointer;
-`;
-
-const Gutter = styled.div<{ orientation: "vertical" | "horizontal" }>`
-  width: ${props => props.orientation === "horizontal" && "24px"};
-  height: ${props => props.orientation === "vertical" && "24px"};
-  background: ${props =>
-    props.orientation === "horizontal"
-      ? `url(${gutter_horizontal}) no-repeat center`
-      : `url(${gutter_vertical}) #3F3F47 no-repeat center`};
-  background-size: ${props => (props.orientation === "horizontal" ? "auto/40px" : "40px/auto")};
-  border-right: ${props => props.orientation === "horizontal" && "2px solid var(--background-color)"};
-  border-top: ${props => props.orientation === "vertical" && "2px solid var(--background-color)"};
-  cursor: ${props => (props.orientation === "horizontal" ? "e-resize" : "n-resize")};
-  margin-top: 1rem;
-  z-index: 1;
-  @media only screen and (max-width: 768px) {
-    display: none;
-  }
 `;

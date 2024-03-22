@@ -1,10 +1,8 @@
 import styled from "@emotion/styled";
-import gutter_horizontal from "../assets/gutter_horizontal.svg";
-import gutter_vertical from "../assets/gutter_vertical.svg";
 import icon_bookmark from "../assets/icon_bookmark.svg";
 import icon_bookmark_true from "../assets/icon_bookmark_true.svg";
 import { useDraggable } from "../hook";
-import { Header, Modal, ReadOnlyEditor, RoundButton, SquareButton } from "../components";
+import { Gutter, Header, Modal, ReadOnlyEditor, RoundButton, SquareButton } from "../components";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { deleteBookmarkAPI, getAiFeedbackAPI, getBookmarkInfoAPI, patchBookmarkAPI, postBookmarkAPI } from "../api";
@@ -66,7 +64,7 @@ export const CodeCompare = () => {
   function formatDate(originalDateString: string) {
     const date = new Date(originalDateString);
     const year = date.getFullYear().toString();
-    const month = (date.getMonth() + 1).toString().padStart(2, "0"); // +1 because months are 0-indexed
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
     const day = date.getDate().toString().padStart(2, "0");
 
     return `${year}.${month}.${day}`;
@@ -146,7 +144,7 @@ export const CodeCompare = () => {
             <ReadOnlyEditor code={aiRes?.gptCode as string} language={location.state?.language} />
           </div>
           <div style={{ height: `${100 - editorHeight}%` }} className="Feedback">
-            <Gutter orientation="vertical" onMouseDown={startDragVertical} />
+            <Gutter orientation="vertical" onMouseDown={startDragVertical} changeBackColor={false} />
             <CompareHeader>
               <strong>AI Feedback</strong>
             </CompareHeader>
@@ -295,23 +293,6 @@ const Contain = styled.div`
   @media only screen and (max-width: 768px) {
     flex-direction: column;
     height: 100%;
-  }
-`;
-
-const Gutter = styled.div<{ orientation: "vertical" | "horizontal" }>`
-  width: ${props => props.orientation === "horizontal" && "24px"};
-  height: ${props => props.orientation === "vertical" && "24px"};
-  background: ${props =>
-    props.orientation === "horizontal"
-      ? `url(${gutter_horizontal}) no-repeat center`
-      : `url(${gutter_vertical}) #3F3F47 no-repeat center`};
-  background-size: ${props => (props.orientation === "horizontal" ? "auto/40px" : "40px/auto")};
-  border-right: ${props => props.orientation === "horizontal" && "2px solid var(--background-color)"};
-  border-top: ${props => props.orientation === "vertical" && "2px solid var(--background-color)"};
-  cursor: ${props => (props.orientation === "horizontal" ? "e-resize" : "n-resize")};
-  z-index: 1;
-  @media only screen and (max-width: 768px) {
-    display: none;
   }
 `;
 
