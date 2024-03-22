@@ -100,7 +100,9 @@ export const CodingTest = () => {
 
   const handleSubmit = () => {
     setTestValue(undefined);
-    if (!submitValue?.first) {
+    console.log(submitValue);
+
+    if (submitValue?.first === false) {
       submissionFunc<ScoreSubmit_I>(postRetryScoreSubmitAPI, setSubmitValue, true);
     }
     submissionFunc<ScoreSubmit_I>(postScoreSubmitAPI, setSubmitValue, true);
