@@ -68,7 +68,7 @@ export const SplashCarousel = ({ currentSlide, setCurrentSlide }: SplashCarousel
           <img src={arrowPrev} alt="이전 슬라이드" />
         </button>
         <span>
-          {currentSlide + 1} / {totalSlides}
+          <span>{currentSlide + 1}</span> / <span>{totalSlides}</span>
         </span>
         <button onClick={nextSlide}>
           <img src={arrowNext} alt="다음 슬라이드" />
@@ -95,7 +95,6 @@ const StyledCarousel = styled.div`
 const Slide = styled.div`
   flex: 0 0 100%;
   display: flex;
-  align-items: center;
   text-align: left;
   justify-content: center;
   gap: 20px;
@@ -105,6 +104,7 @@ const Slide = styled.div`
   & > div {
     flex: 1;
     min-width: fit-content;
+    margin-top: 165px;
   }
 
   & h2 {
@@ -121,17 +121,18 @@ const Slide = styled.div`
     width: fit-content;
     font-size: 1rem;
     white-space: pre-wrap;
-    color: var(--gray-700-color);
+    color: var(--gray700-color);
     line-height: 156%;
   }
 
   & img {
-    max-width: 400px;
+    max-width: 580px;
     height: auto;
   }
 
   @media (max-width: 768px) {
     flex-direction: column;
+    align-items: center;
     gap: 10px;
   }
 `;
@@ -141,7 +142,7 @@ const CarouselControls = styled.div`
   justify-content: center;
   align-items: center;
   position: absolute;
-  top: 0;
+  top: 6.25rem;
   background-color: rgba(34, 34, 34, 0.1);
   border-radius: 799.2px;
   width: 100px;
@@ -159,14 +160,17 @@ const CarouselControls = styled.div`
     }
   }
 
-  span {
+  & > span {
     margin: 0 10px;
     font-size: 14px;
     color: var(--black-color);
+    & > span:nth-child(1) {
+      font-weight: bold;
+    }
   }
 
   @media (max-width: 768px) {
-    top: -20%;
+    top: 1.875rem;
     transform: translateX(-50%);
     left: 50%;
   }

@@ -41,7 +41,7 @@ const StyledMain = styled.main`
 
 const StyledSection = styled.section`
   width: 100%;
-  padding: 8.25rem 0 11.6875rem 0;
+  padding: 2rem 0;
   background-color: #444444;
   display: flex;
   justify-content: center;
@@ -53,6 +53,7 @@ const StyledSection = styled.section`
     max-width: 74.0625rem;
     overflow: hidden;
     margin: 0 0.625rem;
+
     @media (max-width: 768px) {
       height: auto;
       overflow: visible;
@@ -62,7 +63,7 @@ const StyledSection = styled.section`
 
 const StyledButton = styled.button`
   position: absolute;
-  bottom: 0;
+  bottom: 183px;
   display: flex;
   align-items: center;
   align-self: flex-start;
@@ -82,6 +83,6 @@ const StyledButton = styled.button`
   @media (max-width: 768px) {
     left: 50%;
     transform: translateX(-50%);
-    bottom: -20%;
+    bottom: 0;
   }
 `;

@@ -13,10 +13,10 @@ const reset = css`
     --gray300-color: #d3d3d3;
     --gray400-color: #989898;
     --gray500-color: #8b8b8b;
-    --gray-600-color: #777777;
-    --gray-700-color: #545454;
-    --gray-800-color: #454545;
-    --gray--900-color: #363738;
+    --gray600-color: #777777;
+    --gray700-color: #545454;
+    --gray800-color: #454545;
+    --gray900-color: #363738;
     --black-color: #222222;
     --system-negative-color: #f53966;
     --system-positivie-color: #398ff5;

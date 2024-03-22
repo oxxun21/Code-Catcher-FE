@@ -124,7 +124,7 @@ const StyledHeader = styled.header<{ isDarkMode: boolean }>`
   justify-content: space-between;
   align-items: center;
   background-color: ${({ isDarkMode }) => (isDarkMode ? "var(--background-color)" : "#ffffff")};
-  color: ${({ isDarkMode }) => (isDarkMode ? "#ffffff" : "var(--gray-800-color)")};
+  color: ${({ isDarkMode }) => (isDarkMode ? "#ffffff" : "var(--gray800-color)")};
 
   & h1 {
     cursor: pointer;
@@ -134,20 +134,8 @@ const StyledHeader = styled.header<{ isDarkMode: boolean }>`
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
-    color: ${({ isDarkMode }) => (isDarkMode ? "#EAEAEA" : "var(--gray-800-color)")};
+    color: ${({ isDarkMode }) => (isDarkMode ? "#EAEAEA" : "var(--gray800-color)")};
     background-color: ${({ isDarkMode }) => (isDarkMode ? "transparent" : "#ffffff")};
-  }
-`;
-
-const StyledLoginBtn = styled.button`
-  padding: 0.75rem 1.6563rem;
-  background-color: #ffffff;
-  color: var(--black-color);
-  border-radius: 999px;
-  border: 1px solid var(--black-color);
-  background-color: #ffffff;
-  &:hover {
-    background-color: #f4f4f4;
   }
 `;
 
@@ -160,6 +148,18 @@ const StyledBtnGroup = styled.div`
 
   & > button:not(:first-child) {
     margin-left: 1.25rem;
+  }
+`;
+
+const StyledLoginBtn = styled.button`
+  padding: 0.75rem 1.6563rem;
+  background-color: #ffffff;
+  color: var(--black-color);
+  border-radius: 999px;
+  border: 1px solid var(--black-color);
+  background-color: #ffffff;
+  &:hover {
+    background-color: #f4f4f4;
   }
 `;
 
