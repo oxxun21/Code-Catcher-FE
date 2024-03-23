@@ -1,4 +1,4 @@
-import { Bookmark_I, SubmissionProps_I } from "../interface";
+import { BookmarkInfoOne_I, Bookmark_I, SubmissionProps_I } from "../interface";
 import { instance } from "./instance";
 
 export const postBookmarkAPI = async ({ problemId, codeType, code }: SubmissionProps_I) => {
@@ -29,6 +29,24 @@ export const getBookmarkAPI = async (id: string | undefined): Promise<Bookmark_I
 export const deleteBookmarkAPI = async (id: string | undefined) => {
   try {
     const response = await instance.delete(`/bookmark/one?id=${id}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getBookmarkInfoAPI = async (id: number): Promise<BookmarkInfoOne_I> => {
+  try {
+    const response = await instance.get(`/bookmark/record?problemId=${id}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const patchBookmarkAPI = async ({ problemId, codeType, code }: SubmissionProps_I) => {
+  try {
+    const response = await instance.patch(`/bookmark?id=${problemId}`, { myCode: code, codeType });
     return response.data;
   } catch (error) {
     throw error;

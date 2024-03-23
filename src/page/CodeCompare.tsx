@@ -7,8 +7,8 @@ import { useDraggable } from "../hook";
 import { Header, Modal, ReadOnlyEditor, RoundButton, SquareButton } from "../components";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { deleteBookmarkAPI, getAiFeedbackAPI, postBookmarkAPI } from "../api";
-import { AiFeedback_I } from "../interface";
+import { deleteBookmarkAPI, getAiFeedbackAPI, getBookmarkInfoAPI, patchBookmarkAPI, postBookmarkAPI } from "../api";
+import { AiFeedback_I, BookmarkInfoOne_I } from "../interface";
 
 export const CodeCompare = () => {
   const [isMedia, setIsMedia] = useState(window.innerWidth <= 768);
@@ -21,6 +21,8 @@ export const CodeCompare = () => {
   const location = useLocation();
   const [isbookmark, setIsbookmark] = useState(false);
   const [bookmarkId, setBookmarkId] = useState();
+  const [isConfirmBookmarkModal, setIsConfirmBookmarkModal] = useState(false);
+  const [bookmarkInfo, setBookmarkInfo] = useState<BookmarkInfoOne_I | undefined>();
   const [isModal, setIsModal] = useState(false);
   const [aiRes, setAiRes] = useState<AiFeedback_I | undefined>();
   const { id } = useParams();
@@ -48,12 +50,29 @@ export const CodeCompare = () => {
       }
     })();
   }, [id]);
+  console.log(Number(id));
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const response = await getBookmarkInfoAPI(Number(id));
+        setBookmarkInfo(response);
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, [id]);
+
+  function formatDate(originalDateString: string) {
+    const date = new Date(originalDateString);
+    const year = date.getFullYear().toString();
+    const month = (date.getMonth() + 1).toString().padStart(2, "0"); // +1 because months are 0-indexed
+    const day = date.getDate().toString().padStart(2, "0");
+
+    return `${year}.${month}.${day}`;
+  }
 
   const handleBookmarkSave = async () => {
-    if (isbookmark) {
-      setIsModal(true);
-      return;
-    }
     try {
       const response = await postBookmarkAPI({
         problemId: Number(id),
@@ -77,8 +96,19 @@ export const CodeCompare = () => {
     }
   };
 
-  const handleClose = () => {
-    setIsModal(prev => !prev);
+  const handleBookmarkReSave = async () => {
+    try {
+      const response = await patchBookmarkAPI({
+        problemId: bookmarkInfo?.bookmarkId as string,
+        codeType: location.state?.language,
+        code: location.state.myCode,
+      });
+      setIsbookmark(true);
+      setIsConfirmBookmarkModal(false);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -100,7 +130,15 @@ export const CodeCompare = () => {
           <div style={{ height: `${editorHeight}%` }}>
             <CompareHeader className="gptCode">
               <strong>AI Code</strong>
-              <button onClick={handleBookmarkSave}>
+              <button
+                onClick={
+                  !isbookmark && bookmarkInfo
+                    ? () => setIsConfirmBookmarkModal(true)
+                    : isbookmark
+                    ? () => setIsModal(true)
+                    : handleBookmarkSave
+                }
+              >
                 북마크에 추가하기
                 <img src={isbookmark ? icon_bookmark_true : icon_bookmark} alt="북마크 아이콘" />
               </button>
@@ -120,13 +158,34 @@ export const CodeCompare = () => {
         <SquareButton as={Link} to="/" text="나가기" />
       </ButtonContain>
       {isModal && (
-        <Modal onClose={handleClose} modalHeader="Cancel">
+        <Modal onClose={() => setIsModal(prev => !prev)} modalHeader="Want to Cancel">
           <ModalContain>
-            <p>북마크를 삭제하시겠습니까?</p>
-            <div>
-              <RoundButton text="아니오" width="50%" onClick={() => setIsModal(false)} />
-              <RoundButton text="예" width="50%" onClick={handleBookmarkOff} dark />
-            </div>
+            <strong>북마크를 해제 하시겠어요?</strong>
+            <p>
+              해제하기 버튼을 누르시면
+              <br />
+              북마크 목록에 저장되지 않습니다
+            </p>
+            <ModalButtonContain>
+              <RoundButton text="취소" width="50%" onClick={() => setIsModal(false)} />
+              <RoundButton text="해제하기" width="50%" onClick={handleBookmarkOff} dark />
+            </ModalButtonContain>
+          </ModalContain>
+        </Modal>
+      )}
+      {isConfirmBookmarkModal && (
+        <Modal onClose={() => setIsConfirmBookmarkModal(prev => !prev)} modalHeader="Want to Cancel">
+          <ModalContain>
+            <strong>이전에 저장한 내역이 있어요!</strong>
+            <ReSaveModalContain>
+              <span>저장한 날짜 {formatDate(bookmarkInfo?.createdAt as string)}</span>
+              <p>지금 저장하면 기존 북마크 내역이 사라져요</p>
+              <p>계속 진행하시겠어요?</p>
+            </ReSaveModalContain>
+            <ModalButtonContain>
+              <RoundButton text="취소" width="50%" onClick={() => setIsConfirmBookmarkModal(false)} />
+              <RoundButton text="네, 저장할게요" width="50%" onClick={handleBookmarkReSave} dark />
+            </ModalButtonContain>
           </ModalContain>
         </Modal>
       )}
@@ -272,15 +331,46 @@ const ModalContain = styled.div`
   align-items: center;
   gap: 12px;
   font-size: 1rem;
-  & > p {
+  & > strong {
+    display: block;
     font-weight: 600;
     margin-top: 12px;
+    font-size: 1.125rem;
   }
-  & > div {
-    width: 100%;
-    margin-top: 24px;
-    display: flex;
-    justify-content: space-between;
-    gap: 20px;
+  & > p {
+    text-align: center;
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+`;
+
+const ModalButtonContain = styled.div`
+  width: 100%;
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+`;
+
+const ReSaveModalContain = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  & > span {
+    padding: 10px 45px;
+    font-size: 0.875rem;
+    background-color: #f4f4f4;
+    color: #454545;
+    text-align: center;
+    margin-top: 10px;
+  }
+  & > p {
+    font-weight: 400;
+    font-size: 0.875rem;
+    &:first-of-type {
+      color: #f53966;
+    }
   }
 `;
