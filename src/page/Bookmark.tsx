@@ -85,10 +85,10 @@ export const Bookmark = () => {
             {renderTabContent()}
           </div>
           <Gutter orientation="vertical" onMouseDown={startDragVertical} changeBackColor={false} />
-          <div style={{ height: `${100 - editorHeight}%` }} className="feedback">
-            <strong>AI Feedback</strong>
+          <FeedbackTitle>AI Feedback</FeedbackTitle>
+          <FeedbackSection editorHeight={editorHeight}>
             <p>{getBookmark?.gptExplain}</p>
-          </div>
+          </FeedbackSection>
         </CodeContain>
       </Contain>
       <ButtonContain>
@@ -131,44 +131,6 @@ const Contain = styled.div`
 const CodeContain = styled.section`
   display: flex;
   flex-direction: column;
-  & > .feedback {
-    background-color: #3f3f47;
-    font-size: 0.75rem;
-    overflow: auto;
-    ::-webkit-scrollbar {
-      width: 5px;
-    }
-    ::-webkit-scrollbar-track {
-      background: transparent;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #555;
-      border-radius: 6px;
-    }
-    ::-webkit-scrollbar-button:vertical:start:decrement,
-    ::-webkit-scrollbar-button:vertical:start:increment,
-    ::-webkit-scrollbar-button:vertical:end:decrement {
-      display: block;
-      height: 5px;
-    }
-    * {
-      scrollbar-width: thin;
-      scrollbar-color: #555 transparent;
-    }
-    & > strong {
-      padding: 1rem 1.375rem;
-      padding-top: 0;
-      display: block;
-      font-family: var(--font--Galmuri);
-      color: #fff;
-      font-weight: 600;
-      border-bottom: 2px solid var(--background-color);
-    }
-    & > p {
-      padding: 24px 22px;
-      line-height: 2;
-    }
-  }
 `;
 
 const ButtonContain = styled.div`
@@ -198,4 +160,51 @@ const TabButton = styled.button<{ isActive: boolean }>`
   font-size: 0.875rem;
   font-weight: 600;
   cursor: pointer;
+`;
+
+const FeedbackTitle = styled.strong`
+  background-color: #3f3f47;
+  display: block;
+  font-size: 0.75rem;
+  padding: 0 22px 20px;
+  font-weight: 600;
+  border-bottom: 2px solid var(--background-color);
+  font-family: var(--font--Galmuri);
+`;
+
+const FeedbackSection = styled.section<{ editorHeight: number }>`
+  background-color: #3f3f47;
+  color: var(--gray400-color);
+  font-size: 0.75rem;
+  overflow: auto;
+  padding: 1.5rem;
+  height: calc(100% - ${props => props.editorHeight + "%"} - 60px);
+  & > p {
+    color: #fff;
+    line-height: 2;
+  }
+  ::-webkit-scrollbar {
+    width: 5px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #555;
+    border-radius: 6px;
+  }
+  ::-webkit-scrollbar-button:vertical:start:decrement,
+  ::-webkit-scrollbar-button:vertical:start:increment,
+  ::-webkit-scrollbar-button:vertical:end:decrement {
+    display: block;
+    height: 5px;
+  }
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #555 transparent;
+  }
+  @media only screen and (max-width: 768px) {
+    padding-top: 20px;
+    border-top: 2px solid var(--background-color);
+  }
 `;

@@ -48,7 +48,6 @@ export const CodeCompare = () => {
       }
     })();
   }, [id]);
-  console.log(Number(id));
 
   useEffect(() => {
     (async () => {
@@ -143,13 +142,11 @@ export const CodeCompare = () => {
             </CompareHeader>
             <ReadOnlyEditor code={aiRes?.gptCode as string} language={location.state?.language} />
           </div>
-          <div style={{ height: `${100 - editorHeight}%` }} className="Feedback">
-            <Gutter orientation="vertical" onMouseDown={startDragVertical} changeBackColor={false} />
-            <CompareHeader>
-              <strong>AI Feedback</strong>
-            </CompareHeader>
+          <Gutter orientation="vertical" onMouseDown={startDragVertical} changeBackColor={false} />
+          <FeedbackTitle>AI Feedback</FeedbackTitle>
+          <FeedbackSection editorHeight={editorHeight}>
             <p>{aiRes?.gptCodeExplain}</p>
-          </div>
+          </FeedbackSection>
         </section>
       </Contain>
       <ButtonContain>
@@ -218,6 +215,16 @@ const CompareHeader = styled.div`
   }
 `;
 
+const FeedbackTitle = styled.strong`
+  background-color: #3f3f47;
+  display: block;
+  font-size: 0.75rem;
+  padding: 0 22px 20px;
+  font-weight: 600;
+  border-bottom: 2px solid var(--background-color);
+  font-family: var(--font--Galmuri);
+`;
+
 const Contain = styled.div`
   display: flex;
   background-color: var(--gray500-color);
@@ -249,39 +256,6 @@ const Contain = styled.div`
     }
   }
 
-  .Feedback {
-    background-color: #3f3f47;
-    font-size: 0.75rem;
-    overflow: auto;
-    ::-webkit-scrollbar {
-      width: 5px;
-    }
-    ::-webkit-scrollbar-track {
-      background: transparent;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #555;
-      border-radius: 6px;
-    }
-    ::-webkit-scrollbar-button:vertical:start:decrement,
-    ::-webkit-scrollbar-button:vertical:start:increment,
-    ::-webkit-scrollbar-button:vertical:end:decrement {
-      display: block;
-      height: 5px;
-    }
-    * {
-      scrollbar-width: thin;
-      scrollbar-color: #555 transparent;
-    }
-    & > div:last-of-type {
-      padding-top: 0;
-      border-bottom: 2px solid var(--background-color);
-    }
-    & > p {
-      padding: 24px 22px;
-      line-height: 2;
-    }
-  }
   & > section:first-of-type > div:last-of-type {
     margin-right: 10px;
     height: 85%;
@@ -353,5 +327,42 @@ const ReSaveModalContain = styled.div`
     &:first-of-type {
       color: #f53966;
     }
+  }
+`;
+
+const FeedbackSection = styled.section<{ editorHeight: number }>`
+  background-color: #3f3f47;
+  color: var(--gray400-color);
+  font-size: 0.75rem;
+  overflow: auto;
+  padding: 1.5rem;
+  height: calc(100% - ${props => props.editorHeight + "%"} - 60px);
+  & > p {
+    color: #fff;
+    line-height: 2;
+  }
+  ::-webkit-scrollbar {
+    width: 5px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #555;
+    border-radius: 6px;
+  }
+  ::-webkit-scrollbar-button:vertical:start:decrement,
+  ::-webkit-scrollbar-button:vertical:start:increment,
+  ::-webkit-scrollbar-button:vertical:end:decrement {
+    display: block;
+    height: 5px;
+  }
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #555 transparent;
+  }
+  @media only screen and (max-width: 768px) {
+    padding-top: 20px;
+    border-top: 2px solid var(--background-color);
   }
 `;
