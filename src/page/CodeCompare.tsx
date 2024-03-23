@@ -108,6 +108,8 @@ export const CodeCompare = () => {
     }
   };
 
+  const handleAICodeReview = () => {};
+
   return (
     <>
       <Header />
@@ -150,7 +152,12 @@ export const CodeCompare = () => {
         </section>
       </Contain>
       <ButtonContain>
-        <SquareButton as={Link} to="/" text="나가기" />
+        <SquareButton onClick={handleAICodeReview} text="AI 코드 리뷰 시작하기" disabled={false} />
+        <div className="notice">
+          하루 1회에 한하여 <span>내가 작성한 코드에 대한 AI의 리뷰</span>를 제공합니다.
+          <br /> 코드 리뷰를 받으면 해당 기능은 다음날까지 비활성화됩니다.
+        </div>
+        <SquareButton as={Link} to="/" text="나가기" white />
       </ButtonContain>
       {isModal && (
         <Modal onClose={() => setIsModal(prev => !prev)} modalHeader="Want to Cancel">
@@ -274,7 +281,40 @@ const ButtonContain = styled.div`
   width: 100%;
   padding: 10px 22px;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  & > button:first-of-type {
+    position: relative;
+  }
+  .notice {
+    visibility: hidden;
+    position: absolute;
+    bottom: 85px;
+    left: 22px;
+    font-size: 0.875rem;
+    line-height: 1.3;
+    background: #d4fed4;
+    padding: 0.75rem 1rem;
+    border-radius: 10px;
+    color: #222;
+    z-index: 100;
+    & > span {
+      color: #32cd32;
+    }
+    &::before {
+      content: "";
+      position: absolute;
+      bottom: -7px;
+      left: 20px;
+      width: 15px;
+      height: 15px;
+      background-color: #d4fed4;
+      transform: rotate(45deg);
+    }
+  }
+  & > button:first-of-type:hover + .notice {
+    visibility: visible;
+  }
+
   @media only screen and (max-width: 768px) {
     position: relative;
   }
