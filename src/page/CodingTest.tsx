@@ -127,7 +127,7 @@ export const CodingTest = () => {
         <Gutter orientation="horizontal" onMouseDown={startDragHorizontal} />
         <CodeContain style={{ width: isMedia ? "100%" : `${100 - descWidth}%` }}>
           <SelectLang language={language} setLanguage={setLanguage} />
-          <CodeEditor language={language} editorHeight={editorHeight} setCodeValue={setCodeValue} />
+          <CodeEditor language={language} editorHeight={editorHeight} setCodeValue={setCodeValue} question={question} />
           <Gutter orientation="vertical" onMouseDown={startDragVertical} />
           <TestResultSection
             editorHeight={editorHeight}
