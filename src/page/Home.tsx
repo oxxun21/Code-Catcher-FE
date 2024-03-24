@@ -27,7 +27,7 @@ export const Home = () => {
   );
 };
 const StyledMain = styled.main`
-  height: 100vh;
+  height: calc(100vh - 6.25rem);
   display: flex;
   flex-direction: column;
   justify-content: center;

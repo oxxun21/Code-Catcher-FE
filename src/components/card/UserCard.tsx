@@ -141,6 +141,10 @@ const StyledCard = styled.article`
   border-radius: 1.25rem;
   padding: 2.5rem 3.875rem 2.8125rem 3.625rem;
   height: 34.1875rem;
+
+  @media (max-width: 768px) {
+    width: 26.2494rem;
+  }
 `;
 const StyledUserInfoGroup = styled.div`
   margin: 1.25rem 0 1.6875rem;

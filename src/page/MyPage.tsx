@@ -44,7 +44,7 @@ export const MyPage = ({}) => {
 };
 
 const StyledMain = styled.main`
-  height: 100vh;
+  height: calc(100vh - 6.25rem);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -59,5 +59,17 @@ const StyledMain = styled.main`
       flex-direction: column;
       gap: 1.3125rem;
     }
+    @media (max-width: 768px) {
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    height: auto;
+    padding: 2rem 1rem;
+    justify-content: flex-start;
   }
 `;

@@ -61,7 +61,6 @@ export const QuestionSelect = () => {
                 isSelected={selectedCard === index}
                 isHovered={hoveredCard === index}
                 onClick={() => {
-                  console.log(`Question ID: ${question.id}`);
                   setSelectedCard(selectedCard === index ? null : index);
                   setSelectedQuestionId(selectedCard === index ? null : question.id);
                 }}
@@ -84,10 +83,14 @@ export const QuestionSelect = () => {
 };
 
 const StyledMain = styled.main`
-  height: 100vh;
+  height: calc(100vh - 6.25rem);
   display: flex;
   justify-content: center;
   align-items: center;
+
+  @media (max-width: 768px) {
+    padding: 2rem 1rem;
+  }
 `;
 
 const StyledSection = styled.section`

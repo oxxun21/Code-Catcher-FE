@@ -33,7 +33,7 @@ export const Splash = () => {
 };
 
 const StyledMain = styled.main`
-  height: 100vh;
+  height: calc(100vh - 6.25rem);
   display: flex;
   justify-content: center;
   align-items: center;
