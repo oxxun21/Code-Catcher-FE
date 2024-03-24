@@ -158,7 +158,7 @@ const StyledBtnGroup = styled.div`
 const StyledLoginBtn = styled.button`
   padding: 0.75rem 1.6563rem;
   background-color: #ffffff;
-  color: var(--black-color);
+  color: var(--black-color) !important;
   border-radius: 999px;
   border: 1px solid var(--black-color);
   background-color: #ffffff;
