@@ -78,7 +78,8 @@ const StyledCard = styled.article<StyledCardProps>`
   background-color: #fafafa;
   font-family: var(--font--Pretendard);
   cursor: pointer;
-  border: 1px solid #d1d1d1;
+  box-shadow: 0 0 0 1px #d1d1d1;
+  border: 4px solid transparent;
   transition: border-color 0.3s, background-color 0.3s;
 
   ${({ isSelected, isHovered }) => {
