@@ -64,41 +64,49 @@ export const Bookmark = () => {
   return (
     <>
       <Header />
-      <PageHeader>
-        <h2>마이페이지 &gt; 북마크 &gt; {getBookmark?.title}</h2>
-        <span>{getBookmark?.subject}</span>
-      </PageHeader>
-      <Contain>
-        <TestDescSection descWidth={isMedia ? 100 : descWidth} question={getBookmark as Bookmark_I} />
-        <Gutter orientation="horizontal" onMouseDown={startDragHorizontal} />
-        <CodeContain style={{ width: isMedia ? "100%" : `${100 - descWidth}%` }}>
-          <div style={{ height: `${editorHeight}%` }}>
-            <TabContainer>
-              <TabButton onClick={() => setActiveTab("myCode")} isActive={activeTab === "myCode"}>
-                My Code
-              </TabButton>
-              <TabButton onClick={() => setActiveTab("aiCode")} isActive={activeTab === "aiCode"}>
-                AI Code
-              </TabButton>
-            </TabContainer>
-            {renderTabContent()}
-          </div>
-          <Gutter orientation="vertical" onMouseDown={startDragVertical} changeBackColor={false} />
-          <FeedbackTitle>AI Feedback</FeedbackTitle>
-          <FeedbackSection editorHeight={editorHeight}>
-            <p>{getBookmark?.gptExplain}</p>
-          </FeedbackSection>
-        </CodeContain>
-      </Contain>
-      <ButtonContain>
-        <SquareButton as={Link} to="/" text="나가기" />
-      </ButtonContain>
+      <Main>
+        <PageHeader>
+          <h2>마이페이지 &gt; 북마크 &gt; {getBookmark?.title}</h2>
+          <span>{getBookmark?.subject}</span>
+        </PageHeader>
+        <Contain>
+          <TestDescSection descWidth={isMedia ? 100 : descWidth} question={getBookmark as Bookmark_I} />
+          <Gutter orientation="horizontal" onMouseDown={startDragHorizontal} />
+          <CodeContain style={{ width: isMedia ? "100%" : `${100 - descWidth}%` }}>
+            <div style={{ height: `${editorHeight}%` }}>
+              <TabContainer>
+                <TabButton onClick={() => setActiveTab("myCode")} isActive={activeTab === "myCode"}>
+                  My Code
+                </TabButton>
+                <TabButton onClick={() => setActiveTab("aiCode")} isActive={activeTab === "aiCode"}>
+                  AI Code
+                </TabButton>
+              </TabContainer>
+              {renderTabContent()}
+            </div>
+            <Gutter orientation="vertical" onMouseDown={startDragVertical} changeBackColor={false} />
+            <FeedbackTitle>AI Feedback</FeedbackTitle>
+            <FeedbackSection editorHeight={editorHeight}>
+              <p>{getBookmark?.gptExplain}</p>
+            </FeedbackSection>
+          </CodeContain>
+        </Contain>
+        <ButtonContain>
+          <SquareButton as={Link} to="/" text="나가기" />
+        </ButtonContain>
+      </Main>
     </>
   );
 };
 
-const PageHeader = styled.div`
+const Main = styled.main`
+  height: calc(100vh - 4rem);
   background-color: #32323a;
+  display: flex;
+  flex-direction: column;
+`;
+
+const PageHeader = styled.div`
   padding: 1rem 22px;
   font-weight: 600;
   border-bottom: 2px solid var(--background-color);
@@ -116,8 +124,7 @@ const PageHeader = styled.div`
 
 const Contain = styled.div`
   display: flex;
-  background-color: #32323a;
-  height: 75vh;
+  height: calc(100vh - 10.875rem);
   @media only screen and (max-width: 768px) {
     flex-direction: column;
     height: 100%;
@@ -127,13 +134,15 @@ const Contain = styled.div`
 const CodeContain = styled.section`
   display: flex;
   flex-direction: column;
-  
+`;
+
 const ButtonContain = styled.div`
   width: 100%;
   padding: 10px 22px;
   display: flex;
   justify-content: flex-end;
   gap: 0.75rem;
+  background-color: var(--background-color);
   @media only screen and (max-width: 768px) {
     position: relative;
   }

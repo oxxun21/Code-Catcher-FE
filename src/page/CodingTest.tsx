@@ -120,28 +120,35 @@ export const CodingTest = () => {
   return (
     <>
       <Header />
-      <PageHeader>
-        <h2>{question?.title}</h2>
-        <span>{question?.subject}</span>
-      </PageHeader>
-      <Contain>
-        <TestDescSection descWidth={isMedia ? 100 : descWidth} question={question as Question_I} />
-        <Gutter orientation="horizontal" onMouseDown={startDragHorizontal} />
-        <CodeContain style={{ width: isMedia ? "100%" : `${100 - descWidth}%` }}>
-          <SelectLang language={language} setLanguage={setLanguage} />
-          <CodeEditor language={language} editorHeight={editorHeight} setCodeValue={setCodeValue} question={question} />
-          <Gutter orientation="vertical" onMouseDown={startDragVertical} />
-          <TestResultSection
-            editorHeight={editorHeight}
-            testValue={testValue as TestScoreSubmit_I}
-            submitValue={submitValue as ScoreSubmit_I}
-          />
-        </CodeContain>
-      </Contain>
-      <ButtonContain>
-        <SquareButton text="코드 실행" white onClick={handleTestSubmit} />
-        <SquareButton text="제출 후 채점하기" onClick={handleSubmit} />
-      </ButtonContain>
+      <Main>
+        <PageHeader>
+          <h2>{question?.title}</h2>
+          <span>{question?.subject}</span>
+        </PageHeader>
+        <Contain>
+          <TestDescSection descWidth={isMedia ? 100 : descWidth} question={question as Question_I} />
+          <Gutter orientation="horizontal" onMouseDown={startDragHorizontal} />
+          <CodeContain style={{ width: isMedia ? "100%" : `${100 - descWidth}%` }}>
+            <SelectLang language={language} setLanguage={setLanguage} />
+            <CodeEditor
+              language={language}
+              editorHeight={editorHeight}
+              setCodeValue={setCodeValue}
+              question={question}
+            />
+            <Gutter orientation="vertical" onMouseDown={startDragVertical} />
+            <TestResultSection
+              editorHeight={editorHeight}
+              testValue={testValue as TestScoreSubmit_I}
+              submitValue={submitValue as ScoreSubmit_I}
+            />
+          </CodeContain>
+        </Contain>
+        <ButtonContain>
+          <SquareButton text="코드 실행" white onClick={handleTestSubmit} />
+          <SquareButton text="제출 후 채점하기" onClick={handleSubmit} />
+        </ButtonContain>
+      </Main>
       {isModal && (
         <Modal onClose={handleClose} modalHeader={submitValue?.correct ? "Test Complete" : "Test Failed"}>
           <ModalContain>
@@ -184,8 +191,14 @@ export const CodingTest = () => {
   );
 };
 
-const PageHeader = styled.div`
+const Main = styled.main`
+  height: calc(100vh - 4rem);
   background-color: #32323a;
+  display: flex;
+  flex-direction: column;
+`;
+
+const PageHeader = styled.div`
   padding: 1rem 22px;
   font-weight: 600;
   border-bottom: 2px solid var(--background-color);
@@ -202,8 +215,8 @@ const PageHeader = styled.div`
 
 const Contain = styled.div`
   display: flex;
-  background-color: #32323a;
-  height: 75vh;
+  height: calc(100vh - 10.875rem);
+
   @media only screen and (max-width: 768px) {
     flex-direction: column;
     height: 100%;
@@ -221,6 +234,7 @@ const ButtonContain = styled.div`
   display: flex;
   justify-content: flex-end;
   gap: 0.75rem;
+  background-color: var(--background-color);
   @media only screen and (max-width: 768px) {
     position: relative;
   }

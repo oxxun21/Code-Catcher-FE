@@ -14,7 +14,7 @@ export const Header = () => {
   const location = useLocation();
   const isDarkMode =
     location.pathname.startsWith("/codingTest/") ||
-    location.pathname.startsWith("/codeCompare/") ||
+    location.pathname.startsWith("/CodeCompare/") ||
     location.pathname.startsWith("/bookmark/");
   const logoImage = isDarkMode ? LogoDark : LogoLight;
 
