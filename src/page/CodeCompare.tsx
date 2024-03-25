@@ -113,52 +113,54 @@ export const CodeCompare = () => {
   return (
     <>
       <Header />
-      <PageHeader>
-        <h2>{location.state.question.title}</h2>
-        <span>{location.state.question.subject}</span>
-      </PageHeader>
-      <Contain>
-        <section style={{ width: isMedia ? "100%" : `${descWidth}%` }}>
-          <CompareHeader>
-            <strong>My Code</strong>
-          </CompareHeader>
-          <ReadOnlyEditor code={location.state.myCode} language={location.state?.language} />
-        </section>
-        <Gutter orientation="horizontal" onMouseDown={startDragHorizontal} />
-        <section style={{ width: isMedia ? "100%" : `${100 - descWidth}%` }}>
-          <div style={{ height: `${editorHeight}%` }}>
-            <CompareHeader className="gptCode">
-              <strong>AI Code</strong>
-              <button
-                onClick={
-                  !isbookmark && bookmarkInfo
-                    ? () => setIsConfirmBookmarkModal(true)
-                    : isbookmark
-                    ? () => setIsModal(true)
-                    : handleBookmarkSave
-                }
-              >
-                북마크에 추가하기
-                <img src={isbookmark ? icon_bookmark_true : icon_bookmark} alt="북마크 아이콘" />
-              </button>
+      <Main>
+        <PageHeader>
+          <h2>{location.state.question.title}</h2>
+          <span>{location.state.question.subject}</span>
+        </PageHeader>
+        <Contain>
+          <section style={{ width: isMedia ? "100%" : `${descWidth}%` }}>
+            <CompareHeader>
+              <strong>My Code</strong>
             </CompareHeader>
-            <ReadOnlyEditor code={aiRes?.gptCode as string} language={location.state?.language} />
+            <ReadOnlyEditor code={location.state.myCode} language={location.state?.language} />
+          </section>
+          <Gutter orientation="horizontal" onMouseDown={startDragHorizontal} />
+          <section style={{ width: isMedia ? "100%" : `${100 - descWidth}%` }}>
+            <div style={{ height: `${editorHeight}%` }}>
+              <CompareHeader className="gptCode">
+                <strong>AI Code</strong>
+                <button
+                  onClick={
+                    !isbookmark && bookmarkInfo
+                      ? () => setIsConfirmBookmarkModal(true)
+                      : isbookmark
+                      ? () => setIsModal(true)
+                      : handleBookmarkSave
+                  }
+                >
+                  북마크에 추가하기
+                  <img src={isbookmark ? icon_bookmark_true : icon_bookmark} alt="북마크 아이콘" />
+                </button>
+              </CompareHeader>
+              <ReadOnlyEditor code={aiRes?.gptCode as string} language={location.state?.language} />
+            </div>
+            <Gutter orientation="vertical" onMouseDown={startDragVertical} changeBackColor={false} />
+            <FeedbackTitle>AI Feedback</FeedbackTitle>
+            <FeedbackSection editorHeight={editorHeight}>
+              <p>{aiRes?.gptCodeExplain}</p>
+            </FeedbackSection>
+          </section>
+        </Contain>
+        <ButtonContain>
+          <SquareButton onClick={handleAICodeReview} text="AI 코드 리뷰 시작하기" disabled={false} />
+          <div className="notice">
+            하루 1회에 한하여 <span>내가 작성한 코드에 대한 AI의 리뷰</span>를 제공합니다.
+            <br /> 코드 리뷰를 받으면 해당 기능은 다음날까지 비활성화됩니다.
           </div>
-          <Gutter orientation="vertical" onMouseDown={startDragVertical} changeBackColor={false} />
-          <FeedbackTitle>AI Feedback</FeedbackTitle>
-          <FeedbackSection editorHeight={editorHeight}>
-            <p>{aiRes?.gptCodeExplain}</p>
-          </FeedbackSection>
-        </section>
-      </Contain>
-      <ButtonContain>
-        <SquareButton onClick={handleAICodeReview} text="AI 코드 리뷰 시작하기" disabled={false} />
-        <div className="notice">
-          하루 1회에 한하여 <span>내가 작성한 코드에 대한 AI의 리뷰</span>를 제공합니다.
-          <br /> 코드 리뷰를 받으면 해당 기능은 다음날까지 비활성화됩니다.
-        </div>
-        <SquareButton as={Link} to="/" text="나가기" white />
-      </ButtonContain>
+          <SquareButton as={Link} to="/" text="나가기" white />
+        </ButtonContain>
+      </Main>
       {isModal && (
         <Modal onClose={() => setIsModal(prev => !prev)} modalHeader="Want to Cancel">
           <ModalContain>
@@ -195,8 +197,14 @@ export const CodeCompare = () => {
   );
 };
 
-const PageHeader = styled.div`
+const Main = styled.main`
+  height: calc(100vh - 4rem);
   background-color: #32323a;
+  display: flex;
+  flex-direction: column;
+`;
+
+const PageHeader = styled.div`
   padding: 1rem 22px;
   font-weight: 600;
   border-bottom: 2px solid var(--background-color);
@@ -234,8 +242,7 @@ const FeedbackTitle = styled.strong`
 
 const Contain = styled.div`
   display: flex;
-  background-color: #32323a;
-  height: 76vh;
+  height: calc(100vh - 10.875rem);
 
   .gptCode {
     display: flex;
@@ -282,6 +289,7 @@ const ButtonContain = styled.div`
   padding: 10px 22px;
   display: flex;
   justify-content: space-between;
+  background-color: var(--background-color);
   & > button:first-of-type {
     position: relative;
   }
