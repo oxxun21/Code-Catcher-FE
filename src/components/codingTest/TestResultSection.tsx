@@ -13,16 +13,17 @@ export const TestResultSection = ({ editorHeight, testValue, submitValue }: Test
   return (
     <>
       <ResultTitle>실행 결과</ResultTitle>
-      <ResultSection style={{ height: `${100 - editorHeight}%` }}>
+      <ResultSection editorHeight={editorHeight}>
         {resultValue ? <ShowResult value={resultValue} /> : <article>실행 결과가 여기에 표시됩니다.</article>}
       </ResultSection>
     </>
   );
 };
 
-const ResultSection = styled.section`
+const ResultSection = styled.section<{ editorHeight: number }>`
   color: var(--gray400-color);
   font-size: 0.75rem;
+  height: calc(100% - ${props => props.editorHeight}%);
   overflow: auto;
   ::-webkit-scrollbar {
     width: 5px;
@@ -57,7 +58,7 @@ const ResultTitle = styled.strong`
   display: block;
   font-size: 0.875rem;
   padding: 0 22px 20px;
-  color: var(--gray400-color);
-  font-weight: 600;
+  color: var(--gray200-color);
+  font-weight: 500;
   border-bottom: 2px solid var(--background-color);
 `;

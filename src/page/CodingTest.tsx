@@ -1,5 +1,6 @@
 import {
   CodeEditor,
+  Gutter,
   Header,
   Modal,
   RoundButton,
@@ -9,8 +10,6 @@ import {
   TestResultSection,
 } from "../components";
 import styled from "@emotion/styled";
-import gutter_horizontal from "../assets/gutter_horizontal.svg";
-import gutter_vertical from "../assets/gutter_vertical.svg";
 import { useDraggable } from "../hook";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -100,7 +99,9 @@ export const CodingTest = () => {
 
   const handleSubmit = () => {
     setTestValue(undefined);
-    if (!submitValue?.first) {
+    console.log(submitValue);
+
+    if (submitValue?.first === false) {
       submissionFunc<ScoreSubmit_I>(postRetryScoreSubmitAPI, setSubmitValue, true);
     }
     submissionFunc<ScoreSubmit_I>(postScoreSubmitAPI, setSubmitValue, true);
@@ -114,41 +115,49 @@ export const CodingTest = () => {
     message = submitValue?.correct ? "정답입니다!" : "틀렸습니다";
   }
 
+  console.log(submitValue);
+
   return (
     <>
       <Header />
-      <PageHeader>
-        <h2>{question?.title}</h2>
-        <span>{question?.subject}</span>
-      </PageHeader>
-      <Contain>
-        <TestDescSection descWidth={isMedia ? 100 : descWidth} question={question as Question_I} />
-        <Gutter orientation="horizontal" onMouseDown={startDragHorizontal} />
-        <CodeContain style={{ width: isMedia ? "100%" : `${100 - descWidth}%` }}>
-          <SelectLang language={language} setLanguage={setLanguage} />
-          <CodeEditor language={language} editorHeight={editorHeight} setCodeValue={setCodeValue} />
-          <Gutter orientation="vertical" onMouseDown={startDragVertical} />
-          <TestResultSection
-            editorHeight={editorHeight}
-            testValue={testValue as TestScoreSubmit_I}
-            submitValue={submitValue as ScoreSubmit_I}
-          />
-        </CodeContain>
-      </Contain>
-      <ButtonContain>
-        <SquareButton text="코드 실행" white onClick={handleTestSubmit} />
-        <SquareButton text="제출 후 채점하기" onClick={handleSubmit} />
-      </ButtonContain>
+      <Main>
+        <PageHeader>
+          <h2>{question?.title}</h2>
+          <span>{question?.subject}</span>
+        </PageHeader>
+        <Contain>
+          <TestDescSection descWidth={isMedia ? 100 : descWidth} question={question as Question_I} />
+          <Gutter orientation="horizontal" onMouseDown={startDragHorizontal} />
+          <CodeContain style={{ width: isMedia ? "100%" : `${100 - descWidth}%` }}>
+            <SelectLang language={language} setLanguage={setLanguage} />
+            <CodeEditor
+              language={language}
+              editorHeight={editorHeight}
+              setCodeValue={setCodeValue}
+              question={question}
+            />
+            <Gutter orientation="vertical" onMouseDown={startDragVertical} />
+            <TestResultSection
+              editorHeight={editorHeight}
+              testValue={testValue as TestScoreSubmit_I}
+              submitValue={submitValue as ScoreSubmit_I}
+            />
+          </CodeContain>
+        </Contain>
+        <ButtonContain>
+          <SquareButton text="코드 실행" white onClick={handleTestSubmit} />
+          <SquareButton text="제출 후 채점하기" onClick={handleSubmit} />
+        </ButtonContain>
+      </Main>
       {isModal && (
         <Modal onClose={handleClose} modalHeader={submitValue?.correct ? "Test Complete" : "Test Failed"}>
           <ModalContain>
-            {submitValue?.first ? (
+            {submitValue?.first && (
               <img
                 src={submitValue?.correct ? icon_test_complete : icon_test_failed}
                 alt={submitValue?.correct ? "테스트 통과" : "테스트 실패"}
               />
-            ) : undefined}
-
+            )}
             <strong>{message}</strong>
             <p>{submitValue?.correct ? "축하합니다! 문제를 맞추셨어요" : "다음 테스트엔 더 잘 할 수 있어요"}</p>
             <div>
@@ -182,8 +191,14 @@ export const CodingTest = () => {
   );
 };
 
-const PageHeader = styled.div`
+const Main = styled.main`
+  height: calc(100vh - 4rem);
   background-color: #32323a;
+  display: flex;
+  flex-direction: column;
+`;
+
+const PageHeader = styled.div`
   padding: 1rem 22px;
   font-weight: 600;
   border-bottom: 2px solid var(--background-color);
@@ -200,8 +215,8 @@ const PageHeader = styled.div`
 
 const Contain = styled.div`
   display: flex;
-  background-color: var(--gray500-color);
-  height: 76vh;
+  height: calc(100vh - 10.875rem);
+
   @media only screen and (max-width: 768px) {
     flex-direction: column;
     height: 100%;
@@ -219,24 +234,9 @@ const ButtonContain = styled.div`
   display: flex;
   justify-content: flex-end;
   gap: 0.75rem;
+  background-color: var(--background-color);
   @media only screen and (max-width: 768px) {
     position: relative;
-  }
-`;
-
-const Gutter = styled.div<{ orientation: "vertical" | "horizontal" }>`
-  width: ${props => props.orientation === "horizontal" && "24px"};
-  height: ${props => props.orientation === "vertical" && "24px"};
-  background: ${props =>
-    props.orientation === "horizontal"
-      ? `url(${gutter_horizontal}) no-repeat center`
-      : `url(${gutter_vertical}) no-repeat center`};
-  background-size: ${props => (props.orientation === "horizontal" ? "auto/40px" : "40px/auto")};
-  border-right: ${props => props.orientation === "horizontal" && "2px solid var(--background-color)"};
-  border-top: ${props => props.orientation === "vertical" && "2px solid var(--background-color)"};
-  cursor: ${props => (props.orientation === "horizontal" ? "e-resize" : "n-resize")};
-  @media only screen and (max-width: 768px) {
-    display: none;
   }
 `;
 

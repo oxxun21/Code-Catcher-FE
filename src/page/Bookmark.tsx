@@ -4,9 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import { getBookmarkAPI } from "../api";
 import { Bookmark_I } from "../interface";
 import { useDraggable } from "../hook";
-import { Header, ReadOnlyEditor, SquareButton, TestDescSection } from "../components";
-import gutter_horizontal from "../assets/gutter_horizontal.svg";
-import gutter_vertical from "../assets/gutter_vertical.svg";
+import { Gutter, Header, ReadOnlyEditor, SquareButton, TestDescSection } from "../components";
 
 export const Bookmark = () => {
   const { id } = useParams();
@@ -66,42 +64,49 @@ export const Bookmark = () => {
   return (
     <>
       <Header />
-      <PageHeader>
-        <span>마이페이지 &gt; 북마크 &gt; </span>
-        <h2>{getBookmark?.title}</h2>
-        <span>{getBookmark?.subject}</span>
-      </PageHeader>
-      <Contain>
-        <TestDescSection descWidth={isMedia ? 100 : descWidth} question={getBookmark as Bookmark_I} />
-        <Gutter orientation="horizontal" onMouseDown={startDragHorizontal} />
-        <CodeContain style={{ width: isMedia ? "100%" : `${100 - descWidth}%` }}>
-          <div style={{ height: `${editorHeight}%` }}>
-            <TabContainer>
-              <TabButton onClick={() => setActiveTab("myCode")} isActive={activeTab === "myCode"}>
-                My Code
-              </TabButton>
-              <TabButton onClick={() => setActiveTab("aiCode")} isActive={activeTab === "aiCode"}>
-                AI Code
-              </TabButton>
-            </TabContainer>
-            {renderTabContent()}
-          </div>
-          <Gutter orientation="vertical" onMouseDown={startDragVertical} />
-          <div style={{ height: `${100 - editorHeight}%` }} className="feedback">
-            <strong>AI Feedback</strong>
-            <p>{getBookmark?.gptExplain}</p>
-          </div>
-        </CodeContain>
-      </Contain>
-      <ButtonContain>
-        <SquareButton as={Link} to="/" text="나가기" />
-      </ButtonContain>
+      <Main>
+        <PageHeader>
+          <h2>마이페이지 &gt; 북마크 &gt; {getBookmark?.title}</h2>
+          <span>{getBookmark?.subject}</span>
+        </PageHeader>
+        <Contain>
+          <TestDescSection descWidth={isMedia ? 100 : descWidth} question={getBookmark as Bookmark_I} />
+          <Gutter orientation="horizontal" onMouseDown={startDragHorizontal} />
+          <CodeContain style={{ width: isMedia ? "100%" : `${100 - descWidth}%` }}>
+            <div style={{ height: `${editorHeight}%` }}>
+              <TabContainer>
+                <TabButton onClick={() => setActiveTab("myCode")} isActive={activeTab === "myCode"}>
+                  My Code
+                </TabButton>
+                <TabButton onClick={() => setActiveTab("aiCode")} isActive={activeTab === "aiCode"}>
+                  AI Code
+                </TabButton>
+              </TabContainer>
+              {renderTabContent()}
+            </div>
+            <Gutter orientation="vertical" onMouseDown={startDragVertical} changeBackColor={false} />
+            <FeedbackTitle>AI Feedback</FeedbackTitle>
+            <FeedbackSection editorHeight={editorHeight}>
+              <p>{getBookmark?.gptExplain}</p>
+            </FeedbackSection>
+          </CodeContain>
+        </Contain>
+        <ButtonContain>
+          <SquareButton as={Link} to="/" text="나가기" />
+        </ButtonContain>
+      </Main>
     </>
   );
 };
 
-const PageHeader = styled.div`
+const Main = styled.main`
+  height: calc(100vh - 4rem);
   background-color: #32323a;
+  display: flex;
+  flex-direction: column;
+`;
+
+const PageHeader = styled.div`
   padding: 1rem 22px;
   font-weight: 600;
   border-bottom: 2px solid var(--background-color);
@@ -110,20 +115,16 @@ const PageHeader = styled.div`
   justify-content: flex-start;
   align-items: center;
   font-size: 1rem;
+  font-weight: 400;
   & > span {
-    font-family: var(--font--Galmuri);
-    &:last-of-type {
-      color: var(--gray400-color);
-      font-size: 14px;
-      font-family: var(--font--Pretendard);
-    }
+    color: var(--gray400-color);
+    font-size: 14px;
   }
 `;
 
 const Contain = styled.div`
   display: flex;
-  background-color: var(--gray500-color);
-  height: 76vh;
+  height: calc(100vh - 10.875rem);
   @media only screen and (max-width: 768px) {
     flex-direction: column;
     height: 100%;
@@ -133,44 +134,6 @@ const Contain = styled.div`
 const CodeContain = styled.section`
   display: flex;
   flex-direction: column;
-  & > .feedback {
-    background-color: #3f3f47;
-    font-size: 0.75rem;
-    overflow: auto;
-    ::-webkit-scrollbar {
-      width: 5px;
-    }
-    ::-webkit-scrollbar-track {
-      background: transparent;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #555;
-      border-radius: 6px;
-    }
-    ::-webkit-scrollbar-button:vertical:start:decrement,
-    ::-webkit-scrollbar-button:vertical:start:increment,
-    ::-webkit-scrollbar-button:vertical:end:decrement {
-      display: block;
-      height: 5px;
-    }
-    * {
-      scrollbar-width: thin;
-      scrollbar-color: #555 transparent;
-    }
-    & > strong {
-      padding: 1rem 1.375rem;
-      padding-top: 0;
-      display: block;
-      font-family: var(--font--Galmuri);
-      color: #fff;
-      font-weight: 600;
-      border-bottom: 2px solid var(--background-color);
-    }
-    & > p {
-      padding: 24px 22px;
-      line-height: 2;
-    }
-  }
 `;
 
 const ButtonContain = styled.div`
@@ -179,6 +142,7 @@ const ButtonContain = styled.div`
   display: flex;
   justify-content: flex-end;
   gap: 0.75rem;
+  background-color: var(--background-color);
   @media only screen and (max-width: 768px) {
     position: relative;
   }
@@ -202,20 +166,49 @@ const TabButton = styled.button<{ isActive: boolean }>`
   cursor: pointer;
 `;
 
-const Gutter = styled.div<{ orientation: "vertical" | "horizontal" }>`
-  width: ${props => props.orientation === "horizontal" && "24px"};
-  height: ${props => props.orientation === "vertical" && "24px"};
-  background: ${props =>
-    props.orientation === "horizontal"
-      ? `url(${gutter_horizontal}) no-repeat center`
-      : `url(${gutter_vertical}) #3F3F47 no-repeat center`};
-  background-size: ${props => (props.orientation === "horizontal" ? "auto/40px" : "40px/auto")};
-  border-right: ${props => props.orientation === "horizontal" && "2px solid var(--background-color)"};
-  border-top: ${props => props.orientation === "vertical" && "2px solid var(--background-color)"};
-  cursor: ${props => (props.orientation === "horizontal" ? "e-resize" : "n-resize")};
-  margin-top: 1rem;
-  z-index: 1;
+const FeedbackTitle = styled.strong`
+  background-color: #3f3f47;
+  display: block;
+  font-size: 0.75rem;
+  padding: 0 22px 20px;
+  font-weight: 600;
+  border-bottom: 2px solid var(--background-color);
+  font-family: var(--font--Galmuri);
+`;
+
+const FeedbackSection = styled.section<{ editorHeight: number }>`
+  background-color: #3f3f47;
+  color: var(--gray400-color);
+  font-size: 0.75rem;
+  overflow: auto;
+  padding: 1.5rem;
+  height: calc(100% - ${props => props.editorHeight + "%"} - 60px);
+  & > p {
+    color: #fff;
+    line-height: 2;
+  }
+  ::-webkit-scrollbar {
+    width: 5px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #555;
+    border-radius: 6px;
+  }
+  ::-webkit-scrollbar-button:vertical:start:decrement,
+  ::-webkit-scrollbar-button:vertical:start:increment,
+  ::-webkit-scrollbar-button:vertical:end:decrement {
+    display: block;
+    height: 5px;
+  }
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #555 transparent;
+  }
   @media only screen and (max-width: 768px) {
-    display: none;
+    padding-top: 20px;
+    border-top: 2px solid var(--background-color);
   }
 `;

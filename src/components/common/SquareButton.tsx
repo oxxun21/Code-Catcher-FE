@@ -7,6 +7,7 @@ interface ButtonProps {
   onClick?: (e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => void;
   to?: string;
   as?: React.ForwardRefExoticComponent<LinkProps & React.RefAttributes<HTMLAnchorElement>>;
+  disabled?: boolean;
 }
 
 export const SquareButton = ({ text, ...props }: ButtonProps) => {
@@ -25,6 +26,11 @@ const Button = styled.button<ButtonProps>`
   text-align: center;
   transition: all 0.3s;
   &:hover {
-    background-color: ${props => (props.white ? "var(--gray300-color)" : "var(--dark-color)")}; // 임시
+    background-color: ${props => (props.white ? "var(--gray100-color)" : "var(--hover-color)")};
+  }
+  &:disabled {
+    background-color: #427042;
+    color: #75a175;
+    cursor: default;
   }
 `;

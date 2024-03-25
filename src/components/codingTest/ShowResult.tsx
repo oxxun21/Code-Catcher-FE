@@ -99,7 +99,7 @@ const TestResult = styled.article`
 
 const TestResultSection = styled.table`
   padding: 15px 24px;
-  background-color: #2c2c34;
+  background-color: #2a2a31;
   border-radius: 4px;
   color: #aaa;
   margin-bottom: 10px;
@@ -118,6 +118,7 @@ const TestResultSection = styled.table`
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    font-weight: 200;
     & > th:last-of-type {
       color: #fff;
     }
@@ -129,5 +130,6 @@ const TestResultSection = styled.table`
 `;
 
 const CorrectnessIndicator = styled.td<{ correct: boolean }>`
-  color: ${props => (props.correct ? "var(--light-color)" : "#F53966")};
+  color: ${props => (props.correct ? "var(--system-positivie-color)" : "var(--system-negative-color)")};
+  font-weight: ${props => props.correct && "600"};
 `;
