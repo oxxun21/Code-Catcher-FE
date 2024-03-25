@@ -27,8 +27,7 @@ const Button = styled.button<ButtonProps>`
   transition: all 0.3s;
   text-align: center;
   &:hover {
-    // 임시
-    background-color: ${props => (props.dark ? "#122134" : "var(--gray200-color)")};
+    background-color: ${props => (props.dark ? "var(--secondary-light-color)" : "var(--gray200-color)")};
     border: ${props => (props.dark ? "1px solid var(--black-color)" : "1px solid var(--gray400-color)")};
   }
 `;
