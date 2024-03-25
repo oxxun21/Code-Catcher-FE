@@ -65,8 +65,7 @@ export const Bookmark = () => {
     <>
       <Header />
       <PageHeader>
-        <span>마이페이지 &gt; 북마크 &gt; </span>
-        <h2>{getBookmark?.title}</h2>
+        <h2>마이페이지 &gt; 북마크 &gt; {getBookmark?.title}</h2>
         <span>{getBookmark?.subject}</span>
       </PageHeader>
       <Contain>
@@ -108,20 +107,17 @@ const PageHeader = styled.div`
   justify-content: flex-start;
   align-items: center;
   font-size: 1rem;
+  font-weight: 400;
   & > span {
-    font-family: var(--font--Galmuri);
-    &:last-of-type {
-      color: var(--gray400-color);
-      font-size: 14px;
-      font-family: var(--font--Pretendard);
-    }
+    color: var(--gray400-color);
+    font-size: 14px;
   }
 `;
 
 const Contain = styled.div`
   display: flex;
-  background-color: var(--gray500-color);
-  height: 76vh;
+  background-color: #32323a;
+  height: 75vh;
   @media only screen and (max-width: 768px) {
     flex-direction: column;
     height: 100%;
@@ -131,8 +127,7 @@ const Contain = styled.div`
 const CodeContain = styled.section`
   display: flex;
   flex-direction: column;
-`;
-
+  
 const ButtonContain = styled.div`
   width: 100%;
   padding: 10px 22px;

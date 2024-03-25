@@ -10,7 +10,8 @@ export const QuestionSelect = () => {
   const [questions, setQuestions] = useState<QuestionOutline_I[]>([]);
   const [selectedCard, setSelectedCard] = useState<number | null>(null);
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
-  const isAnyCardHovered = hoveredCard !== null;
+  const [successCount, setSuccessCount] = useState<number>(0);
+
   const [selectedQuestionId, setSelectedQuestionId] = useState<number | null>(null);
   const navigate = useNavigate();
 
@@ -19,7 +20,10 @@ export const QuestionSelect = () => {
       try {
         const data = await getQuestionListAPI();
         if (data) {
-          setQuestions(Object.values(data));
+          const questionsArray = Object.values(data);
+          setQuestions(questionsArray);
+          const successQuestionsCount = questionsArray.filter(question => question.isSuccess).length;
+          setSuccessCount(successQuestionsCount);
         }
       } catch (error) {
         console.error("질문 목록을 가져오는 데 실패했습니다:", error);
@@ -40,45 +44,60 @@ export const QuestionSelect = () => {
       <Header />
       <StyledMain>
         <StyledSection>
-          {questions.map((question, index) => (
-            <QuestionCard
-              key={index}
-              questionId={question.id}
-              isSuccess={question.isSuccess}
-              title={question.title}
-              subject={question.subject}
-              level={question.level}
-              script={question.script}
-              isSelected={selectedCard === index}
-              isHovered={hoveredCard === index}
-              onClick={() => {
-                console.log(`Question ID: ${question.id}`);
-                setSelectedCard(selectedCard === index ? null : index);
-                setSelectedQuestionId(selectedCard === index ? null : question.id);
-              }}
-              onMouseEnter={() => setHoveredCard(index)}
-              onMouseLeave={() => setHoveredCard(null)}
-            />
-          ))}
+          <StyledTodayCount>
+            <span>TODAY</span>
+            {successCount} / 3
+          </StyledTodayCount>
+          <StyledCardContainer>
+            {questions.map((question, index) => (
+              <QuestionCard
+                key={index}
+                questionId={question.id}
+                isSuccess={question.isSuccess}
+                title={question.title}
+                subject={question.subject}
+                level={question.level}
+                script={question.script}
+                isSelected={selectedCard === index}
+                isHovered={hoveredCard === index}
+                onClick={() => {
+                  setSelectedCard(selectedCard === index ? null : index);
+                  setSelectedQuestionId(selectedCard === index ? null : question.id);
+                }}
+                onMouseEnter={() => setHoveredCard(index)}
+                onMouseLeave={() => setHoveredCard(null)}
+              />
+            ))}
+          </StyledCardContainer>
+          <StyledButton
+            onClick={handleToCodingTest}
+            isSelected={selectedQuestionId !== null}
+            disabled={selectedQuestionId === null}
+          >
+            시작하기
+          </StyledButton>
         </StyledSection>
-        <StyledButton onClick={handleToCodingTest} isSelected={selectedQuestionId !== null || isAnyCardHovered}>
-          시작하기
-        </StyledButton>
       </StyledMain>
     </>
   );
 };
 
 const StyledMain = styled.main`
-  height: 100vh;
+  height: calc(100vh - 6.25rem);
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 4rem;
-  background-color: #ffffff;
+
+  @media (max-width: 768px) {
+    padding: 2rem 1rem;
+  }
 `;
 
+const StyledSection = styled.section`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
 const StyledButton = styled.button<{ isSelected: boolean }>`
   width: 14.1875rem;
   line-height: 3.75rem;
@@ -91,15 +110,41 @@ const StyledButton = styled.button<{ isSelected: boolean }>`
   border-radius: 1.25rem;
   cursor: pointer;
   transition: border-color 0.3s, background-color 0.3s;
+  &:hover {
+    background-color: var(--hover-color);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    background-color: var(--gray400-color);
+    &:hover {
+      background-color: var(--gray400-color);
+    }
+  }
 `;
 
-const StyledSection = styled.section`
+const StyledCardContainer = styled.div`
   display: flex;
   gap: 2.5rem;
+  margin: 1.5625rem 0 4.75rem;
+
   @media (max-width: 768px) {
     height: fit-content;
     padding: 1.25rem;
     flex-direction: column;
     gap: 1.25rem;
+  }
+`;
+
+const StyledTodayCount = styled.div`
+  align-self: flex-end;
+  font-family: var(--font--Galmuri);
+  font-weight: bold;
+  font-size: 0.875rem;
+  line-height: 120%;
+  color: var(--gray400-color);
+
+  & > span {
+    margin-right: 0.9375rem;
   }
 `;

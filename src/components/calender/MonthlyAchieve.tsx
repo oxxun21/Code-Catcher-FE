@@ -71,6 +71,7 @@ export const MonthlyAchieve = ({ data }: MonthlyAchieveProps) => {
 };
 
 const StyledContianer = styled.article`
+  background-color: #fafafa;
   border: 1px solid #d1d1d1;
   border-radius: 1.25rem;
   padding: 3rem 2.5rem;

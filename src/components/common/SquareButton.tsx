@@ -26,7 +26,7 @@ const Button = styled.button<ButtonProps>`
   text-align: center;
   transition: all 0.3s;
   &:hover {
-    background-color: ${props => (props.white ? "var(--gray300-color)" : "var(--dark-color)")}; // 임시
+    background-color: ${props => (props.white ? "var(--gray100-color)" : "var(--hover-color)")};
   }
   &:disabled {
     background-color: #427042;
