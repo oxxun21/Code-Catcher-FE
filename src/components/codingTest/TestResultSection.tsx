@@ -62,8 +62,3 @@ const ResultTitle = styled.strong`
   font-weight: 500;
   border-bottom: 2px solid var(--background-color);
 `;
-
-const Test = styled.section<{ editorHeight: number }>`
-  height: calc(${props => props.editorHeight}% - 3.5rem);
-  overflow: auto;
-`;
