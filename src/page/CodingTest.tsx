@@ -14,22 +14,25 @@ import { useDraggable } from "../hook";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { getQuestionAPI } from "../api";
-import { Question_I, ScoreSubmit_I, SubmissionProps_I, TestScoreSubmit_I } from "../interface";
+import { QuestionOutline_I, Question_I, ScoreSubmit_I, SubmissionProps_I, TestScoreSubmit_I } from "../interface";
 import icon_test_complete from "../assets/icon_test_complete.svg";
 import icon_test_failed from "../assets/icon_test_failed.svg";
 import { AxiosError } from "axios";
 import { postRetryScoreSubmitAPI, postScoreSubmitAPI } from "../api/scoreSubmit";
 import { postTestScoreSubmitAPI } from "../api/testScoreSubmit";
+import { Loading } from "../components/common/Loading";
 
 export const CodingTest = () => {
   const { id } = useParams();
   const [question, setQuestion] = useState<Question_I | undefined>();
+  const [todayQuestionList, setTodayQuestionList] = useState<QuestionOutline_I[] | undefined>();
   const [language, setLanguage] = useState<"Java" | "Python">("Java");
   const [isModal, setIsModal] = useState(false);
   const [codeValue, setCodeValue] = useState("");
   const [testValue, setTestValue] = useState<TestScoreSubmit_I | undefined>();
   const [submitValue, setSubmitValue] = useState<ScoreSubmit_I | undefined>();
   const [isMedia, setIsMedia] = useState(window.innerWidth <= 768);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const {
@@ -57,7 +60,10 @@ export const CodingTest = () => {
     (async () => {
       try {
         const response = await getQuestionAPI(id);
-        setQuestion(response);
+        const questionData: Question_I = response.questionData.data;
+        const todayQuestionListData: QuestionOutline_I[] = response.todayQuestionListData.data;
+        setQuestion(questionData);
+        setTodayQuestionList(todayQuestionListData);
       } catch (error) {
         const axiosError = error as AxiosError;
         console.log(axiosError);
@@ -89,6 +95,8 @@ export const CodingTest = () => {
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -97,9 +105,16 @@ export const CodingTest = () => {
     submissionFunc<TestScoreSubmit_I>(postTestScoreSubmitAPI, setTestValue);
   };
 
+  // const doesIdExistInQuestions = (id: number) => {
+  //   return Object.values(todayQuestionList as QuestionOutline_I[]).some(todayQuestion => todayQuestion.id === id);
+  // };
+
+  // console.log(doesIdExistInQuestions(Number(id))); // 이게 true면 오늘꺼
+
   const handleSubmit = () => {
     setTestValue(undefined);
-    console.log(submitValue);
+    // console.log(submitValue);
+    setIsLoading(true);
     if (submitValue?.first === false) {
       submissionFunc<ScoreSubmit_I>(postRetryScoreSubmitAPI, setSubmitValue, true);
     }
@@ -117,6 +132,11 @@ export const CodingTest = () => {
   }
 
   console.log(question);
+  console.log(todayQuestionList);
+
+  // if (isLoading) {
+  //   return <Loading />;
+  // }
 
   return (
     <>
@@ -188,6 +208,7 @@ export const CodingTest = () => {
           </ModalContain>
         </Modal>
       )}
+      {isLoading && <Loading />}
     </>
   );
 };

@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { deleteBookmarkAPI, getAiFeedbackAPI, getBookmarkInfoAPI, patchBookmarkAPI, postBookmarkAPI } from "../api";
 import { AiFeedback_I, BookmarkInfoOne_I } from "../interface";
 import icon_tooltip from "../assets/icon_tooltip.svg";
+import { Loading } from "../components/common/Loading";
 
 export const CodeCompare = () => {
   const [isMedia, setIsMedia] = useState(window.innerWidth <= 768);
@@ -24,6 +25,7 @@ export const CodeCompare = () => {
   const [bookmarkInfo, setBookmarkInfo] = useState<BookmarkInfoOne_I | undefined>();
   const [isModal, setIsModal] = useState(false);
   const [aiRes, setAiRes] = useState<AiFeedback_I | undefined>();
+  const [isLoading, setIsLoading] = useState(false);
   const { id } = useParams();
 
   useEffect(() => {
@@ -113,7 +115,14 @@ export const CodeCompare = () => {
     }
   };
 
-  const handleAICodeReview = () => {};
+  const handleAICodeReview = () => {
+    setIsLoading(true);
+    try {
+    } catch (error) {
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <>
@@ -204,6 +213,7 @@ export const CodeCompare = () => {
           </ModalContain>
         </Modal>
       )}
+      {isLoading && <Loading />}
     </>
   );
 };
