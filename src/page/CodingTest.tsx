@@ -1,5 +1,6 @@
 import {
   CodeEditor,
+  Gutter,
   Header,
   Modal,
   RoundButton,
@@ -9,8 +10,6 @@ import {
   TestResultSection,
 } from "../components";
 import styled from "@emotion/styled";
-import gutter_horizontal from "../assets/gutter_horizontal.svg";
-import gutter_vertical from "../assets/gutter_vertical.svg";
 import { useDraggable } from "../hook";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -130,7 +129,7 @@ export const CodingTest = () => {
         <Gutter orientation="horizontal" onMouseDown={startDragHorizontal} />
         <CodeContain style={{ width: isMedia ? "100%" : `${100 - descWidth}%` }}>
           <SelectLang language={language} setLanguage={setLanguage} />
-          <CodeEditor language={language} editorHeight={editorHeight} setCodeValue={setCodeValue} />
+          <CodeEditor language={language} editorHeight={editorHeight} setCodeValue={setCodeValue} question={question} />
           <Gutter orientation="vertical" onMouseDown={startDragVertical} />
           <TestResultSection
             editorHeight={editorHeight}
@@ -224,22 +223,6 @@ const ButtonContain = styled.div`
   gap: 0.75rem;
   @media only screen and (max-width: 768px) {
     position: relative;
-  }
-`;
-
-const Gutter = styled.div<{ orientation: "vertical" | "horizontal" }>`
-  width: ${props => props.orientation === "horizontal" && "24px"};
-  height: ${props => props.orientation === "vertical" && "24px"};
-  background: ${props =>
-    props.orientation === "horizontal"
-      ? `url(${gutter_horizontal}) no-repeat center`
-      : `url(${gutter_vertical}) no-repeat center`};
-  background-size: ${props => (props.orientation === "horizontal" ? "auto/40px" : "40px/auto")};
-  border-right: ${props => props.orientation === "horizontal" && "2px solid var(--background-color)"};
-  border-top: ${props => props.orientation === "vertical" && "2px solid var(--background-color)"};
-  cursor: ${props => (props.orientation === "horizontal" ? "e-resize" : "n-resize")};
-  @media only screen and (max-width: 768px) {
-    display: none;
   }
 `;
 

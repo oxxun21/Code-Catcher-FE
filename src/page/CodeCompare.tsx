@@ -1,10 +1,8 @@
 import styled from "@emotion/styled";
-import gutter_horizontal from "../assets/gutter_horizontal.svg";
-import gutter_vertical from "../assets/gutter_vertical.svg";
 import icon_bookmark from "../assets/icon_bookmark.svg";
 import icon_bookmark_true from "../assets/icon_bookmark_true.svg";
 import { useDraggable } from "../hook";
-import { Header, Modal, ReadOnlyEditor, RoundButton, SquareButton } from "../components";
+import { Gutter, Header, Modal, ReadOnlyEditor, RoundButton, SquareButton } from "../components";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { deleteBookmarkAPI, getAiFeedbackAPI, getBookmarkInfoAPI, patchBookmarkAPI, postBookmarkAPI } from "../api";
@@ -50,7 +48,6 @@ export const CodeCompare = () => {
       }
     })();
   }, [id]);
-  console.log(Number(id));
 
   useEffect(() => {
     (async () => {
@@ -66,7 +63,7 @@ export const CodeCompare = () => {
   function formatDate(originalDateString: string) {
     const date = new Date(originalDateString);
     const year = date.getFullYear().toString();
-    const month = (date.getMonth() + 1).toString().padStart(2, "0"); // +1 because months are 0-indexed
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
     const day = date.getDate().toString().padStart(2, "0");
 
     return `${year}.${month}.${day}`;
@@ -111,6 +108,8 @@ export const CodeCompare = () => {
     }
   };
 
+  const handleAICodeReview = () => {};
+
   return (
     <>
       <Header />
@@ -145,17 +144,20 @@ export const CodeCompare = () => {
             </CompareHeader>
             <ReadOnlyEditor code={aiRes?.gptCode as string} language={location.state?.language} />
           </div>
-          <div style={{ height: `${100 - editorHeight}%` }} className="Feedback">
-            <Gutter orientation="vertical" onMouseDown={startDragVertical} />
-            <CompareHeader>
-              <strong>AI Feedback</strong>
-            </CompareHeader>
+          <Gutter orientation="vertical" onMouseDown={startDragVertical} changeBackColor={false} />
+          <FeedbackTitle>AI Feedback</FeedbackTitle>
+          <FeedbackSection editorHeight={editorHeight}>
             <p>{aiRes?.gptCodeExplain}</p>
-          </div>
+          </FeedbackSection>
         </section>
       </Contain>
       <ButtonContain>
-        <SquareButton as={Link} to="/" text="나가기" />
+        <SquareButton onClick={handleAICodeReview} text="AI 코드 리뷰 시작하기" disabled={false} />
+        <div className="notice">
+          하루 1회에 한하여 <span>내가 작성한 코드에 대한 AI의 리뷰</span>를 제공합니다.
+          <br /> 코드 리뷰를 받으면 해당 기능은 다음날까지 비활성화됩니다.
+        </div>
+        <SquareButton as={Link} to="/" text="나가기" white />
       </ButtonContain>
       {isModal && (
         <Modal onClose={() => setIsModal(prev => !prev)} modalHeader="Want to Cancel">
@@ -220,6 +222,16 @@ const CompareHeader = styled.div`
   }
 `;
 
+const FeedbackTitle = styled.strong`
+  background-color: #3f3f47;
+  display: block;
+  font-size: 0.75rem;
+  padding: 0 22px 20px;
+  font-weight: 600;
+  border-bottom: 2px solid var(--background-color);
+  font-family: var(--font--Galmuri);
+`;
+
 const Contain = styled.div`
   display: flex;
   background-color: #32323a;
@@ -251,39 +263,6 @@ const Contain = styled.div`
     }
   }
 
-  .Feedback {
-    background-color: #3f3f47;
-    font-size: 0.75rem;
-    overflow: auto;
-    ::-webkit-scrollbar {
-      width: 5px;
-    }
-    ::-webkit-scrollbar-track {
-      background: transparent;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #555;
-      border-radius: 6px;
-    }
-    ::-webkit-scrollbar-button:vertical:start:decrement,
-    ::-webkit-scrollbar-button:vertical:start:increment,
-    ::-webkit-scrollbar-button:vertical:end:decrement {
-      display: block;
-      height: 5px;
-    }
-    * {
-      scrollbar-width: thin;
-      scrollbar-color: #555 transparent;
-    }
-    & > div:last-of-type {
-      padding-top: 0;
-      border-bottom: 2px solid var(--background-color);
-    }
-    & > p {
-      padding: 24px 22px;
-      line-height: 2;
-    }
-  }
   & > section:first-of-type > div:last-of-type {
     margin-right: 10px;
     height: 85%;
@@ -298,28 +277,44 @@ const Contain = styled.div`
   }
 `;
 
-const Gutter = styled.div<{ orientation: "vertical" | "horizontal" }>`
-  width: ${props => props.orientation === "horizontal" && "24px"};
-  height: ${props => props.orientation === "vertical" && "24px"};
-  background: ${props =>
-    props.orientation === "horizontal"
-      ? `url(${gutter_horizontal}) no-repeat center`
-      : `url(${gutter_vertical}) #3F3F47 no-repeat center`};
-  background-size: ${props => (props.orientation === "horizontal" ? "auto/40px" : "40px/auto")};
-  border-right: ${props => props.orientation === "horizontal" && "2px solid var(--background-color)"};
-  border-top: ${props => props.orientation === "vertical" && "2px solid var(--background-color)"};
-  cursor: ${props => (props.orientation === "horizontal" ? "e-resize" : "n-resize")};
-  z-index: 1;
-  @media only screen and (max-width: 768px) {
-    display: none;
-  }
-`;
-
 const ButtonContain = styled.div`
   width: 100%;
   padding: 10px 22px;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  & > button:first-of-type {
+    position: relative;
+  }
+  .notice {
+    visibility: hidden;
+    position: absolute;
+    bottom: 85px;
+    left: 22px;
+    font-size: 0.875rem;
+    line-height: 1.3;
+    background: #d4fed4;
+    padding: 0.75rem 1rem;
+    border-radius: 10px;
+    color: #222;
+    z-index: 100;
+    & > span {
+      color: #32cd32;
+    }
+    &::before {
+      content: "";
+      position: absolute;
+      bottom: -7px;
+      left: 20px;
+      width: 15px;
+      height: 15px;
+      background-color: #d4fed4;
+      transform: rotate(45deg);
+    }
+  }
+  & > button:first-of-type:hover + .notice {
+    visibility: visible;
+  }
+
   @media only screen and (max-width: 768px) {
     position: relative;
   }
@@ -372,5 +367,42 @@ const ReSaveModalContain = styled.div`
     &:first-of-type {
       color: #f53966;
     }
+  }
+`;
+
+const FeedbackSection = styled.section<{ editorHeight: number }>`
+  background-color: #3f3f47;
+  color: var(--gray400-color);
+  font-size: 0.75rem;
+  overflow: auto;
+  padding: 1.5rem;
+  height: calc(100% - ${props => props.editorHeight + "%"} - 60px);
+  & > p {
+    color: #fff;
+    line-height: 2;
+  }
+  ::-webkit-scrollbar {
+    width: 5px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #555;
+    border-radius: 6px;
+  }
+  ::-webkit-scrollbar-button:vertical:start:decrement,
+  ::-webkit-scrollbar-button:vertical:start:increment,
+  ::-webkit-scrollbar-button:vertical:end:decrement {
+    display: block;
+    height: 5px;
+  }
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #555 transparent;
+  }
+  @media only screen and (max-width: 768px) {
+    padding-top: 20px;
+    border-top: 2px solid var(--background-color);
   }
 `;
