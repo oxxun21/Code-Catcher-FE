@@ -127,7 +127,8 @@ const Contain = styled.div`
 const CodeContain = styled.section`
   display: flex;
   flex-direction: column;
-  
+`;
+
 const ButtonContain = styled.div`
   width: 100%;
   padding: 10px 22px;
