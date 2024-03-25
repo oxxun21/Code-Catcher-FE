@@ -67,8 +67,7 @@ export const Bookmark = () => {
     <>
       <Header />
       <PageHeader>
-        <span>마이페이지 &gt; 북마크 &gt; </span>
-        <h2>{getBookmark?.title}</h2>
+        <h2>마이페이지 &gt; 북마크 &gt; {getBookmark?.title}</h2>
         <span>{getBookmark?.subject}</span>
       </PageHeader>
       <Contain>
@@ -110,20 +109,17 @@ const PageHeader = styled.div`
   justify-content: flex-start;
   align-items: center;
   font-size: 1rem;
+  font-weight: 400;
   & > span {
-    font-family: var(--font--Galmuri);
-    &:last-of-type {
-      color: var(--gray400-color);
-      font-size: 14px;
-      font-family: var(--font--Pretendard);
-    }
+    color: var(--gray400-color);
+    font-size: 14px;
   }
 `;
 
 const Contain = styled.div`
   display: flex;
-  background-color: var(--gray500-color);
-  height: 76vh;
+  background-color: #32323a;
+  height: 75vh;
   @media only screen and (max-width: 768px) {
     flex-direction: column;
     height: 100%;
@@ -137,6 +133,7 @@ const CodeContain = styled.section`
     background-color: #3f3f47;
     font-size: 0.75rem;
     overflow: auto;
+    white-space: pre-wrap;
     ::-webkit-scrollbar {
       width: 5px;
     }
@@ -169,6 +166,7 @@ const CodeContain = styled.section`
     & > p {
       padding: 24px 22px;
       line-height: 2;
+      font-weight: 300;
     }
   }
 `;

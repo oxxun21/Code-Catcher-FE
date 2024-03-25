@@ -20,15 +20,15 @@ const Button = styled.button<ButtonProps>`
   font-family: var(--font--Pretendard);
   font-size: 1rem;
   padding: 16px;
-  background-color: ${props => (props.dark ? "#192E47" : "#f4f4f4")};
+  background-color: ${props => (props.dark ? "var(--secondary-color)" : "#f4f4f4")};
   color: ${props => (props.dark ? "#fff" : "#222")};
-  border: ${props => (props.dark ? "1px solid #222222" : "1px solid #DBDBDB")};
+  border: ${props => (props.dark ? "1px solid var(--black-color)" : "1px solid var(--gray200-color)")};
   border-radius: 20px;
   transition: all 0.3s;
   text-align: center;
   &:hover {
     // 임시
-    background-color: ${props => (props.dark ? "#122134" : "#DBDBDB")};
-    border: ${props => (props.dark ? "1px solid #222222" : "1px solid #989898")};
+    background-color: ${props => (props.dark ? "#122134" : "var(--gray200-color)")};
+    border: ${props => (props.dark ? "1px solid var(--black-color)" : "1px solid var(--gray400-color)")};
   }
 `;

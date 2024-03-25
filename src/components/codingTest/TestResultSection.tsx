@@ -57,7 +57,7 @@ const ResultTitle = styled.strong`
   display: block;
   font-size: 0.875rem;
   padding: 0 22px 20px;
-  color: var(--gray400-color);
-  font-weight: 600;
+  color: var(--gray200-color);
+  font-weight: 500;
   border-bottom: 2px solid var(--background-color);
 `;

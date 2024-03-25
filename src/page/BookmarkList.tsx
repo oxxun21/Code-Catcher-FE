@@ -136,12 +136,11 @@ export const BookmarkList = () => {
 };
 
 const StyledMain = styled.main`
-  height: 100vh;
+  height: calc(100vh - 6.25rem);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #ffffff;
 
   & > section {
     position: relative;
@@ -156,7 +155,7 @@ const StyledMain = styled.main`
       & > h2 {
         font-family: var(--font--Galmuri);
         font-size: 1.25rem;
-        color: #222222;
+        color: var(--black-color);
         font-weight: bold;
       }
       & > p {
@@ -187,6 +186,9 @@ const DeleteButton = styled.button`
     border: 1px solid #bdbdbd;
     background-color: #ffffff;
     cursor: not-allowed;
+  }
+  &:hover {
+    background-color: var(--hover-color);
   }
 `;
 const ModalContents = styled.div`
@@ -219,13 +221,13 @@ const ModalContents = styled.div`
       cursor: pointer;
     }
     & button:nth-child(1) {
-      color: #222222;
-      border: 2px solid #dbdbdb;
+      color: var(--black-color);
+      border: 2px solid var(--gray200-color);
       background-color: #f4f4f4;
     }
     & button:nth-child(2) {
       color: #ffffff;
-      background-color: #192e47;
+      background-color: var(--secondary-color);
     }
   }
 `;
@@ -236,8 +238,8 @@ const StyledTable = styled.table`
 `;
 const StyledTableHead = styled.thead`
   & > tr > th {
-    color: #192e47;
-    border-bottom: 1px solid #dbdbdb;
+    color: var(--secondary-color);
+    border-bottom: 1px solid var(--gray200-color);
     font-family: var(--font--Galmuri);
     font-weight: bold;
     font-size: 0.625rem;
@@ -257,29 +259,34 @@ const StyledTableHead = styled.thead`
   }
 `;
 const StyledTableBody = styled.tbody`
-  color: #222222;
+  color: var(--black-color);
   font-family: var(--font-Pretendard);
 `;
 
 const StyledTableRow = styled.tr<{ checked: boolean }>`
-  border-bottom: 1px solid #dbdbdb;
+  border-bottom: 1px solid var(--gray200-color);
   cursor: pointer;
   background-color: ${props => (props.checked ? "rgba(50, 205, 50, 0.1)" : "#ffffff")};
-
+  &:hover {
+    background-color: ${props => (props.checked ? "rgba(50, 205, 50, 0.1)" : "#f5f5f5")};
+  }
   &:nth-child(even) {
     background-color: ${props => (props.checked ? "rgba(50, 205, 50, 0.1)" : "#f4f4f4")};
+    &:hover {
+      background-color: ${props => (props.checked ? "rgba(50, 205, 50, 0.1)" : "#ececec")};
+    }
   }
 
   & > td {
     padding: 0.625rem 0;
-    color: #222222;
+    color: var(--black-color);
     &:nth-child(1) {
       width: 3rem;
       & img {
         vertical-align: middle;
       }
       padding-left: 0.875rem;
-      color: #192e47;
+      color: var(--secondary-color);
     }
     &:nth-child(2) {
       width: 22rem;
@@ -294,7 +301,7 @@ const StyledTableRow = styled.tr<{ checked: boolean }>`
       & strong {
         font-size: 0.875rem;
         font-weight: 600;
-        color: #222222;
+        color: var(--black-color);
         line-height: 0.875rem;
         white-space: nowrap;
         overflow: hidden;
@@ -326,7 +333,7 @@ const CheckboxDiv = styled.div<{ checked: boolean }>`
   height: 1rem;
   border: ${({ checked }) => (checked ? "none" : "1px solid #bdbdbd")};
   border-radius: 2px;
-  background-color: ${({ checked }) => (checked ? "var(--light-color)" : "transparent")};
+  background-color: ${({ checked }) => (checked ? "var(--point-color)" : "transparent")};
   cursor: pointer;
 `;
 const Checkmark = styled.img`

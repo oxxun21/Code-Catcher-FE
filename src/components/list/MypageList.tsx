@@ -103,7 +103,7 @@ const StyledContainer = styled.article`
     font-family: var(--font--Galmuri);
     font-size: 1.125rem;
     font-weight: bold;
-    color: #222222;
+    color: var(--black-color);
   }
 
   & > div > button {
@@ -119,8 +119,8 @@ const StyledTable = styled.table`
 
 const StyledTableHead = styled.thead`
   & > tr > th {
-    color: #192e47;
-    border-bottom: 1px solid #dbdbdb;
+    color: var(--secondary-color);
+    border-bottom: 1px solid var(--gray200-color);
     font-family: var(--font-Galmuri);
     font-weight: bold;
     font-size: 0.625rem;
@@ -141,14 +141,21 @@ const StyledTableHead = styled.thead`
 `;
 
 const StyledTableBody = styled.tbody`
-  color: #222222;
+  color: var(--black-color);
   font-family: var(--font-Pretendard);
 
   & > tr {
-    border-bottom: 1px solid #dbdbdb;
+    border-bottom: 1px solid var(--gray200-color);
+    background-color: #ffffff;
     cursor: pointer;
+    &:hover {
+      background-color: #f5f5f5;
+    }
     &:nth-child(even) {
       background-color: #f4f4f4;
+      &:hover {
+        background-color: #ececec;
+      }
     }
   }
 
@@ -160,7 +167,7 @@ const StyledTableBody = styled.tbody`
         vertical-align: middle;
       }
       padding-left: 0.25rem;
-      color: #192e47;
+      color: var(--secondary-color);
     }
     &:nth-child(2) {
       display: flex;
@@ -174,7 +181,7 @@ const StyledTableBody = styled.tbody`
       & strong {
         font-size: 0.875rem;
         font-weight: 600;
-        color: #222222;
+        color: var(--black-color);
         width: 9.5625rem;
         line-height: 0.875rem;
         white-space: nowrap;
@@ -193,7 +200,8 @@ const StyledTableBody = styled.tbody`
 const StyledEmptyComponent = styled.div`
   width: 21.875rem;
   height: 9.875rem;
-  background-color: #eeeeee;
+  background-color: #f4f4f4;
+  border-radius: 10px;
 `;
 
 const StyledBookmarkEmpty = styled.div`
@@ -219,7 +227,7 @@ const StyledLastEmpty = styled.div`
     }
     &:hover,
     & > img:hover {
-      color: var(--light-color);
+      color: var(--point-color);
       filter: brightness(0) saturate(100%) invert(43%) sepia(85%) saturate(1352%) hue-rotate(80deg) brightness(119%)
         contrast(89%);
     }

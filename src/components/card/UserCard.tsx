@@ -5,11 +5,13 @@ import styled from "@emotion/styled";
 import * as images from "../../assets/level";
 import editIcon from "../../assets/edit.svg";
 import TooltipIcon from "../../assets/icon_tooltip.svg";
+import LevelInfoImage from "../../assets/tooltip_level.svg";
 
 export const UserCard = () => {
   const { nickname, email, level, exp, expUpper, totalCnt, completeCnt, bookmarkCnt, setUserInfo } = useUserStore();
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editedNickname, setEditedNickname] = useState<string | null>(nickname);
+  const [isVisible, setIsVisible] = useState(false);
 
   type LevelImages = {
     [key: number]: string;
@@ -74,7 +76,19 @@ export const UserCard = () => {
           <div>
             <span>
               <strong>Lv.{level}</strong>
-              <img src={TooltipIcon} alt="레벨 규정 설명" />
+              <StyledTooltip>
+                <img
+                  src={TooltipIcon}
+                  alt="tooltip"
+                  onMouseEnter={() => setIsVisible(true)}
+                  onMouseLeave={() => setIsVisible(false)}
+                />
+                {isVisible && (
+                  <StyledLevelInfoImage>
+                    <img src={LevelInfoImage} alt="레벨 규정 설명" />
+                  </StyledLevelInfoImage>
+                )}
+              </StyledTooltip>
             </span>
             <strong>
               EXP {exp}/{expUpper}
@@ -127,6 +141,10 @@ const StyledCard = styled.article`
   border-radius: 1.25rem;
   padding: 2.5rem 3.875rem 2.8125rem 3.625rem;
   height: 34.1875rem;
+
+  @media (max-width: 768px) {
+    width: 26.2494rem;
+  }
 `;
 const StyledUserInfoGroup = styled.div`
   margin: 1.25rem 0 1.6875rem;
@@ -158,7 +176,8 @@ const StyledUserInfoGroup = styled.div`
 `;
 
 const StyledNickname = styled.div`
-  color: #222222;
+  height: 1.625rem;
+  color: var(--black-color);
   display: flex;
   align-items: center;
   & > strong {
@@ -179,9 +198,10 @@ const StyledNickname = styled.div`
 `;
 
 const StyledNicknameInput = styled.div`
-  color: #222222;
-  background-color: #d4fed4;
-  border-bottom: 1px var(--light-color) solid;
+  height: 1.625rem;
+  color: var(--black-color);
+  background-color: var(--light-color);
+  border-bottom: 1px var(--point-color) solid;
 
   & > input {
     all: unset;
@@ -212,7 +232,7 @@ const StyledProgress = styled.div`
     & span {
       & > strong {
         font-size: 0.875rem;
-        color: #222222;
+        color: var(--black-color);
         font-weight: 500;
       }
       & > img {
@@ -224,9 +244,26 @@ const StyledProgress = styled.div`
       font-family: var(--font--Galmuri);
       font-size: 0.75rem;
       font-weight: bold;
-      color: #989898;
+      color: var(--gray400-color);
     }
   }
+`;
+
+const StyledTooltip = styled.div`
+  position: relative;
+  display: inline-block;
+  & > img {
+    cursor: pointer;
+  }
+`;
+
+const StyledLevelInfoImage = styled.div`
+  position: absolute;
+  top: 100%;
+  left: -38px;
+  max-width: 350.73px;
+  max-height: 240px;
+  z-index: 10;
 `;
 
 const StyledProgressBar = styled.progress`
@@ -243,7 +280,7 @@ const StyledProgressBar = styled.progress`
   }
 
   &::-webkit-progress-value {
-    background-color: var(--light-color); /* 진행된 부분의 색상 */
+    background-color: var(--point-color); /* 진행된 부분의 색상 */
     border-radius: 10px;
   }
 `;
@@ -279,7 +316,7 @@ const StyledStatistics = styled.div`
       bottom: 0;
       width: 1px;
       height: 42px;
-      background-color: #dbdbdb;
+      background-color: var(--gray200-color);
     }
   }
 
@@ -291,7 +328,7 @@ const StyledStatistics = styled.div`
   }
 
   & span {
-    color: #222222;
+    color: var(--black-color);
     font-family: var(--font--Galmuri);
     font-weight: bold;
     font-size: 0.875rem;

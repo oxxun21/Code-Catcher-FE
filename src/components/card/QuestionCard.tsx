@@ -78,15 +78,27 @@ const StyledCard = styled.article<StyledCardProps>`
   background-color: #fafafa;
   font-family: var(--font--Pretendard);
   cursor: pointer;
-  border: 4px solid #d1d1d1;
+  box-shadow: 0 0 0 1px #d1d1d1;
+  border: 4px solid transparent;
   transition: border-color 0.3s, background-color 0.3s;
 
   ${({ isSelected, isHovered }) => {
-    if (isSelected || isHovered) {
+    if (isSelected) {
+      if (isHovered) {
+        return `
+        border: 4px solid var(--point-color);
+        background-color: rgba(50, 205, 50, 0.2);
+    `;
+      }
       return `
-        border-color: var(--light-color);
+        border: 4px solid var(--point-color);
         background-color: rgba(50, 205, 50, 0.2);
       `;
+    }
+    if (isHovered) {
+      return `
+        background-color: #EAEAEA;
+    `;
     }
   }}
 
@@ -101,7 +113,7 @@ const StyledSpan = styled.span`
 
   & > span {
     font-size: 1.25rem;
-    color: #192e47;
+    color: var(--secondary-color);
   }
 `;
 const StyledRank = styled.div`
@@ -127,8 +139,9 @@ const StyledDesc = styled.div<{ isSuccess: boolean | null }>`
     font-weight: bold;
     line-height: 1.625rem;
     font-family: var(--font--Galmuri);
-    background-color: ${({ isSuccess }) =>
-      isSuccess === true ? "#398FF5" : isSuccess === false ? "#F53966" : "#192e47"};
+    color: ${({ isSuccess }) =>
+      isSuccess === true ? "var(--system-positivie-color)" : "var(--system-negative-color)"};
+    background-color: ${({ isSuccess }) => (isSuccess === true ? "rgba(57,143,245, 0.25)" : "rgba(245,57,102,0.2)")};
     border-radius: 999px;
     padding: 0.375rem 0.625rem;
   }
@@ -136,13 +149,14 @@ const StyledDesc = styled.div<{ isSuccess: boolean | null }>`
   & h2 {
     font-size: 1.75rem;
     font-weight: bold;
-    color: #222222;
+    color: var(--black-color);
     margin: 0.75rem 0;
+    line-height: 122%;
   }
   & h3 {
     font-size: 1.25rem;
-    font-weight: 600;
-    color: #192e47;
+    font-weight: 500;
+    color: var(--secondary-color);
     margin-bottom: 3.17rem;
   }
 
@@ -156,7 +170,7 @@ const StyledDesc = styled.div<{ isSuccess: boolean | null }>`
   & strong {
     font-size: 0.875rem;
     font-weight: 600;
-    color: #8b8b8b;
+    color: var(--gray500-color);
   }
   & p {
     font-size: 0.875rem;
