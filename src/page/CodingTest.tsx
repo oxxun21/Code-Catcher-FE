@@ -100,11 +100,12 @@ export const CodingTest = () => {
   const handleSubmit = () => {
     setTestValue(undefined);
     console.log(submitValue);
-
     if (submitValue?.first === false) {
       submissionFunc<ScoreSubmit_I>(postRetryScoreSubmitAPI, setSubmitValue, true);
     }
     submissionFunc<ScoreSubmit_I>(postScoreSubmitAPI, setSubmitValue, true);
+    // 코딩 테스트 3문제 확인(오늘) -> id, isSuccess (오늘 정답을 맞춘적이 있는지 없는지 fail 모달 구별), 오늘 문제는 코딩 테스트 3문제 불러오기로 확인 -> postScoreSubmitAPI, 이 외는 postRetryScoreSubmitAPI
+    // isFirst true -> 유저 정보 다시 불러와서 쿠기에 다시 저장 필요(코드 비교 페이지 나갈 때 가능?)
   };
 
   let message = "";
@@ -115,7 +116,7 @@ export const CodingTest = () => {
     message = submitValue?.correct ? "정답입니다!" : "틀렸습니다";
   }
 
-  console.log(submitValue);
+  console.log(question);
 
   return (
     <>

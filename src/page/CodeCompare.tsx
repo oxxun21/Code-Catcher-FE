@@ -7,6 +7,7 @@ import { Link, useLocation, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { deleteBookmarkAPI, getAiFeedbackAPI, getBookmarkInfoAPI, patchBookmarkAPI, postBookmarkAPI } from "../api";
 import { AiFeedback_I, BookmarkInfoOne_I } from "../interface";
+import icon_tooltip from "../assets/icon_tooltip.svg";
 
 export const CodeCompare = () => {
   const [isMedia, setIsMedia] = useState(window.innerWidth <= 768);
@@ -82,10 +83,14 @@ export const CodeCompare = () => {
       console.log(error);
     }
   };
+  console.log(bookmarkId);
+  console.log(bookmarkInfo);
 
   const handleBookmarkOff = async () => {
     try {
-      await deleteBookmarkAPI(bookmarkId);
+      const res = await deleteBookmarkAPI(bookmarkId);
+      console.log(res);
+
       setIsbookmark(false);
       setIsModal(false);
     } catch (error) {
@@ -146,7 +151,13 @@ export const CodeCompare = () => {
               <ReadOnlyEditor code={aiRes?.gptCode as string} language={location.state?.language} />
             </div>
             <Gutter orientation="vertical" onMouseDown={startDragVertical} changeBackColor={false} />
-            <FeedbackTitle>AI Feedback</FeedbackTitle>
+            <FeedbackTitle>
+              AI Feedback
+              <span>
+                <img src={icon_tooltip} alt="tooltip icon" />
+              </span>
+              <span className="tooltipInfo">AI Code에 대한 설명을 제공합니다.</span>
+            </FeedbackTitle>
             <FeedbackSection editorHeight={editorHeight}>
               <p>{aiRes?.gptCodeExplain}</p>
             </FeedbackSection>
@@ -238,6 +249,37 @@ const FeedbackTitle = styled.strong`
   font-weight: 600;
   border-bottom: 2px solid var(--background-color);
   font-family: var(--font--Galmuri);
+  & > span {
+    display: inline-block;
+    margin-left: 5px;
+    & > img {
+      vertical-align: sub;
+    }
+    &:hover + .tooltipInfo {
+      visibility: visible;
+    }
+  }
+  .tooltipInfo {
+    visibility: hidden;
+    font-family: var(--font--Pretendard);
+    color: var(--gray300-color);
+    border-radius: 4px;
+    background-color: #2e2e31;
+    padding: 7px 10px;
+    font-size: 9px;
+    position: relative;
+    font-weight: 300;
+    &::before {
+      content: "";
+      position: absolute;
+      left: -4px;
+      top: 7px;
+      width: 8px;
+      height: 8px;
+      background-color: #2e2e31;
+      transform: rotate(45deg);
+    }
+  }
 `;
 
 const Contain = styled.div`
