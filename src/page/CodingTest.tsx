@@ -22,6 +22,7 @@ import { AxiosError } from "axios";
 import { postRetryScoreSubmitAPI, postScoreSubmitAPI } from "../api/scoreSubmit";
 import { postTestScoreSubmitAPI } from "../api/testScoreSubmit";
 import { Loading } from "../components/common/Loading";
+import Swal from "sweetalert2";
 
 export const CodingTest = () => {
   const { id } = useParams();
@@ -108,7 +109,24 @@ export const CodingTest = () => {
         setIsModal(true);
       }
     } catch (error) {
-      console.log(error);
+      const axiosError = error as AxiosError;
+      console.log(axiosError);
+      Swal.fire({
+        title: "Sorry",
+        text: `Test Submission ${axiosError?.message}`,
+        width: 600,
+        padding: "3em",
+        color: "#44b044",
+        background: "#fff",
+        backdrop: `
+        rgba(0,0,0,0.4)
+          url("https://sweetalert2.github.io/images/nyan-cat.gif")
+          left top
+          no-repeat
+        `,
+        confirmButtonColor: "#32cd32",
+        confirmButtonText: "Close",
+      });
     } finally {
       setIsLoading(false);
     }

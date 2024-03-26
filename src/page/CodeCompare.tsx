@@ -17,6 +17,8 @@ import { AiFeedback_I, BookmarkInfoOne_I, UserAiFeedback_I } from "../interface"
 import icon_tooltip from "../assets/icon_tooltip.svg";
 import { Loading } from "../components/common/Loading";
 import icon_grayStar from "../assets/icon_grayStar.svg";
+import Swal from "sweetalert2";
+import { AxiosError } from "axios";
 
 export const CodeCompare = () => {
   const [isMedia, setIsMedia] = useState(window.innerWidth <= 768);
@@ -56,7 +58,24 @@ export const CodeCompare = () => {
         });
         setAiRes(response);
       } catch (error) {
-        console.log(error);
+        const axiosError = error as AxiosError;
+        console.log(axiosError);
+        Swal.fire({
+          title: "Sorry",
+          text: `AI Feedback ${axiosError?.message}`,
+          width: 600,
+          padding: "3em",
+          color: "#44b044",
+          background: "#fff",
+          backdrop: `
+          rgba(0,0,0,0.4)
+            url("https://sweetalert2.github.io/images/nyan-cat.gif")
+            left top
+            no-repeat
+          `,
+          confirmButtonColor: "#32cd32",
+          confirmButtonText: "Close",
+        });
       }
     })();
   }, [id]);
@@ -67,7 +86,24 @@ export const CodeCompare = () => {
         const response = await getBookmarkInfoAPI(Number(id));
         setBookmarkInfo(response);
       } catch (error) {
-        console.log(error);
+        const axiosError = error as AxiosError;
+        console.log(axiosError);
+        Swal.fire({
+          title: "Sorry",
+          text: `Bookmark Info ${axiosError?.message}`,
+          width: 600,
+          padding: "3em",
+          color: "#44b044",
+          background: "#fff",
+          backdrop: `
+          rgba(0,0,0,0.4)
+            url("https://sweetalert2.github.io/images/nyan-cat.gif")
+            left top
+            no-repeat
+          `,
+          confirmButtonColor: "#32cd32",
+          confirmButtonText: "Close",
+        });
       }
     })();
   }, [id]);
@@ -91,7 +127,24 @@ export const CodeCompare = () => {
       setBookmarkId(response);
       setIsbookmark(true);
     } catch (error) {
-      console.log(error);
+      const axiosError = error as AxiosError;
+      console.log(axiosError);
+      Swal.fire({
+        title: "Sorry",
+        text: `Bookmark save ${axiosError?.message}`,
+        width: 600,
+        padding: "3em",
+        color: "#44b044",
+        background: "#fff",
+        backdrop: `
+          rgba(0,0,0,0.4)
+            url("https://sweetalert2.github.io/images/nyan-cat.gif")
+            left top
+            no-repeat
+          `,
+        confirmButtonColor: "#32cd32",
+        confirmButtonText: "Close",
+      });
     }
   };
   const handleBookmarkOff = async () => {
@@ -100,13 +153,30 @@ export const CodeCompare = () => {
       setIsbookmark(false);
       setIsModal(false);
     } catch (error) {
-      console.log(error);
+      const axiosError = error as AxiosError;
+      console.log(axiosError);
+      Swal.fire({
+        title: "Sorry",
+        text: `Bookmark Off ${axiosError?.message}`,
+        width: 600,
+        padding: "3em",
+        color: "#44b044",
+        background: "#fff",
+        backdrop: `
+          rgba(0,0,0,0.4)
+            url("https://sweetalert2.github.io/images/nyan-cat.gif")
+            left top
+            no-repeat
+          `,
+        confirmButtonColor: "#32cd32",
+        confirmButtonText: "Close",
+      });
     }
   };
 
   const handleBookmarkReSave = async () => {
     try {
-      const response = await patchBookmarkAPI({
+      await patchBookmarkAPI({
         problemId: bookmarkInfo?.bookmarkId as string,
         codeType: location.state?.language,
         code: location.state.myCode,
@@ -114,7 +184,24 @@ export const CodeCompare = () => {
       setIsbookmark(true);
       setIsConfirmBookmarkModal(false);
     } catch (error) {
-      console.log(error);
+      const axiosError = error as AxiosError;
+      console.log(axiosError);
+      Swal.fire({
+        title: "Sorry",
+        text: `Bookmark ReSave ${axiosError?.message}`,
+        width: 600,
+        padding: "3em",
+        color: "#44b044",
+        background: "#fff",
+        backdrop: `
+        rgba(0,0,0,0.4)
+          url("https://sweetalert2.github.io/images/nyan-cat.gif")
+          left top
+          no-repeat
+        `,
+        confirmButtonColor: "#32cd32",
+        confirmButtonText: "Close",
+      });
     }
   };
 
@@ -124,7 +211,24 @@ export const CodeCompare = () => {
       const response = await postUserAiFeedbackAPI({ myCode: location.state.myCode, problemId: Number(id) });
       setUserAiReview(response);
     } catch (error) {
-      console.log(error);
+      const axiosError = error as AxiosError;
+      console.log(axiosError);
+      Swal.fire({
+        title: "Sorry",
+        text: `User AI Code Review ${axiosError?.message}`,
+        width: 600,
+        padding: "3em",
+        color: "#44b044",
+        background: "#fff",
+        backdrop: `
+          rgba(0,0,0,0.4)
+            url("https://sweetalert2.github.io/images/nyan-cat.gif")
+            left top
+            no-repeat
+          `,
+        confirmButtonColor: "#32cd32",
+        confirmButtonText: "Close",
+      });
     } finally {
       setIsLoading(false);
     }
