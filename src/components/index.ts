@@ -14,8 +14,5 @@ export * from "./common/RoundButton.tsx";
 export * from "./common/MobilePopup.tsx";
 export * from "./list/MypageList.tsx";
 export * from "./calender/MonthlyAchieve.tsx";
-<<<<<<< HEAD
 export * from "./common/HelmetMetaTags.tsx";
-=======
 export * from "./common/Gutter.tsx";
->>>>>>> 3c7fa46d35619273e1ddbc7d1b0efe3ceffcf9e3

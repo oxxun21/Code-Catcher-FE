@@ -4,14 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import { getBookmarkAPI } from "../api";
 import { Bookmark_I } from "../interface";
 import { useDraggable } from "../hook";
-<<<<<<< HEAD
-import { Header, HelmetMetaTags, ReadOnlyEditor, SquareButton, TestDescSection } from "../components";
-import gutter_horizontal from "../assets/gutter_horizontal.svg";
-import gutter_vertical from "../assets/gutter_vertical.svg";
-import { metaData } from "../meta/metaData";
-=======
 import { Gutter, Header, ReadOnlyEditor, SquareButton, TestDescSection } from "../components";
->>>>>>> 3c7fa46d35619273e1ddbc7d1b0efe3ceffcf9e3
 
 export const Bookmark = () => {
   const { id } = useParams();
@@ -70,7 +63,6 @@ export const Bookmark = () => {
 
   return (
     <>
-      <HelmetMetaTags meta={metaData.bookmark} />
       <Header />
       <Main>
         <PageHeader>

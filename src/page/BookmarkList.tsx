@@ -6,7 +6,8 @@ import styled from "@emotion/styled";
 import StarPixel from "../assets/star_pixel.svg";
 import CheckedImage from "../assets/checked.svg";
 import { Pagination } from "../components/list/Pagination";
-import { Header, Modal } from "../components";
+import { Header, HelmetMetaTags, Modal } from "../components";
+import { metaData } from "../meta/metaData";
 
 export const BookmarkList = () => {
   const [data, setData] = useState<BookmarkListAll_I | undefined>(undefined);
@@ -64,6 +65,7 @@ export const BookmarkList = () => {
   };
   return (
     <>
+      <HelmetMetaTags meta={metaData.bookmark} />
       <Header />
       <StyledMain>
         <section>
