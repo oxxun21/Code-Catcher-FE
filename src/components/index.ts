@@ -16,3 +16,4 @@ export * from "./list/MypageList.tsx";
 export * from "./calender/MonthlyAchieve.tsx";
 export * from "./common/HelmetMetaTags.tsx";
 export * from "./common/Gutter.tsx";
+export * from "./codeCompare/UserAICodeReview.tsx";

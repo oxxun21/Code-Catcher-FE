@@ -2,12 +2,23 @@ import styled from "@emotion/styled";
 import icon_bookmark from "../assets/icon_bookmark.svg";
 import icon_bookmark_true from "../assets/icon_bookmark_true.svg";
 import { useDraggable } from "../hook";
-import { Gutter, Header, Modal, ReadOnlyEditor, RoundButton, SquareButton } from "../components";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Gutter, Header, Modal, ReadOnlyEditor, RoundButton, SquareButton, UserAICodeReview } from "../components";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { deleteBookmarkAPI, getAiFeedbackAPI, getBookmarkInfoAPI, patchBookmarkAPI, postBookmarkAPI } from "../api";
-import { AiFeedback_I, BookmarkInfoOne_I } from "../interface";
+import {
+  deleteBookmarkAPI,
+  getAiFeedbackAPI,
+  getBookmarkInfoAPI,
+  patchBookmarkAPI,
+  postBookmarkAPI,
+  postUserAiFeedbackAPI,
+} from "../api";
+import { AiFeedback_I, BookmarkInfoOne_I, UserAiFeedback_I } from "../interface";
 import icon_tooltip from "../assets/icon_tooltip.svg";
+import { Loading } from "../components/common/Loading";
+import icon_grayStar from "../assets/icon_grayStar.svg";
+import Swal from "sweetalert2";
+import { AxiosError } from "axios";
 
 export const CodeCompare = () => {
   const [isMedia, setIsMedia] = useState(window.innerWidth <= 768);
@@ -24,7 +35,10 @@ export const CodeCompare = () => {
   const [bookmarkInfo, setBookmarkInfo] = useState<BookmarkInfoOne_I | undefined>();
   const [isModal, setIsModal] = useState(false);
   const [aiRes, setAiRes] = useState<AiFeedback_I | undefined>();
+  const [isLoading, setIsLoading] = useState(false);
   const { id } = useParams();
+  const [userAiReview, setUserAiReview] = useState<UserAiFeedback_I | undefined>();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleResize = () => {
@@ -45,7 +59,27 @@ export const CodeCompare = () => {
         });
         setAiRes(response);
       } catch (error) {
-        console.log(error);
+        const axiosError = error as AxiosError;
+        console.log(axiosError);
+        if (axiosError.response?.status === 404) {
+          navigate("/404");
+        }
+        Swal.fire({
+          title: "Sorry",
+          text: `AI Feedback ${axiosError?.message}`,
+          width: 600,
+          padding: "3em",
+          color: "#44b044",
+          background: "#fff",
+          backdrop: `
+          rgba(0,0,0,0.4)
+            url("https://sweetalert2.github.io/images/nyan-cat.gif")
+            left top
+            no-repeat
+          `,
+          confirmButtonColor: "#32cd32",
+          confirmButtonText: "Close",
+        });
       }
     })();
   }, [id]);
@@ -56,7 +90,27 @@ export const CodeCompare = () => {
         const response = await getBookmarkInfoAPI(Number(id));
         setBookmarkInfo(response);
       } catch (error) {
-        console.log(error);
+        const axiosError = error as AxiosError;
+        console.log(axiosError);
+        if (axiosError.response?.status === 404) {
+          navigate("/404");
+        }
+        Swal.fire({
+          title: "Sorry",
+          text: `Bookmark Info ${axiosError?.message}`,
+          width: 600,
+          padding: "3em",
+          color: "#44b044",
+          background: "#fff",
+          backdrop: `
+          rgba(0,0,0,0.4)
+            url("https://sweetalert2.github.io/images/nyan-cat.gif")
+            left top
+            no-repeat
+          `,
+          confirmButtonColor: "#32cd32",
+          confirmButtonText: "Close",
+        });
       }
     })();
   }, [id]);
@@ -80,40 +134,126 @@ export const CodeCompare = () => {
       setBookmarkId(response);
       setIsbookmark(true);
     } catch (error) {
-      console.log(error);
+      const axiosError = error as AxiosError;
+      console.log(axiosError);
+      if (axiosError.response?.status === 404) {
+        navigate("/404");
+      }
+
+      Swal.fire({
+        title: "Sorry",
+        text: `Bookmark save ${axiosError?.message}`,
+        width: 600,
+        padding: "3em",
+        color: "#44b044",
+        background: "#fff",
+        backdrop: `
+          rgba(0,0,0,0.4)
+            url("https://sweetalert2.github.io/images/nyan-cat.gif")
+            left top
+            no-repeat
+          `,
+        confirmButtonColor: "#32cd32",
+        confirmButtonText: "Close",
+      });
     }
   };
-  console.log(bookmarkId);
-  console.log(bookmarkInfo);
-
   const handleBookmarkOff = async () => {
     try {
-      const res = await deleteBookmarkAPI(bookmarkId);
-      console.log(res);
-
+      deleteBookmarkAPI(bookmarkId);
       setIsbookmark(false);
       setIsModal(false);
     } catch (error) {
-      console.log(error);
+      const axiosError = error as AxiosError;
+      console.log(axiosError);
+      if (axiosError.response?.status === 404) {
+        navigate("/404");
+      }
+
+      Swal.fire({
+        title: "Sorry",
+        text: `Bookmark Off ${axiosError?.message}`,
+        width: 600,
+        padding: "3em",
+        color: "#44b044",
+        background: "#fff",
+        backdrop: `
+          rgba(0,0,0,0.4)
+            url("https://sweetalert2.github.io/images/nyan-cat.gif")
+            left top
+            no-repeat
+          `,
+        confirmButtonColor: "#32cd32",
+        confirmButtonText: "Close",
+      });
     }
   };
 
   const handleBookmarkReSave = async () => {
     try {
-      const response = await patchBookmarkAPI({
+      await patchBookmarkAPI({
         problemId: bookmarkInfo?.bookmarkId as string,
         codeType: location.state?.language,
         code: location.state.myCode,
       });
       setIsbookmark(true);
       setIsConfirmBookmarkModal(false);
-      console.log(response);
     } catch (error) {
-      console.log(error);
+      const axiosError = error as AxiosError;
+      console.log(axiosError);
+      if (axiosError.response?.status === 404) {
+        navigate("/404");
+      }
+      Swal.fire({
+        title: "Sorry",
+        text: `Bookmark ReSave ${axiosError?.message}`,
+        width: 600,
+        padding: "3em",
+        color: "#44b044",
+        background: "#fff",
+        backdrop: `
+        rgba(0,0,0,0.4)
+          url("https://sweetalert2.github.io/images/nyan-cat.gif")
+          left top
+          no-repeat
+        `,
+        confirmButtonColor: "#32cd32",
+        confirmButtonText: "Close",
+      });
     }
   };
 
-  const handleAICodeReview = () => {};
+  const handleAICodeReview = async () => {
+    setIsLoading(true);
+    try {
+      const response = await postUserAiFeedbackAPI({ myCode: location.state.myCode, problemId: Number(id) });
+      setUserAiReview(response);
+    } catch (error) {
+      const axiosError = error as AxiosError;
+      console.log(axiosError);
+      if (axiosError.response?.status === 404) {
+        navigate("/404");
+      }
+      Swal.fire({
+        title: "Sorry",
+        text: `User AI Code Review ${axiosError?.message}`,
+        width: 600,
+        padding: "3em",
+        color: "#44b044",
+        background: "#fff",
+        backdrop: `
+          rgba(0,0,0,0.4)
+            url("https://sweetalert2.github.io/images/nyan-cat.gif")
+            left top
+            no-repeat
+          `,
+        confirmButtonColor: "#32cd32",
+        confirmButtonText: "Close",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <>
@@ -121,6 +261,12 @@ export const CodeCompare = () => {
       <Main>
         <PageHeader>
           <h2>{location.state.question.title}</h2>
+          <span>
+            Lv
+            {Array.from({ length: location.state.question?.level as number }, _ => (
+              <img src={icon_grayStar} alt={`레벨 ${location.state.question?.level}`} />
+            ))}
+          </span>
           <span>{location.state.question.subject}</span>
         </PageHeader>
         <Contain>
@@ -129,6 +275,7 @@ export const CodeCompare = () => {
               <strong>My Code</strong>
             </CompareHeader>
             <ReadOnlyEditor code={location.state.myCode} language={location.state?.language} />
+            <UserAICodeReview userAiReview={userAiReview as UserAiFeedback_I} />
           </section>
           <Gutter orientation="horizontal" onMouseDown={startDragHorizontal} />
           <section style={{ width: isMedia ? "100%" : `${100 - descWidth}%` }}>
@@ -204,6 +351,7 @@ export const CodeCompare = () => {
           </ModalContain>
         </Modal>
       )}
+      {isLoading && <Loading />}
     </>
   );
 };
@@ -219,14 +367,34 @@ const PageHeader = styled.div`
   padding: 1rem 22px;
   font-weight: 600;
   border-bottom: 2px solid var(--background-color);
+  display: flex;
+  justify-content: flex-start;
+  gap: 12px;
+  align-items: flex-end;
   & > h2 {
     font-size: 1rem;
-    display: inline-block;
-    margin-right: 12px;
   }
   & > span {
     color: var(--gray400-color);
     font-size: 14px;
+    font-weight: 400;
+  }
+  & > span:first-of-type {
+    display: flex;
+    gap: 2px;
+    align-items: center;
+    justify-content: center;
+    margin-right: 8px;
+    position: relative;
+    &::after {
+      content: "";
+      position: absolute;
+      right: -10px;
+      top: 0;
+      width: 1px;
+      height: 100%;
+      background-color: var(--gray700-color);
+    }
   }
 `;
 
@@ -286,6 +454,30 @@ const Contain = styled.div`
   display: flex;
   height: calc(100vh - 10.875rem);
 
+  & > section:first-of-type {
+    overflow: auto;
+    ::-webkit-scrollbar {
+      width: 5px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #555;
+      border-radius: 6px;
+    }
+    ::-webkit-scrollbar-button:vertical:start:decrement,
+    ::-webkit-scrollbar-button:vertical:start:increment,
+    ::-webkit-scrollbar-button:vertical:end:decrement {
+      display: block;
+      height: 5px;
+    }
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: #555 transparent;
+    }
+  }
+
   .gptCode {
     display: flex;
     justify-content: space-between;
@@ -314,7 +506,6 @@ const Contain = styled.div`
 
   & > section:first-of-type > div:last-of-type {
     margin-right: 10px;
-    height: 85%;
     @media only screen and (max-width: 768px) {
       margin-right: 22px;
     }

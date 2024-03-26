@@ -1,10 +1,13 @@
 import { instance } from "./instance";
-import { Question_I } from "../interface";
 
-export const getQuestionAPI = async (id: string | undefined): Promise<Question_I | undefined> => {
+export const getQuestionAPI = async (id: string | undefined) => {
   try {
-    const response = await instance.get(`/coding/question?id=${id}`);
-    return response.data;
+    const [questionData, todayQuestionListData] = await Promise.all([
+      instance.get(`/coding/question?id=${id}`),
+      instance.get("/coding/questionlist"),
+    ]);
+
+    return { questionData, todayQuestionListData };
   } catch (error) {
     throw error;
   }

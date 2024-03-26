@@ -1,16 +1,20 @@
 import styled from "@emotion/styled";
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { getBookmarkAPI } from "../api";
 import { Bookmark_I } from "../interface";
 import { useDraggable } from "../hook";
 import { Gutter, Header, ReadOnlyEditor, SquareButton, TestDescSection } from "../components";
+import icon_grayStar from "../assets/icon_grayStar.svg";
+import { AxiosError } from "axios";
+import Swal from "sweetalert2";
 
 export const Bookmark = () => {
   const { id } = useParams();
   const [getBookmark, setGetBookmark] = useState<Bookmark_I | undefined>();
   const [activeTab, setActiveTab] = useState("myCode");
   const [isMedia, setIsMedia] = useState(window.innerWidth <= 768);
+  const navigate = useNavigate();
   const {
     width: descWidth,
     height: editorHeight,
@@ -35,7 +39,28 @@ export const Bookmark = () => {
         console.log(response);
         setGetBookmark(response);
       } catch (error) {
-        console.log(error);
+        const axiosError = error as AxiosError;
+        console.log(axiosError);
+        if (axiosError.response?.status === 404) {
+          navigate("/404");
+        }
+
+        Swal.fire({
+          title: "Sorry",
+          text: `Bookmark Info ${axiosError?.message}`,
+          width: 600,
+          padding: "3em",
+          color: "#44b044",
+          background: "#fff",
+          backdrop: `
+          rgba(0,0,0,0.4)
+            url("https://sweetalert2.github.io/images/nyan-cat.gif")
+            left top
+            no-repeat
+          `,
+          confirmButtonColor: "#32cd32",
+          confirmButtonText: "Close",
+        });
       }
     })();
   }, [id]);
@@ -67,6 +92,12 @@ export const Bookmark = () => {
       <Main>
         <PageHeader>
           <h2>마이페이지 &gt; 북마크 &gt; {getBookmark?.title}</h2>
+          <span>
+            Lv
+            {Array.from({ length: getBookmark?.level as number }, _ => (
+              <img src={icon_grayStar} alt={`레벨 ${getBookmark?.level}`} />
+            ))}
+          </span>
           <span>{getBookmark?.subject}</span>
         </PageHeader>
         <Contain>
@@ -113,12 +144,29 @@ const PageHeader = styled.div`
   display: flex;
   gap: 12px;
   justify-content: flex-start;
-  align-items: center;
+  align-items: flex-end;
   font-size: 1rem;
   font-weight: 400;
   & > span {
     color: var(--gray400-color);
     font-size: 14px;
+  }
+  & > span:first-of-type {
+    display: flex;
+    gap: 2px;
+    align-items: center;
+    justify-content: center;
+    margin-right: 8px;
+    position: relative;
+    &::after {
+      content: "";
+      position: absolute;
+      right: -10px;
+      top: 0;
+      width: 1px;
+      height: 100%;
+      background-color: var(--gray700-color);
+    }
   }
 `;
 
