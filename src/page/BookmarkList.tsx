@@ -13,11 +13,12 @@ export const BookmarkList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [checkedItems, setCheckedItems] = useState<{ [key: string]: boolean }>({});
   const isAnyChecked = Object.values(checkedItems).some(checked => checked);
+  const [currentPage, setCurrentPage] = useState<number>(data?.currentPage || 0);
 
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
-        const data = await getBookmarkListAPI(0);
+        const data = await getBookmarkListAPI(currentPage);
         setData(data);
       } catch (error) {
         console.error("북마크 불러오기 실패", error);
@@ -25,9 +26,8 @@ export const BookmarkList = () => {
     };
 
     fetchQuestions();
-  }, []);
+  }, [currentPage]);
 
-  const [currentPage, setCurrentPage] = useState<number>(data?.currentPage || 0);
   const totalPage = data?.totalPage || 0;
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);

@@ -9,11 +9,12 @@ import { Header } from "../components";
 
 export const LastQuestionList = () => {
   const [data, setData] = useState<ProblemListAll_I | undefined>(undefined);
+  const [currentPage, setCurrentPage] = useState<number>(data?.currentPage || 0);
 
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
-        const data = await getLastQuestionListAPI(0);
+        const data = await getLastQuestionListAPI(currentPage);
         setData(data);
       } catch (error) {
         console.error("지난 테스트 내역 불러오기 실패", error);
@@ -21,9 +22,8 @@ export const LastQuestionList = () => {
     };
 
     fetchQuestions();
-  }, []);
+  }, [currentPage]);
 
-  const [currentPage, setCurrentPage] = useState<number>(data?.currentPage || 0);
   const totalPage = data?.totalPage || 0;
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
