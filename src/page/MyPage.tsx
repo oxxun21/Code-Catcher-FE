@@ -1,9 +1,10 @@
 import styled from "@emotion/styled";
-import { UserCard, MypageList, GalmuriButton, MonthlyAchieve, Header } from "../components";
+import { UserCard, MypageList, GalmuriButton, MonthlyAchieve, Header, HelmetMetaTags } from "../components";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getMyPageInfoAPI } from "../api";
 import { MyPageInfo_I } from "../interface";
+import { metaData } from "../meta/metaData";
 
 export const MyPage = ({}) => {
   const [myInfo, setMyInfo] = useState<MyPageInfo_I>({
@@ -27,6 +28,7 @@ export const MyPage = ({}) => {
   console.log("이거 useState myInfo임", myInfo);
   return (
     <>
+      <HelmetMetaTags meta={metaData.myPage} />
       <Header />
       <StyledMain>
         <section>

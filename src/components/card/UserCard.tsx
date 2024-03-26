@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useUserStore } from "../../stores/useUserStore";
-import { updateNicknameAPI } from "../../api";
+import { getUserAPI, updateNicknameAPI } from "../../api";
 import styled from "@emotion/styled";
 import * as images from "../../assets/level";
 import editIcon from "../../assets/edit.svg";
@@ -12,6 +12,14 @@ export const UserCard = () => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editedNickname, setEditedNickname] = useState<string | null>(nickname);
   const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      await getUserAPI(setUserInfo);
+    };
+
+    fetchUserInfo();
+  }, []);
 
   type LevelImages = {
     [key: number]: string;

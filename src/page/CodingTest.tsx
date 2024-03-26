@@ -2,6 +2,7 @@ import {
   CodeEditor,
   Gutter,
   Header,
+  HelmetMetaTags,
   Modal,
   RoundButton,
   SelectLang,
@@ -23,6 +24,7 @@ import { postRetryScoreSubmitAPI, postScoreSubmitAPI } from "../api/scoreSubmit"
 import { postTestScoreSubmitAPI } from "../api/testScoreSubmit";
 import { Loading } from "../components/common/Loading";
 import Swal from "sweetalert2";
+import { metaData } from "../meta/metaData";
 
 export const CodingTest = () => {
   const { id } = useParams();
@@ -174,6 +176,7 @@ export const CodingTest = () => {
 
   return (
     <>
+      <HelmetMetaTags meta={metaData.codingTest} />
       <Header />
       <Main>
         <PageHeader>

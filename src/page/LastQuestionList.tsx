@@ -5,15 +5,17 @@ import { useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
 import StarPixel from "../assets/star_pixel.svg";
 import { Pagination } from "../components/list/Pagination";
-import { Header } from "../components";
+import { Header, HelmetMetaTags } from "../components";
+import { metaData } from "../meta/metaData";
 
 export const LastQuestionList = () => {
   const [data, setData] = useState<ProblemListAll_I | undefined>(undefined);
+  const [currentPage, setCurrentPage] = useState<number>(data?.currentPage || 0);
 
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
-        const data = await getLastQuestionListAPI(0);
+        const data = await getLastQuestionListAPI(currentPage);
         setData(data);
       } catch (error) {
         console.error("지난 테스트 내역 불러오기 실패", error);
@@ -21,9 +23,8 @@ export const LastQuestionList = () => {
     };
 
     fetchQuestions();
-  }, []);
+  }, [currentPage]);
 
-  const [currentPage, setCurrentPage] = useState<number>(data?.currentPage || 0);
   const totalPage = data?.totalPage || 0;
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
@@ -58,6 +59,7 @@ export const LastQuestionList = () => {
 
   return (
     <>
+      <HelmetMetaTags meta={metaData.lastQuestion} />
       <Header />
       <StyledMain>
         <section>
@@ -167,6 +169,7 @@ const StyledTableHead = styled.thead`
     }
     &:nth-child(3) {
       padding-right: 2.875rem;
+      width: 37.75rem;
     }
     &:nth-child(4) {
       padding-right: 2.875rem;
