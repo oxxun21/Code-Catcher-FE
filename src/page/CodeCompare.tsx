@@ -1,14 +1,12 @@
 import styled from "@emotion/styled";
-import gutter_horizontal from "../assets/gutter_horizontal.svg";
-import gutter_vertical from "../assets/gutter_vertical.svg";
 import icon_bookmark from "../assets/icon_bookmark.svg";
 import icon_bookmark_true from "../assets/icon_bookmark_true.svg";
 import { useDraggable } from "../hook";
-import { Header, Modal, ReadOnlyEditor, RoundButton, SquareButton } from "../components";
+import { Gutter, Header, Modal, ReadOnlyEditor, RoundButton, SquareButton } from "../components";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { deleteBookmarkAPI, getAiFeedbackAPI, postBookmarkAPI } from "../api";
-import { AiFeedback_I } from "../interface";
+import { deleteBookmarkAPI, getAiFeedbackAPI, getBookmarkInfoAPI, patchBookmarkAPI, postBookmarkAPI } from "../api";
+import { AiFeedback_I, BookmarkInfoOne_I } from "../interface";
 
 export const CodeCompare = () => {
   const [isMedia, setIsMedia] = useState(window.innerWidth <= 768);
@@ -21,6 +19,8 @@ export const CodeCompare = () => {
   const location = useLocation();
   const [isbookmark, setIsbookmark] = useState(false);
   const [bookmarkId, setBookmarkId] = useState();
+  const [isConfirmBookmarkModal, setIsConfirmBookmarkModal] = useState(false);
+  const [bookmarkInfo, setBookmarkInfo] = useState<BookmarkInfoOne_I | undefined>();
   const [isModal, setIsModal] = useState(false);
   const [aiRes, setAiRes] = useState<AiFeedback_I | undefined>();
   const { id } = useParams();
@@ -49,11 +49,27 @@ export const CodeCompare = () => {
     })();
   }, [id]);
 
+  useEffect(() => {
+    (async () => {
+      try {
+        const response = await getBookmarkInfoAPI(Number(id));
+        setBookmarkInfo(response);
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, [id]);
+
+  function formatDate(originalDateString: string) {
+    const date = new Date(originalDateString);
+    const year = date.getFullYear().toString();
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const day = date.getDate().toString().padStart(2, "0");
+
+    return `${year}.${month}.${day}`;
+  }
+
   const handleBookmarkSave = async () => {
-    if (isbookmark) {
-      setIsModal(true);
-      return;
-    }
     try {
       const response = await postBookmarkAPI({
         problemId: Number(id),
@@ -77,56 +93,103 @@ export const CodeCompare = () => {
     }
   };
 
-  const handleClose = () => {
-    setIsModal(prev => !prev);
+  const handleBookmarkReSave = async () => {
+    try {
+      const response = await patchBookmarkAPI({
+        problemId: bookmarkInfo?.bookmarkId as string,
+        codeType: location.state?.language,
+        code: location.state.myCode,
+      });
+      setIsbookmark(true);
+      setIsConfirmBookmarkModal(false);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
   };
+
+  const handleAICodeReview = () => {};
 
   return (
     <>
       <Header />
-      <PageHeader>
-        <h2>{location.state.question.title}</h2>
-        <span>{location.state.question.subject}</span>
-      </PageHeader>
-      <Contain>
-        <section style={{ width: isMedia ? "100%" : `${descWidth}%` }}>
-          <CompareHeader>
-            <strong>My Code</strong>
-          </CompareHeader>
-          <ReadOnlyEditor code={location.state.myCode} language={location.state?.language} />
-        </section>
-        <Gutter orientation="horizontal" onMouseDown={startDragHorizontal} />
-        <section style={{ width: isMedia ? "100%" : `${100 - descWidth}%` }}>
-          <div style={{ height: `${editorHeight}%` }}>
-            <CompareHeader className="gptCode">
-              <strong>AI Code</strong>
-              <button onClick={handleBookmarkSave}>
-                북마크에 추가하기
-                <img src={isbookmark ? icon_bookmark_true : icon_bookmark} alt="북마크 아이콘" />
-              </button>
-            </CompareHeader>
-            <ReadOnlyEditor code={aiRes?.gptCode as string} language={location.state?.language} />
-          </div>
-          <div style={{ height: `${100 - editorHeight}%` }} className="Feedback">
-            <Gutter orientation="vertical" onMouseDown={startDragVertical} />
+      <Main>
+        <PageHeader>
+          <h2>{location.state.question.title}</h2>
+          <span>{location.state.question.subject}</span>
+        </PageHeader>
+        <Contain>
+          <section style={{ width: isMedia ? "100%" : `${descWidth}%` }}>
             <CompareHeader>
-              <strong>AI Feedback</strong>
+              <strong>My Code</strong>
             </CompareHeader>
-            <p>{aiRes?.gptCodeExplain}</p>
-          </div>
-        </section>
-      </Contain>
-      <ButtonContain>
-        <SquareButton as={Link} to="/" text="나가기" />
-      </ButtonContain>
-      {isModal && (
-        <Modal onClose={handleClose} modalHeader="Cancel">
-          <ModalContain>
-            <p>북마크를 삭제하시겠습니까?</p>
-            <div>
-              <RoundButton text="아니오" width="50%" onClick={() => setIsModal(false)} />
-              <RoundButton text="예" width="50%" onClick={handleBookmarkOff} dark />
+            <ReadOnlyEditor code={location.state.myCode} language={location.state?.language} />
+          </section>
+          <Gutter orientation="horizontal" onMouseDown={startDragHorizontal} />
+          <section style={{ width: isMedia ? "100%" : `${100 - descWidth}%` }}>
+            <div style={{ height: `${editorHeight}%` }}>
+              <CompareHeader className="gptCode">
+                <strong>AI Code</strong>
+                <button
+                  onClick={
+                    !isbookmark && bookmarkInfo
+                      ? () => setIsConfirmBookmarkModal(true)
+                      : isbookmark
+                      ? () => setIsModal(true)
+                      : handleBookmarkSave
+                  }
+                >
+                  북마크에 추가하기
+                  <img src={isbookmark ? icon_bookmark_true : icon_bookmark} alt="북마크 아이콘" />
+                </button>
+              </CompareHeader>
+              <ReadOnlyEditor code={aiRes?.gptCode as string} language={location.state?.language} />
             </div>
+            <Gutter orientation="vertical" onMouseDown={startDragVertical} changeBackColor={false} />
+            <FeedbackTitle>AI Feedback</FeedbackTitle>
+            <FeedbackSection editorHeight={editorHeight}>
+              <p>{aiRes?.gptCodeExplain}</p>
+            </FeedbackSection>
+          </section>
+        </Contain>
+        <ButtonContain>
+          <SquareButton onClick={handleAICodeReview} text="AI 코드 리뷰 시작하기" disabled={false} />
+          <div className="notice">
+            하루 1회에 한하여 <span>내가 작성한 코드에 대한 AI의 리뷰</span>를 제공합니다.
+            <br /> 코드 리뷰를 받으면 해당 기능은 다음날까지 비활성화됩니다.
+          </div>
+          <SquareButton as={Link} to="/" text="나가기" white />
+        </ButtonContain>
+      </Main>
+      {isModal && (
+        <Modal onClose={() => setIsModal(prev => !prev)} modalHeader="Want to Cancel">
+          <ModalContain>
+            <strong>북마크를 해제 하시겠어요?</strong>
+            <p>
+              해제하기 버튼을 누르시면
+              <br />
+              북마크 목록에 저장되지 않습니다
+            </p>
+            <ModalButtonContain>
+              <RoundButton text="취소" width="50%" onClick={() => setIsModal(false)} />
+              <RoundButton text="해제하기" width="50%" onClick={handleBookmarkOff} dark />
+            </ModalButtonContain>
+          </ModalContain>
+        </Modal>
+      )}
+      {isConfirmBookmarkModal && (
+        <Modal onClose={() => setIsConfirmBookmarkModal(prev => !prev)} modalHeader="Want to Cancel">
+          <ModalContain>
+            <strong>이전에 저장한 내역이 있어요!</strong>
+            <ReSaveModalContain>
+              <span>저장한 날짜 {formatDate(bookmarkInfo?.createdAt as string)}</span>
+              <p>지금 저장하면 기존 북마크 내역이 사라져요</p>
+              <p>계속 진행하시겠어요?</p>
+            </ReSaveModalContain>
+            <ModalButtonContain>
+              <RoundButton text="취소" width="50%" onClick={() => setIsConfirmBookmarkModal(false)} />
+              <RoundButton text="네, 저장할게요" width="50%" onClick={handleBookmarkReSave} dark />
+            </ModalButtonContain>
           </ModalContain>
         </Modal>
       )}
@@ -134,8 +197,14 @@ export const CodeCompare = () => {
   );
 };
 
-const PageHeader = styled.div`
+const Main = styled.main`
+  height: calc(100vh - 4rem);
   background-color: #32323a;
+  display: flex;
+  flex-direction: column;
+`;
+
+const PageHeader = styled.div`
   padding: 1rem 22px;
   font-weight: 600;
   border-bottom: 2px solid var(--background-color);
@@ -161,10 +230,19 @@ const CompareHeader = styled.div`
   }
 `;
 
+const FeedbackTitle = styled.strong`
+  background-color: #3f3f47;
+  display: block;
+  font-size: 0.75rem;
+  padding: 0 22px 20px;
+  font-weight: 600;
+  border-bottom: 2px solid var(--background-color);
+  font-family: var(--font--Galmuri);
+`;
+
 const Contain = styled.div`
   display: flex;
-  background-color: #32323a;
-  height: 76vh;
+  height: calc(100vh - 10.875rem);
 
   .gptCode {
     display: flex;
@@ -192,39 +270,6 @@ const Contain = styled.div`
     }
   }
 
-  .Feedback {
-    background-color: #3f3f47;
-    font-size: 0.75rem;
-    overflow: auto;
-    ::-webkit-scrollbar {
-      width: 5px;
-    }
-    ::-webkit-scrollbar-track {
-      background: transparent;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #555;
-      border-radius: 6px;
-    }
-    ::-webkit-scrollbar-button:vertical:start:decrement,
-    ::-webkit-scrollbar-button:vertical:start:increment,
-    ::-webkit-scrollbar-button:vertical:end:decrement {
-      display: block;
-      height: 5px;
-    }
-    * {
-      scrollbar-width: thin;
-      scrollbar-color: #555 transparent;
-    }
-    & > div:last-of-type {
-      padding-top: 0;
-      border-bottom: 2px solid var(--background-color);
-    }
-    & > p {
-      padding: 24px 22px;
-      line-height: 2;
-    }
-  }
   & > section:first-of-type > div:last-of-type {
     margin-right: 10px;
     height: 85%;
@@ -239,28 +284,45 @@ const Contain = styled.div`
   }
 `;
 
-const Gutter = styled.div<{ orientation: "vertical" | "horizontal" }>`
-  width: ${props => props.orientation === "horizontal" && "24px"};
-  height: ${props => props.orientation === "vertical" && "24px"};
-  background: ${props =>
-    props.orientation === "horizontal"
-      ? `url(${gutter_horizontal}) no-repeat center`
-      : `url(${gutter_vertical}) #3F3F47 no-repeat center`};
-  background-size: ${props => (props.orientation === "horizontal" ? "auto/40px" : "40px/auto")};
-  border-right: ${props => props.orientation === "horizontal" && "2px solid var(--background-color)"};
-  border-top: ${props => props.orientation === "vertical" && "2px solid var(--background-color)"};
-  cursor: ${props => (props.orientation === "horizontal" ? "e-resize" : "n-resize")};
-  z-index: 1;
-  @media only screen and (max-width: 768px) {
-    display: none;
-  }
-`;
-
 const ButtonContain = styled.div`
   width: 100%;
   padding: 10px 22px;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  background-color: var(--background-color);
+  & > button:first-of-type {
+    position: relative;
+  }
+  .notice {
+    visibility: hidden;
+    position: absolute;
+    bottom: 85px;
+    left: 22px;
+    font-size: 0.875rem;
+    line-height: 1.3;
+    background: #d4fed4;
+    padding: 0.75rem 1rem;
+    border-radius: 10px;
+    color: #222;
+    z-index: 100;
+    & > span {
+      color: #32cd32;
+    }
+    &::before {
+      content: "";
+      position: absolute;
+      bottom: -7px;
+      left: 20px;
+      width: 15px;
+      height: 15px;
+      background-color: #d4fed4;
+      transform: rotate(45deg);
+    }
+  }
+  & > button:first-of-type:hover + .notice {
+    visibility: visible;
+  }
+
   @media only screen and (max-width: 768px) {
     position: relative;
   }
@@ -272,15 +334,83 @@ const ModalContain = styled.div`
   align-items: center;
   gap: 12px;
   font-size: 1rem;
-  & > p {
+  & > strong {
+    display: block;
     font-weight: 600;
     margin-top: 12px;
+    font-size: 1.125rem;
   }
-  & > div {
-    width: 100%;
-    margin-top: 24px;
-    display: flex;
-    justify-content: space-between;
-    gap: 20px;
+  & > p {
+    text-align: center;
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+`;
+
+const ModalButtonContain = styled.div`
+  width: 100%;
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+`;
+
+const ReSaveModalContain = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  & > span {
+    padding: 10px 45px;
+    font-size: 0.875rem;
+    background-color: #f4f4f4;
+    color: #454545;
+    text-align: center;
+    margin-top: 10px;
+  }
+  & > p {
+    font-weight: 400;
+    font-size: 0.875rem;
+    &:first-of-type {
+      color: #f53966;
+    }
+  }
+`;
+
+const FeedbackSection = styled.section<{ editorHeight: number }>`
+  background-color: #3f3f47;
+  color: var(--gray400-color);
+  font-size: 0.75rem;
+  overflow: auto;
+  padding: 1.5rem;
+  height: calc(100% - ${props => props.editorHeight + "%"} - 60px);
+  & > p {
+    color: #fff;
+    line-height: 2;
+  }
+  ::-webkit-scrollbar {
+    width: 5px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #555;
+    border-radius: 6px;
+  }
+  ::-webkit-scrollbar-button:vertical:start:decrement,
+  ::-webkit-scrollbar-button:vertical:start:increment,
+  ::-webkit-scrollbar-button:vertical:end:decrement {
+    display: block;
+    height: 5px;
+  }
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #555 transparent;
+  }
+  @media only screen and (max-width: 768px) {
+    padding-top: 20px;
+    border-top: 2px solid var(--background-color);
   }
 `;

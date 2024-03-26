@@ -13,3 +13,8 @@ export interface Bookmark_I {
   gptCode: string;
   gptExplain: string;
 }
+
+export interface BookmarkInfoOne_I {
+  bookmarkId: string;
+  createdAt: string;
+}

@@ -1,14 +1,16 @@
 import { useRef, useCallback } from "react";
 import Editor, { OnMount, OnChange } from "@monaco-editor/react";
 import { editor } from "monaco-editor";
+import { Question_I } from "../../interface";
 
 interface EditorProps {
   editorHeight: number;
   language: "Java" | "Python";
   setCodeValue: React.Dispatch<React.SetStateAction<any>>;
+  question?: Question_I;
 }
 
-export const CodeEditor = ({ editorHeight, language, setCodeValue }: EditorProps) => {
+export const CodeEditor = ({ editorHeight, language, setCodeValue, question }: EditorProps) => {
   const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
 
   const handleEditorChange: OnChange = useCallback((value?: string) => {
@@ -36,14 +38,21 @@ export const CodeEditor = ({ editorHeight, language, setCodeValue }: EditorProps
     monacoInstance.editor.setTheme("customTheme");
   }, []);
 
-  const defaultContent =
-    language === "Java"
-      ? `public class Main {
-    public static void main(String[] args) {
-        
+  const defaultContentFunction = () => {
+    if (language === "Java") {
+      return question?.javaSubmitCode
+        ? question.javaSubmitCode
+        : `public class Main {
+  public static void main(String[] args) {
+    
+  }
+}`;
+    } else {
+      return question?.pythonSubmitCode ? question.pythonSubmitCode : "// 코드를 입력해주세요";
     }
-}`
-      : "// 코드를 입력해주세요";
+  };
+
+  let defaultContent = defaultContentFunction();
 
   return (
     <section style={{ height: `${editorHeight}%` }}>

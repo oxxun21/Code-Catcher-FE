@@ -24,6 +24,14 @@ export const Modal = ({ children, onClose, modalHeader }: ModalProps) => {
     };
   }, []);
 
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, []);
+
   return createPortal(
     <BackgroundStyle onClick={onClose}>
       <BoxStyle onClick={e => e.stopPropagation()}>
