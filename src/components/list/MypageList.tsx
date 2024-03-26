@@ -127,14 +127,14 @@ const StyledTableHead = styled.thead`
     text-align: left;
     padding: 0.375rem 0;
 
-    &:first-child {
+    &:first-of-type {
       padding-left: 0.375rem;
       padding-right: 3.125rem;
     }
-    &:nth-child(2) {
+    &:nth-of-type(2) {
       padding-right: 11.4375rem;
     }
-    &:nth-child(3) {
+    &:nth-of-type(3) {
       padding-right: 3rem;
     }
   }
@@ -151,7 +151,7 @@ const StyledTableBody = styled.tbody`
     &:hover {
       background-color: #f5f5f5;
     }
-    &:nth-child(even) {
+    &:nth-of-type(even) {
       background-color: #f4f4f4;
       &:hover {
         background-color: #ececec;
@@ -162,14 +162,14 @@ const StyledTableBody = styled.tbody`
   & > tr > td {
     padding: 0.5rem 0;
 
-    &:first-child {
+    &:first-of-type {
       & img {
         vertical-align: middle;
       }
       padding-left: 0.25rem;
       color: var(--secondary-color);
     }
-    &:nth-child(2) {
+    &:nth-of-type(2) {
       display: flex;
       & span {
         font-size: 0.75rem;
@@ -189,7 +189,7 @@ const StyledTableBody = styled.tbody`
         text-overflow: ellipsis;
       }
     }
-    &:nth-child(3) {
+    &:nth-of-type(3) {
       font-size: 0.75rem;
       font-weight: 400;
       color: #9f9f9f;
