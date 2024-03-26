@@ -2,11 +2,18 @@ import styled from "@emotion/styled";
 import icon_bookmark from "../assets/icon_bookmark.svg";
 import icon_bookmark_true from "../assets/icon_bookmark_true.svg";
 import { useDraggable } from "../hook";
-import { Gutter, Header, Modal, ReadOnlyEditor, RoundButton, SquareButton } from "../components";
+import { Gutter, Header, Modal, ReadOnlyEditor, RoundButton, SquareButton, UserAICodeReview } from "../components";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { deleteBookmarkAPI, getAiFeedbackAPI, getBookmarkInfoAPI, patchBookmarkAPI, postBookmarkAPI } from "../api";
-import { AiFeedback_I, BookmarkInfoOne_I } from "../interface";
+import {
+  deleteBookmarkAPI,
+  getAiFeedbackAPI,
+  getBookmarkInfoAPI,
+  patchBookmarkAPI,
+  postBookmarkAPI,
+  postUserAiFeedbackAPI,
+} from "../api";
+import { AiFeedback_I, BookmarkInfoOne_I, UserAiFeedback_I } from "../interface";
 import icon_tooltip from "../assets/icon_tooltip.svg";
 import { Loading } from "../components/common/Loading";
 import icon_grayStar from "../assets/icon_grayStar.svg";
@@ -28,6 +35,7 @@ export const CodeCompare = () => {
   const [aiRes, setAiRes] = useState<AiFeedback_I | undefined>();
   const [isLoading, setIsLoading] = useState(false);
   const { id } = useParams();
+  const [userAiReview, setUserAiReview] = useState<UserAiFeedback_I | undefined>();
 
   useEffect(() => {
     const handleResize = () => {
@@ -86,14 +94,9 @@ export const CodeCompare = () => {
       console.log(error);
     }
   };
-  console.log(bookmarkId);
-  console.log(bookmarkInfo);
-
   const handleBookmarkOff = async () => {
     try {
-      const res = await deleteBookmarkAPI(bookmarkId);
-      console.log(res);
-
+      deleteBookmarkAPI(bookmarkId);
       setIsbookmark(false);
       setIsModal(false);
     } catch (error) {
@@ -110,16 +113,18 @@ export const CodeCompare = () => {
       });
       setIsbookmark(true);
       setIsConfirmBookmarkModal(false);
-      console.log(response);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const handleAICodeReview = () => {
+  const handleAICodeReview = async () => {
     setIsLoading(true);
     try {
+      const response = await postUserAiFeedbackAPI({ myCode: location.state.myCode, problemId: Number(id) });
+      setUserAiReview(response);
     } catch (error) {
+      console.log(error);
     } finally {
       setIsLoading(false);
     }
@@ -145,6 +150,7 @@ export const CodeCompare = () => {
               <strong>My Code</strong>
             </CompareHeader>
             <ReadOnlyEditor code={location.state.myCode} language={location.state?.language} />
+            <UserAICodeReview userAiReview={userAiReview as UserAiFeedback_I} />
           </section>
           <Gutter orientation="horizontal" onMouseDown={startDragHorizontal} />
           <section style={{ width: isMedia ? "100%" : `${100 - descWidth}%` }}>
@@ -323,6 +329,30 @@ const Contain = styled.div`
   display: flex;
   height: calc(100vh - 10.875rem);
 
+  & > section:first-of-type {
+    overflow: auto;
+    ::-webkit-scrollbar {
+      width: 5px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #555;
+      border-radius: 6px;
+    }
+    ::-webkit-scrollbar-button:vertical:start:decrement,
+    ::-webkit-scrollbar-button:vertical:start:increment,
+    ::-webkit-scrollbar-button:vertical:end:decrement {
+      display: block;
+      height: 5px;
+    }
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: #555 transparent;
+    }
+  }
+
   .gptCode {
     display: flex;
     justify-content: space-between;
@@ -351,7 +381,6 @@ const Contain = styled.div`
 
   & > section:first-of-type > div:last-of-type {
     margin-right: 10px;
-    height: 85%;
     @media only screen and (max-width: 768px) {
       margin-right: 22px;
     }
