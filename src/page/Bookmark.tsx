@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { getBookmarkAPI } from "../api";
 import { Bookmark_I } from "../interface";
 import { useDraggable } from "../hook";
@@ -14,6 +14,7 @@ export const Bookmark = () => {
   const [getBookmark, setGetBookmark] = useState<Bookmark_I | undefined>();
   const [activeTab, setActiveTab] = useState("myCode");
   const [isMedia, setIsMedia] = useState(window.innerWidth <= 768);
+  const navigate = useNavigate();
   const {
     width: descWidth,
     height: editorHeight,
@@ -40,6 +41,10 @@ export const Bookmark = () => {
       } catch (error) {
         const axiosError = error as AxiosError;
         console.log(axiosError);
+        if (axiosError.response?.status === 404) {
+          navigate("/404");
+        }
+
         Swal.fire({
           title: "Sorry",
           text: `Bookmark Info ${axiosError?.message}`,

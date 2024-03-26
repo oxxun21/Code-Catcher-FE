@@ -3,7 +3,7 @@ import icon_bookmark from "../assets/icon_bookmark.svg";
 import icon_bookmark_true from "../assets/icon_bookmark_true.svg";
 import { useDraggable } from "../hook";
 import { Gutter, Header, Modal, ReadOnlyEditor, RoundButton, SquareButton, UserAICodeReview } from "../components";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import {
   deleteBookmarkAPI,
@@ -38,6 +38,7 @@ export const CodeCompare = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { id } = useParams();
   const [userAiReview, setUserAiReview] = useState<UserAiFeedback_I | undefined>();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleResize = () => {
@@ -60,6 +61,9 @@ export const CodeCompare = () => {
       } catch (error) {
         const axiosError = error as AxiosError;
         console.log(axiosError);
+        if (axiosError.response?.status === 404) {
+          navigate("/404");
+        }
         Swal.fire({
           title: "Sorry",
           text: `AI Feedback ${axiosError?.message}`,
@@ -88,6 +92,9 @@ export const CodeCompare = () => {
       } catch (error) {
         const axiosError = error as AxiosError;
         console.log(axiosError);
+        if (axiosError.response?.status === 404) {
+          navigate("/404");
+        }
         Swal.fire({
           title: "Sorry",
           text: `Bookmark Info ${axiosError?.message}`,
@@ -129,6 +136,10 @@ export const CodeCompare = () => {
     } catch (error) {
       const axiosError = error as AxiosError;
       console.log(axiosError);
+      if (axiosError.response?.status === 404) {
+        navigate("/404");
+      }
+
       Swal.fire({
         title: "Sorry",
         text: `Bookmark save ${axiosError?.message}`,
@@ -155,6 +166,10 @@ export const CodeCompare = () => {
     } catch (error) {
       const axiosError = error as AxiosError;
       console.log(axiosError);
+      if (axiosError.response?.status === 404) {
+        navigate("/404");
+      }
+
       Swal.fire({
         title: "Sorry",
         text: `Bookmark Off ${axiosError?.message}`,
@@ -186,6 +201,9 @@ export const CodeCompare = () => {
     } catch (error) {
       const axiosError = error as AxiosError;
       console.log(axiosError);
+      if (axiosError.response?.status === 404) {
+        navigate("/404");
+      }
       Swal.fire({
         title: "Sorry",
         text: `Bookmark ReSave ${axiosError?.message}`,
@@ -213,6 +231,9 @@ export const CodeCompare = () => {
     } catch (error) {
       const axiosError = error as AxiosError;
       console.log(axiosError);
+      if (axiosError.response?.status === 404) {
+        navigate("/404");
+      }
       Swal.fire({
         title: "Sorry",
         text: `User AI Code Review ${axiosError?.message}`,

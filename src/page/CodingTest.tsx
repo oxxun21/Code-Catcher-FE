@@ -111,6 +111,9 @@ export const CodingTest = () => {
     } catch (error) {
       const axiosError = error as AxiosError;
       console.log(axiosError);
+      if (axiosError.response?.status === 404) {
+        navigate("/404");
+      }
       Swal.fire({
         title: "Sorry",
         text: `Test Submission ${axiosError?.message}`,
