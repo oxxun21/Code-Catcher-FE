@@ -11,7 +11,7 @@ import { CodeCompare } from "./page/CodeCompare";
 import { NotFound } from "./page/NotFound";
 import { QuestionSelect } from "./page/QuestionSelect";
 import { MyPage } from "./page/MyPage";
-import { MobilePopup } from "./components";
+import { MobilePopup, RouteChangeTracker } from "./components";
 import { Bookmark } from "./page/Bookmark";
 import { BookmarkList } from "./page/BookmarkList";
 import { LastQuestionList } from "./page/LastQuestionList";
@@ -24,6 +24,7 @@ function App() {
       <HelmetProvider>
         <HelmetRootMetaTags meta={metaData.app} />
         <BrowserRouter>
+          <RouteChangeTracker />
           <Global
             styles={css`
               ${reset}
