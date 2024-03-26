@@ -5,6 +5,7 @@ import { getBookmarkAPI } from "../api";
 import { Bookmark_I } from "../interface";
 import { useDraggable } from "../hook";
 import { Gutter, Header, ReadOnlyEditor, SquareButton, TestDescSection } from "../components";
+import icon_grayStar from "../assets/icon_grayStar.svg";
 
 export const Bookmark = () => {
   const { id } = useParams();
@@ -67,6 +68,12 @@ export const Bookmark = () => {
       <Main>
         <PageHeader>
           <h2>마이페이지 &gt; 북마크 &gt; {getBookmark?.title}</h2>
+          <span>
+            Lv
+            {Array.from({ length: getBookmark?.level as number }, _ => (
+              <img src={icon_grayStar} alt={`레벨 ${getBookmark?.level}`} />
+            ))}
+          </span>
           <span>{getBookmark?.subject}</span>
         </PageHeader>
         <Contain>
@@ -113,12 +120,29 @@ const PageHeader = styled.div`
   display: flex;
   gap: 12px;
   justify-content: flex-start;
-  align-items: center;
+  align-items: flex-end;
   font-size: 1rem;
   font-weight: 400;
   & > span {
     color: var(--gray400-color);
     font-size: 14px;
+  }
+  & > span:first-of-type {
+    display: flex;
+    gap: 2px;
+    align-items: center;
+    justify-content: center;
+    margin-right: 8px;
+    position: relative;
+    &::after {
+      content: "";
+      position: absolute;
+      right: -10px;
+      top: 0;
+      width: 1px;
+      height: 100%;
+      background-color: var(--gray700-color);
+    }
   }
 `;
 

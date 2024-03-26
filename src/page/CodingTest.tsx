@@ -16,6 +16,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { getQuestionAPI } from "../api";
 import { QuestionOutline_I, Question_I, ScoreSubmit_I, SubmissionProps_I, TestScoreSubmit_I } from "../interface";
 import icon_test_complete from "../assets/icon_test_complete.svg";
+import icon_grayStar from "../assets/icon_grayStar.svg";
 import icon_test_failed from "../assets/icon_test_failed.svg";
 import { AxiosError } from "axios";
 import { postRetryScoreSubmitAPI, postScoreSubmitAPI } from "../api/scoreSubmit";
@@ -148,12 +149,20 @@ export const CodingTest = () => {
     submitValue?.correct ? (message = "정답입니다!") : (message = "틀렸습니다");
   }
 
+  console.log(question);
+
   return (
     <>
       <Header />
       <Main>
         <PageHeader>
           <h2>{question?.title}</h2>
+          <span>
+            Lv
+            {Array.from({ length: question?.level as number }, _ => (
+              <img src={icon_grayStar} alt={`레벨 ${question?.level}`} />
+            ))}
+          </span>
           <span>{question?.subject}</span>
         </PageHeader>
         <Contain>
@@ -203,6 +212,7 @@ export const CodingTest = () => {
                         question: {
                           title: question?.title,
                           subject: question?.subject,
+                          level: question?.level,
                         },
                         language: language.toLowerCase(),
                         myCode: codeValue,
@@ -235,14 +245,35 @@ const PageHeader = styled.div`
   padding: 1rem 22px;
   font-weight: 600;
   border-bottom: 2px solid var(--background-color);
+  display: flex;
+  justify-content: flex-start;
+  gap: 12px;
+  align-items: flex-end;
   & > h2 {
     font-size: 1rem;
-    display: inline-block;
-    margin-right: 12px;
   }
   & > span {
     color: var(--gray400-color);
     font-size: 14px;
+    font-weight: 400;
+  }
+
+  & > span:first-of-type {
+    display: flex;
+    gap: 2px;
+    align-items: center;
+    justify-content: center;
+    margin-right: 8px;
+    position: relative;
+    &::after {
+      content: "";
+      position: absolute;
+      right: -10px;
+      top: 0;
+      width: 1px;
+      height: 100%;
+      background-color: var(--gray700-color);
+    }
   }
 `;
 

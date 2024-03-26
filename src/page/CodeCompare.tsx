@@ -9,6 +9,7 @@ import { deleteBookmarkAPI, getAiFeedbackAPI, getBookmarkInfoAPI, patchBookmarkA
 import { AiFeedback_I, BookmarkInfoOne_I } from "../interface";
 import icon_tooltip from "../assets/icon_tooltip.svg";
 import { Loading } from "../components/common/Loading";
+import icon_grayStar from "../assets/icon_grayStar.svg";
 
 export const CodeCompare = () => {
   const [isMedia, setIsMedia] = useState(window.innerWidth <= 768);
@@ -78,6 +79,7 @@ export const CodeCompare = () => {
         problemId: Number(id),
         codeType: location.state?.language,
         code: location.state.myCode,
+        // level: location.state.question?.level
       });
       setBookmarkId(response);
       setIsbookmark(true);
@@ -106,6 +108,7 @@ export const CodeCompare = () => {
         problemId: bookmarkInfo?.bookmarkId as string,
         codeType: location.state?.language,
         code: location.state.myCode,
+        // level: location.state.question?.level
       });
       setIsbookmark(true);
       setIsConfirmBookmarkModal(false);
@@ -130,6 +133,12 @@ export const CodeCompare = () => {
       <Main>
         <PageHeader>
           <h2>{location.state.question.title}</h2>
+          <span>
+            Lv
+            {Array.from({ length: location.state.question?.level as number }, _ => (
+              <img src={icon_grayStar} alt={`레벨 ${location.state.question?.level}`} />
+            ))}
+          </span>
           <span>{location.state.question.subject}</span>
         </PageHeader>
         <Contain>
@@ -229,14 +238,34 @@ const PageHeader = styled.div`
   padding: 1rem 22px;
   font-weight: 600;
   border-bottom: 2px solid var(--background-color);
+  display: flex;
+  justify-content: flex-start;
+  gap: 12px;
+  align-items: flex-end;
   & > h2 {
     font-size: 1rem;
-    display: inline-block;
-    margin-right: 12px;
   }
   & > span {
     color: var(--gray400-color);
     font-size: 14px;
+    font-weight: 400;
+  }
+  & > span:first-of-type {
+    display: flex;
+    gap: 2px;
+    align-items: center;
+    justify-content: center;
+    margin-right: 8px;
+    position: relative;
+    &::after {
+      content: "";
+      position: absolute;
+      right: -10px;
+      top: 0;
+      width: 1px;
+      height: 100%;
+      background-color: var(--gray700-color);
+    }
   }
 `;
 
