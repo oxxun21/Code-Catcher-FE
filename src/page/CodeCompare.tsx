@@ -79,7 +79,6 @@ export const CodeCompare = () => {
         problemId: Number(id),
         codeType: location.state?.language,
         code: location.state.myCode,
-        // level: location.state.question?.level
       });
       setBookmarkId(response);
       setIsbookmark(true);
@@ -108,7 +107,6 @@ export const CodeCompare = () => {
         problemId: bookmarkInfo?.bookmarkId as string,
         codeType: location.state?.language,
         code: location.state.myCode,
-        // level: location.state.question?.level
       });
       setIsbookmark(true);
       setIsConfirmBookmarkModal(false);
