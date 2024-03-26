@@ -70,9 +70,11 @@ export const BookmarkList = () => {
           <div>
             <h2>북마크</h2>
             <p>내가 저장한 답안의 북마크 목록이 표시됩니다.</p>
-            <DeleteButton onClick={openModal} disabled={!isAnyChecked}>
-              삭제
-            </DeleteButton>
+            {(data?.questionData?.length ?? 0) > 0 && (
+              <DeleteButton onClick={openModal} disabled={!isAnyChecked}>
+                삭제
+              </DeleteButton>
+            )}
             {isModalOpen && (
               <Modal onClose={closeModal} modalHeader="Want to Delete">
                 <ModalContents>
@@ -187,10 +189,11 @@ const DeleteButton = styled.button`
     background-color: #ffffff;
     cursor: not-allowed;
   }
-  &:hover {
+  &:hover:not(:disabled) {
     background-color: var(--hover-color);
   }
 `;
+
 const ModalContents = styled.div`
   display: flex;
   flex-direction: column;
@@ -246,15 +249,19 @@ const StyledTableHead = styled.thead`
     text-align: left;
     padding: 0.375rem 0;
     width: auto;
-    &:first-child {
+    &:nth-of-type(1) {
       padding-left: 1rem;
       padding-right: 3.875rem;
     }
-    &:nth-child(2) {
+    &:nth-of-type(2) {
       padding-right: 21.25rem;
     }
-    &:nth-child(3) {
+    &:nth-of-type(3) {
       padding-right: 37.125rem;
+      width: 37.75rem;
+    }
+    &:nth-of-type(4) {
+      padding-right: 4.8125rem;
     }
   }
 `;

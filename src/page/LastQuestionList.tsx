@@ -167,6 +167,7 @@ const StyledTableHead = styled.thead`
     }
     &:nth-child(3) {
       padding-right: 2.875rem;
+      width: 37.75rem;
     }
     &:nth-child(4) {
       padding-right: 2.875rem;
