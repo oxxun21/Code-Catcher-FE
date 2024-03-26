@@ -25,7 +25,7 @@ export const MyPage = ({}) => {
 
     fetchMyInfo();
   }, []);
-  console.log("이거 useState myInfo임", myInfo);
+
   return (
     <>
       <HelmetMetaTags meta={metaData.myPage} />
