@@ -4,9 +4,10 @@ import { Link, useParams } from "react-router-dom";
 import { getBookmarkAPI } from "../api";
 import { Bookmark_I } from "../interface";
 import { useDraggable } from "../hook";
-import { Header, ReadOnlyEditor, SquareButton, TestDescSection } from "../components";
+import { Header, HelmetMetaTags, ReadOnlyEditor, SquareButton, TestDescSection } from "../components";
 import gutter_horizontal from "../assets/gutter_horizontal.svg";
 import gutter_vertical from "../assets/gutter_vertical.svg";
+import { metaData } from "../meta/metaData";
 
 export const Bookmark = () => {
   const { id } = useParams();
@@ -65,6 +66,7 @@ export const Bookmark = () => {
 
   return (
     <>
+      <HelmetMetaTags meta={metaData.bookmark} />
       <Header />
       <PageHeader>
         <h2>마이페이지 &gt; 북마크 &gt; {getBookmark?.title}</h2>

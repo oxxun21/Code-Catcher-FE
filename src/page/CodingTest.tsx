@@ -1,6 +1,7 @@
 import {
   CodeEditor,
   Header,
+  HelmetMetaTags,
   Modal,
   RoundButton,
   SelectLang,
@@ -21,6 +22,7 @@ import icon_test_failed from "../assets/icon_test_failed.svg";
 import { AxiosError } from "axios";
 import { postRetryScoreSubmitAPI, postScoreSubmitAPI } from "../api/scoreSubmit";
 import { postTestScoreSubmitAPI } from "../api/testScoreSubmit";
+import { metaData } from "../meta/metaData";
 
 export const CodingTest = () => {
   const { id } = useParams();
@@ -118,6 +120,7 @@ export const CodingTest = () => {
 
   return (
     <>
+      <HelmetMetaTags meta={metaData.codingTest} />
       <Header />
       <PageHeader>
         <h2>{question?.title}</h2>

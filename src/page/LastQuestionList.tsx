@@ -5,7 +5,8 @@ import { useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
 import StarPixel from "../assets/star_pixel.svg";
 import { Pagination } from "../components/list/Pagination";
-import { Header } from "../components";
+import { Header, HelmetMetaTags } from "../components";
+import { metaData } from "../meta/metaData";
 
 export const LastQuestionList = () => {
   const [data, setData] = useState<ProblemListAll_I | undefined>(undefined);
@@ -58,6 +59,7 @@ export const LastQuestionList = () => {
 
   return (
     <>
+      <HelmetMetaTags meta={metaData.lastQuestion} />
       <Header />
       <StyledMain>
         <section>
