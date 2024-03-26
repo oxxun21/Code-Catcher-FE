@@ -8,7 +8,11 @@ export const NotFound = () => {
     <Contain>
       <h2 className="a11y-hidden">404 페이지</h2>
       <TextContain>
-        <p>THE PAGE YOU ARE LOOKING FOR NO LONGER EXISTS</p>
+        <p>
+          찾을 수 없는 페이지 입니다.
+          <br />
+          요청하신 페이지가 사라졌거나, 잘못된 경로를 이용하셨어요 :&#41;
+        </p>
         <Link to="/">
           <img src={goHomeFont} alt="홈으로 가기" />
         </Link>
@@ -30,9 +34,14 @@ const TextContain = styled.div`
   align-items: center;
   gap: 2rem;
   position: absolute;
-  bottom: 158px;
+  bottom: 215px;
   left: 50%;
   transform: translateX(-50%);
+  & > p {
+    color: var(--black-color);
+    text-align: center;
+    line-height: 1.5;
+  }
   & > a {
     background-color: var(--main-color);
     border-radius: 20px;
@@ -42,7 +51,7 @@ const TextContain = styled.div`
       content: "";
       width: 15px;
       height: 7px;
-      background-color: var(--background-color);
+      background-color: #fff;
       position: absolute;
       right: 0;
       top: 15px;
@@ -53,7 +62,7 @@ const TextContain = styled.div`
       height: 9px;
       background-color: var(--background-color);
       position: absolute;
-      left: -1px;
+      left: 10px;
       bottom: 17px;
     }
   }
