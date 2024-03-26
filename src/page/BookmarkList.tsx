@@ -6,18 +6,20 @@ import styled from "@emotion/styled";
 import StarPixel from "../assets/star_pixel.svg";
 import CheckedImage from "../assets/checked.svg";
 import { Pagination } from "../components/list/Pagination";
-import { Header, Modal } from "../components";
+import { Header, HelmetMetaTags, Modal } from "../components";
+import { metaData } from "../meta/metaData";
 
 export const BookmarkList = () => {
   const [data, setData] = useState<BookmarkListAll_I | undefined>(undefined);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [checkedItems, setCheckedItems] = useState<{ [key: string]: boolean }>({});
   const isAnyChecked = Object.values(checkedItems).some(checked => checked);
+  const [currentPage, setCurrentPage] = useState<number>(data?.currentPage || 0);
 
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
-        const data = await getBookmarkListAPI(0);
+        const data = await getBookmarkListAPI(currentPage);
         setData(data);
       } catch (error) {
         console.error("북마크 불러오기 실패", error);
@@ -25,9 +27,8 @@ export const BookmarkList = () => {
     };
 
     fetchQuestions();
-  }, []);
+  }, [currentPage]);
 
-  const [currentPage, setCurrentPage] = useState<number>(data?.currentPage || 0);
   const totalPage = data?.totalPage || 0;
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
@@ -64,15 +65,18 @@ export const BookmarkList = () => {
   };
   return (
     <>
+      <HelmetMetaTags meta={metaData.bookmark} />
       <Header />
       <StyledMain>
         <section>
           <div>
             <h2>북마크</h2>
             <p>내가 저장한 답안의 북마크 목록이 표시됩니다.</p>
-            <DeleteButton onClick={openModal} disabled={!isAnyChecked}>
-              삭제
-            </DeleteButton>
+            {(data?.questionData?.length ?? 0) > 0 && (
+              <DeleteButton onClick={openModal} disabled={!isAnyChecked}>
+                삭제
+              </DeleteButton>
+            )}
             {isModalOpen && (
               <Modal onClose={closeModal} modalHeader="Want to Delete">
                 <ModalContents>
@@ -187,10 +191,11 @@ const DeleteButton = styled.button`
     background-color: #ffffff;
     cursor: not-allowed;
   }
-  &:hover {
+  &:hover:not(:disabled) {
     background-color: var(--hover-color);
   }
 `;
+
 const ModalContents = styled.div`
   display: flex;
   flex-direction: column;
@@ -246,15 +251,19 @@ const StyledTableHead = styled.thead`
     text-align: left;
     padding: 0.375rem 0;
     width: auto;
-    &:first-child {
+    &:nth-of-type(1) {
       padding-left: 1rem;
       padding-right: 3.875rem;
     }
-    &:nth-child(2) {
+    &:nth-of-type(2) {
       padding-right: 21.25rem;
     }
-    &:nth-child(3) {
+    &:nth-of-type(3) {
       padding-right: 37.125rem;
+      width: 37.75rem;
+    }
+    &:nth-of-type(4) {
+      padding-right: 4.8125rem;
     }
   }
 `;
