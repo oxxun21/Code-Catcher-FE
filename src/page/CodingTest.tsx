@@ -34,6 +34,7 @@ export const CodingTest = () => {
   const [isMedia, setIsMedia] = useState(window.innerWidth <= 768);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const [selectedTodayQuestion, setSelectedTodayQuestion] = useState<QuestionOutline_I | undefined>();
 
   const {
     width: descWidth,
@@ -72,6 +73,18 @@ export const CodingTest = () => {
     })();
   }, [id]);
 
+  useEffect(() => {
+    for (const key in todayQuestionList) {
+      if (Object.prototype.hasOwnProperty.call(todayQuestionList, key)) {
+        const question = todayQuestionList[key];
+        if (question.id === Number(id)) {
+          setSelectedTodayQuestion(question);
+          break;
+        }
+      }
+    }
+  }, [id, todayQuestionList]);
+
   async function submissionFunc<T extends object>(
     apiFunc: (props: SubmissionProps_I) => Promise<T>,
     updateStateCallback: React.Dispatch<React.SetStateAction<any>>,
@@ -105,38 +118,35 @@ export const CodingTest = () => {
     submissionFunc<TestScoreSubmit_I>(postTestScoreSubmitAPI, setTestValue);
   };
 
-  // const doesIdExistInQuestions = (id: number) => {
-  //   return Object.values(todayQuestionList as QuestionOutline_I[]).some(todayQuestion => todayQuestion.id === id);
-  // };
-
-  // console.log(doesIdExistInQuestions(Number(id))); // 이게 true면 오늘꺼
-
   const handleSubmit = () => {
     setTestValue(undefined);
-    // console.log(submitValue);
     setIsLoading(true);
-    if (submitValue?.first === false) {
+
+    if (selectedTodayQuestion) {
+      submissionFunc<ScoreSubmit_I>(postScoreSubmitAPI, setSubmitValue, true);
+    } else {
       submissionFunc<ScoreSubmit_I>(postRetryScoreSubmitAPI, setSubmitValue, true);
     }
-    submissionFunc<ScoreSubmit_I>(postScoreSubmitAPI, setSubmitValue, true);
-    // 코딩 테스트 3문제 확인(오늘) -> id, isSuccess (오늘 정답을 맞춘적이 있는지 없는지 fail 모달 구별), 오늘 문제는 코딩 테스트 3문제 불러오기로 확인 -> postScoreSubmitAPI, 이 외는 postRetryScoreSubmitAPI
-    // isFirst true -> 유저 정보 다시 불러와서 쿠기에 다시 저장 필요(코드 비교 페이지 나갈 때 가능?)
   };
 
   let message = "";
 
-  if (submitValue?.first) {
-    message = submitValue?.correct ? "10 EXP 획득!" : "EXP 획득 실패";
+  if (selectedTodayQuestion) {
+    if (submitValue?.first && submitValue?.correct) {
+      message = "10 EXP 획득!";
+    } else if (!submitValue?.first && submitValue?.correct) {
+      message = "정답입니다!";
+    } else if (selectedTodayQuestion?.isSuccess && !submitValue?.correct) {
+      message = "틀렸습니다";
+    } else if (
+      !(selectedTodayQuestion?.isSuccess || selectedTodayQuestion?.isSuccess === null) &&
+      !submitValue?.correct
+    ) {
+      message = "EXP 획득 실패";
+    }
   } else {
-    message = submitValue?.correct ? "정답입니다!" : "틀렸습니다";
+    submitValue?.correct ? (message = "정답입니다!") : (message = "틀렸습니다");
   }
-
-  console.log(question);
-  console.log(todayQuestionList);
-
-  // if (isLoading) {
-  //   return <Loading />;
-  // }
 
   return (
     <>
@@ -173,12 +183,13 @@ export const CodingTest = () => {
       {isModal && (
         <Modal onClose={handleClose} modalHeader={submitValue?.correct ? "Test Complete" : "Test Failed"}>
           <ModalContain>
-            {submitValue?.first && (
-              <img
-                src={submitValue?.correct ? icon_test_complete : icon_test_failed}
-                alt={submitValue?.correct ? "테스트 통과" : "테스트 실패"}
-              />
-            )}
+            {selectedTodayQuestion &&
+              (selectedTodayQuestion?.isSuccess === false || selectedTodayQuestion.isSuccess === null) && (
+                <img
+                  src={submitValue?.correct ? icon_test_complete : icon_test_failed}
+                  alt={submitValue?.correct ? "테스트 통과" : "테스트 실패"}
+                />
+              )}
             <strong>{message}</strong>
             <p>{submitValue?.correct ? "축하합니다! 문제를 맞추셨어요" : "다음 테스트엔 더 잘 할 수 있어요"}</p>
             <div>
