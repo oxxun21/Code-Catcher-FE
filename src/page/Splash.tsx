@@ -1,7 +1,8 @@
 import { useState } from "react";
 import styled from "@emotion/styled";
-import { Header, SplashCarousel } from "../components";
+import { Header, HelmetMetaTags, SplashCarousel } from "../components";
 import KakaoImg from "../assets/kakao_logo.svg";
+import { metaData } from "../meta/metaData";
 
 export const Splash = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -16,6 +17,7 @@ export const Splash = () => {
   };
   return (
     <>
+      <HelmetMetaTags meta={metaData.splash} />
       <Header />
       <StyledMain>
         <StyledSection style={{ backgroundColor: currentBgColor }}>

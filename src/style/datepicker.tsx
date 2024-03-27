@@ -102,6 +102,9 @@ const datePicker = css`
     font-size: 0.9375rem;
     font-weight: bold;
   }
+  .react-datepicker__day--disabled {
+    pointer-events: none;
+  }
 
   //오늘 day
   .react-datepicker__day--selected.react-datepicker__day--today {
