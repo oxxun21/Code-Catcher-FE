@@ -55,6 +55,8 @@ export const Header = () => {
       removeLoginCookie({ path: "/" });
       clearUserInfo();
       localStorage.removeItem("userStore");
+      setIsLoggedIn(false);
+      navigate("/splash");
     } catch (error) {
       console.error("회원 탈퇴 처리 중 오류가 발생했습니다.", error);
     }
