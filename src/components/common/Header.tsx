@@ -7,8 +7,9 @@ import LogoLight from "../../assets/Logo_light.svg";
 import LogoDark from "../../assets/Logo_dark.svg";
 import { Modal } from "..";
 import { withdrawAPI } from "../../api";
+import { useEventTracker } from "../../hook";
 
-type ModalContentType = "logout" | "withdraw" | "";
+type ModalContentType = "logout" | "withdraw" | "leavePage" | "";
 
 export const Header = () => {
   const location = useLocation();
@@ -25,6 +26,7 @@ export const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
+  const trackEvent = useEventTracker();
 
   useEffect(() => {
     const token = getLoginCookie();
@@ -35,6 +37,13 @@ export const Header = () => {
     const kakaoRestApi = import.meta.env.VITE_KAKAO_REST_API;
     const rediretUri = import.meta.env.VITE_KAKAO_REDIRECT_URI;
     const link = `https://kauth.kakao.com/oauth/authorize?client_id=${kakaoRestApi}&redirect_uri=${rediretUri}&response_type=code`;
+
+    trackEvent({
+      category: "Auth",
+      action: "loginInHeader",
+      label: "Kakao",
+    });
+
     window.location.href = link;
   };
 
@@ -43,6 +52,12 @@ export const Header = () => {
     clearUserInfo();
     localStorage.removeItem("userStore");
     setIsLoggedIn(false);
+
+    trackEvent({
+      category: "Auth",
+      action: "logout",
+    });
+
     navigate("/splash");
   };
 
@@ -50,10 +65,29 @@ export const Header = () => {
     try {
       const status = await withdrawAPI();
       if (status === 200) {
+        removeLoginCookie({ path: "/" });
+        clearUserInfo();
+        localStorage.removeItem("userStore");
+        setIsLoggedIn(false);
         alert("회원 탈퇴가 성공적으로 처리되었습니다.");
+
+        trackEvent({
+          category: "Auth",
+          action: "withDraw",
+        });
+
+        navigate("/splash");
       }
     } catch (error) {
       console.error("회원 탈퇴 처리 중 오류가 발생했습니다.", error);
+    }
+  };
+
+  const handleMyPageClick = () => {
+    if (location.pathname.startsWith("/codingTest/")) {
+      openModal("leavePage");
+    } else {
+      navigate("/myPage");
     }
   };
 
@@ -87,6 +121,17 @@ export const Header = () => {
           </div>
         </>
       );
+    } else if (modalContent === "leavePage") {
+      return (
+        <>
+          <strong>페이지를 나가시겠습니까?</strong>
+          <p>지금 페이지를 나가면 작성 중인 코드가 삭제돼요</p>
+          <div>
+            <button onClick={closeModal}>취소</button>
+            <button onClick={() => navigate("/myPage")}>나가기</button>
+          </div>
+        </>
+      );
     }
     return null;
   };
@@ -104,7 +149,7 @@ export const Header = () => {
           {isMyPage ? (
             <button onClick={() => openModal("withdraw")}>회원탈퇴</button>
           ) : (
-            <button onClick={() => navigate("/myPage")}>마이페이지</button>
+            <button onClick={handleMyPageClick}>마이페이지</button>
           )}
         </StyledBtnGroup>
       )}
@@ -201,14 +246,14 @@ const ModalContents = styled.div`
       border: 2px solid var(--gray200-color);
       background-color: #f4f4f4;
       &:hover {
-        background-color: #eaeaea;
+        background-color: var(--gray100-color);
       }
     }
     & button:nth-child(2) {
       color: #ffffff;
       background-color: var(--secondary-color);
       &:hover {
-        background-color: var(--secondary-color);
+        background-color: var(--secondary-light-color);
       }
     }
   }
