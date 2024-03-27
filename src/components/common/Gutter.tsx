@@ -31,7 +31,7 @@ const GutterStyle = styled.div<GutterProps>`
     (props.orientation === "horizontal" ? "auto 40px" : "40px auto")}; */
   background: ${props =>
     props.changeBackColor &&
-    `#3F3F47 url(${gutter_vertical}) no-repeat center / cover;
+    `#3F3F47 url(../../assets/gutter_vertical.svg) no-repeat center / cover;
 `};
   position: relative;
   border-right: ${props => props.orientation === "horizontal" && "2px solid var(--background-color)"};
