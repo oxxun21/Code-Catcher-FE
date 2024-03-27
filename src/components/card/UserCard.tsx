@@ -6,12 +6,14 @@ import * as images from "../../assets/level";
 import editIcon from "../../assets/edit.svg";
 import TooltipIcon from "../../assets/icon_tooltip.svg";
 import LevelInfoImage from "../../assets/tooltip_level.svg";
+import { useEventTracker } from "../../hook";
 
 export const UserCard = () => {
   const { nickname, email, level, exp, expUpper, totalCnt, completeCnt, bookmarkCnt, setUserInfo } = useUserStore();
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editedNickname, setEditedNickname] = useState<string | null>(nickname);
   const [isVisible, setIsVisible] = useState(false);
+  const trackEvent = useEventTracker();
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -42,6 +44,16 @@ export const UserCard = () => {
       } catch (error) {
         console.error("닉네임 변경 중 오류 발생:", error);
       }
+      trackEvent({
+        category: "Nickname",
+        action: "nickNameChangeSave",
+        label: `${editedNickname}`,
+      });
+    } else {
+      trackEvent({
+        category: "Nickname",
+        action: "nickNameChangeStart",
+      });
     }
     setIsEditing(!isEditing);
   };
