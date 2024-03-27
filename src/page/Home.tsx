@@ -2,8 +2,9 @@ import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { getLoginCookie } from "../utils/loginCookie";
 import styled from "@emotion/styled";
-import { Header, GalmuriButton } from "../components";
+import { Header, GalmuriButton, HelmetMetaTags } from "../components";
 import { UserCard } from "../components";
+import { metaData } from "../meta/metaData";
 
 export const Home = () => {
   const navigate = useNavigate();
@@ -17,6 +18,7 @@ export const Home = () => {
 
   return (
     <>
+      <HelmetMetaTags meta={metaData.home} />
       <Header />
       <StyledMain>
         <strong>START TEST . . .</strong>

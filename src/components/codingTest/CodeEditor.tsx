@@ -48,7 +48,7 @@ export const CodeEditor = ({ editorHeight, language, setCodeValue, question }: E
   }
 }`;
     } else {
-      return question?.pythonSubmitCode ? question.pythonSubmitCode : "// 코드를 입력해주세요";
+      return question?.pythonSubmitCode ? question.pythonSubmitCode : "# 코드를 입력해주세요";
     }
   };
 

@@ -12,6 +12,7 @@ export interface Bookmark_I {
   output_2: string;
   gptCode: string;
   gptExplain: string;
+  level: number;
 }
 
 export interface BookmarkInfoOne_I {

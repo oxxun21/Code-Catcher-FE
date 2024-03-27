@@ -16,7 +16,7 @@ import { Bookmark } from "./page/Bookmark";
 import { BookmarkList } from "./page/BookmarkList";
 import { LastQuestionList } from "./page/LastQuestionList";
 import { metaData } from "./meta/metaData";
-import { HelmetRootMetaTags } from "./components/common/HelmetMetaTags";
+import { HelmetRootMetaTags } from "./components";
 
 function App() {
   return (

@@ -53,13 +53,13 @@ export const MonthlyAchieve = ({ data }: MonthlyAchieveProps) => {
           const day = date.getDate();
           const cnt = achieveMap[day];
 
-          let className = "";
+          let className = "react-datepicker__day--disabled";
           if (cnt === 1) {
-            className = "react-datepicker__day--cnt-1";
+            className += " react-datepicker__day--cnt-1";
           } else if (cnt === 2) {
-            className = "react-datepicker__day--cnt-2";
+            className += " react-datepicker__day--cnt-2";
           } else if (cnt === 3) {
-            className = "react-datepicker__day--cnt-3";
+            className += " react-datepicker__day--cnt-3";
           }
 
           return className;

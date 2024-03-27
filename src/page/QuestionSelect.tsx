@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
-import { Header } from "../components";
+import { Header, HelmetMetaTags } from "../components";
 import { QuestionCard } from "../components";
 import { QuestionOutline_I } from "../interface";
 import { getQuestionListAPI } from "../api";
+import { metaData } from "../meta/metaData";
 
 export const QuestionSelect = () => {
   const [questions, setQuestions] = useState<QuestionOutline_I[]>([]);
@@ -41,6 +42,7 @@ export const QuestionSelect = () => {
 
   return (
     <>
+      <HelmetMetaTags meta={metaData.questionSelect} />
       <Header />
       <StyledMain>
         <StyledSection>
