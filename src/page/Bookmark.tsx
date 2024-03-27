@@ -94,8 +94,8 @@ export const Bookmark = () => {
           <h2>마이페이지 &gt; 북마크 &gt; {getBookmark?.title}</h2>
           <span>
             Lv
-            {Array.from({ length: getBookmark?.level as number }, _ => (
-              <img src={icon_grayStar} alt={`레벨 ${getBookmark?.level}`} />
+            {Array.from({ length: getBookmark?.level as number }, (_, index) => (
+              <img key={index} src={icon_grayStar} alt={`레벨 ${getBookmark?.level}`} />
             ))}
           </span>
           <span>{getBookmark?.subject}</span>
@@ -115,7 +115,7 @@ export const Bookmark = () => {
               </TabContainer>
               {renderTabContent()}
             </div>
-            <Gutter orientation="vertical" onMouseDown={startDragVertical} changeBackColor={false} />
+            <Gutter orientation="vertical" onMouseDown={startDragVertical} changeBackColor={true} />
             <FeedbackTitle>AI Feedback</FeedbackTitle>
             <FeedbackSection editorHeight={editorHeight}>
               <p>{getBookmark?.gptExplain}</p>

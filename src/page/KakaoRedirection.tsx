@@ -1,8 +1,8 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useEffect } from "react";
-import { useUserStore } from "../stores/useUserStore";
+import { useUserStore } from "../stores/useUserStore.ts";
 import { getLoginAPI } from "../api";
-import { Loading } from "../components/common/Loading";
+import { Loading } from "../components";
 
 export const KakaoRedirection = () => {
   const [searchParams] = useSearchParams();

@@ -1,6 +1,5 @@
 import styled from "@emotion/styled";
-import { Question_I } from "./../../interface/question_I";
-import { Bookmark_I } from "../../interface";
+import { Question_I, Bookmark_I } from "./../../interface";
 
 interface TestDescSectionProps {
   descWidth: number;

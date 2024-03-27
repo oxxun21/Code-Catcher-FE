@@ -1,4 +1,4 @@
-import { instance } from "./instance";
+import { instance } from "./instance.ts";
 
 export const withdrawAPI = async () => {
   try {

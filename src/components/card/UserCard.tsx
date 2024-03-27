@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useUserStore } from "../../stores/useUserStore";
+import { useUserStore } from "../../stores/useUserStore.ts";
 import { getUserAPI, updateNicknameAPI } from "../../api";
 import styled from "@emotion/styled";
 import * as images from "../../assets/level";

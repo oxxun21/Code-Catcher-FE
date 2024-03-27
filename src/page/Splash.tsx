@@ -1,7 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
-import { Header, HelmetMetaTags, SplashCarousel } from "../components";
-import KakaoImg from "../assets/kakao_logo.svg";
+import { Header, HelmetMetaTags } from "../components";
+import { QuestionCard } from "../components";
+import { QuestionOutline_I } from "../interface";
+import { getQuestionListAPI } from "../api";
 import { metaData } from "../meta/metaData";
 import { useEventTracker } from "../hook";
 

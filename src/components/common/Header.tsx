@@ -1,11 +1,11 @@
 import styled from "@emotion/styled";
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { getLoginCookie, removeLoginCookie } from "../../utils/loginCookie";
-import { useUserStore } from "../../stores/useUserStore";
+import { getLoginCookie, removeLoginCookie } from "../../utils/loginCookie.ts";
+import { useUserStore } from "../../stores/useUserStore.ts";
 import LogoLight from "../../assets/Logo_light.svg";
 import LogoDark from "../../assets/Logo_dark.svg";
-import { Modal } from "..";
+import { Modal } from "./Modal.tsx";
 import { withdrawAPI } from "../../api";
 import { useEventTracker } from "../../hook";
 
@@ -87,6 +87,11 @@ export const Header = () => {
 
         navigate("/splash");
       }
+      removeLoginCookie({ path: "/" });
+      clearUserInfo();
+      localStorage.removeItem("userStore");
+      setIsLoggedIn(false);
+      navigate("/splash");
     } catch (error) {
       console.error("회원 탈퇴 처리 중 오류가 발생했습니다.", error);
     }

@@ -1,5 +1,5 @@
 import { AiFeedbackProps_I, AiFeedback_I, UserAiFeedbackProps_I } from "../interface";
-import { instance } from "./instance";
+import { instance } from "./instance.ts";
 
 export const getAiFeedbackAPI = async ({ problemId, codeType }: AiFeedbackProps_I): Promise<AiFeedback_I> => {
   try {
