@@ -5,6 +5,7 @@ import StarPixel from "../../assets/star_pixel.svg";
 import BookMarkEmptyImage from "../../assets/bookmark_empty.svg";
 import LastEmptyImage from "../../assets/last_empty.svg";
 import ArrowRightIcon from "../../assets/arrow_right_lastTests.svg";
+import { useEventTracker } from "../../hook";
 
 type ListType = "bookmark" | "lastTests";
 
@@ -16,6 +17,7 @@ interface MyPageListProps {
 export const MypageList = ({ listType, data }: MyPageListProps) => {
   const isBookmark = listType === "bookmark";
   const title = isBookmark ? "북마크" : "지난 테스트 내역";
+  const trackEvent = useEventTracker();
 
   const navigate = useNavigate();
   const handleItemClick = (item: BookmarkInfo_I | ProblemInfo_I) => {
@@ -23,7 +25,39 @@ export const MypageList = ({ listType, data }: MyPageListProps) => {
     const routeId = isBookmark ? (item as BookmarkInfo_I).bookmarkId : (item as ProblemInfo_I).problemId;
 
     navigate(`${routePrefix}${routeId}`);
+
+    trackEvent({
+      category: isBookmark ? "BookmarkList" : "LastQuestion",
+      action: isBookmark ? "bookmarkItemClicked" : "lastQuestionItemClicked",
+      label: `${routeId}`,
+    });
   };
+
+  const handleMoreClick = () => {
+    navigate(isBookmark ? "/bookmarkList" : "/lastQuestionList");
+
+    if (isBookmark) {
+      trackEvent({
+        category: "BookmarkList",
+        action: "bookmarkListMore",
+      });
+    } else {
+      trackEvent({
+        category: "LastQuestionList",
+        action: "lastQuestionListMore",
+      });
+    }
+  };
+
+  const handleNavigateToQuestionSelect = () => {
+    trackEvent({
+      category: "CodingTest",
+      action: "goToQuestionSelect",
+    });
+
+    navigate("/question/select");
+  };
+
   const isEmpty = data.length === 0;
   const EmptyComponent = () => (
     <StyledEmptyComponent>
@@ -34,7 +68,7 @@ export const MypageList = ({ listType, data }: MyPageListProps) => {
       ) : (
         <StyledLastEmpty>
           <img src={LastEmptyImage} alt="지난 테스트 내역 데이터 없음" />
-          <button onClick={() => navigate("/question/select")}>
+          <button onClick={handleNavigateToQuestionSelect}>
             테스트하러가기
             <img src={ArrowRightIcon} alt="테스트하러가기" />
           </button>
@@ -47,9 +81,7 @@ export const MypageList = ({ listType, data }: MyPageListProps) => {
     <StyledContainer>
       <div>
         <strong>{title}</strong>
-        {isEmpty ? null : (
-          <button onClick={() => navigate(isBookmark ? "/bookmarkList" : "/lastQuestionList")}>more &gt;</button>
-        )}
+        {isEmpty ? null : <button onClick={handleMoreClick}>more &gt;</button>}
       </div>
       {isEmpty ? (
         <EmptyComponent />
