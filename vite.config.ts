@@ -11,7 +11,7 @@ export default defineConfig({
       },
     }),
   ],
-  base: "",
+  base: "/my-subpath/",
   build: {
     outDir: "build",
   },
