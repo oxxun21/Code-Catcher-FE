@@ -52,7 +52,9 @@ export const Header = () => {
       if (status === 200) {
         alert("회원 탈퇴가 성공적으로 처리되었습니다.");
       }
-      navigate("/splash");
+      removeLoginCookie({ path: "/" });
+      clearUserInfo();
+      localStorage.removeItem("userStore");
     } catch (error) {
       console.error("회원 탈퇴 처리 중 오류가 발생했습니다.", error);
     }
