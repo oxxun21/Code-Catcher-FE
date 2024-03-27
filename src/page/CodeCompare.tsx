@@ -263,8 +263,8 @@ export const CodeCompare = () => {
           <h2>{location.state.question.title}</h2>
           <span>
             Lv
-            {Array.from({ length: location.state.question?.level as number }, _ => (
-              <img src={icon_grayStar} alt={`레벨 ${location.state.question?.level}`} />
+            {Array.from({ length: location.state.question?.level as number }, (_, index) => (
+              <img key={index} src={icon_grayStar} alt={`레벨 ${location.state.question?.level}`} />
             ))}
           </span>
           <span>{location.state.question.subject}</span>
