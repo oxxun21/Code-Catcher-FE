@@ -1,4 +1,4 @@
-import { instance } from "./instance";
+import { instance } from "./instance.ts";
 import { SubmissionProps_I, TestScoreSubmit_I } from "../interface";
 
 export const postTestScoreSubmitAPI = async ({

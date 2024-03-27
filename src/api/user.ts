@@ -1,4 +1,4 @@
-import { instance } from "./instance";
+import { instance } from "./instance.ts";
 import { UserState } from "../interface";
 
 export const getUserAPI = async (setUserInfo: UserState["setUserInfo"]) => {

@@ -1,5 +1,5 @@
 import { BookmarkInfoOne_I, Bookmark_I, SubmissionProps_I } from "../interface";
-import { instance } from "./instance";
+import { instance } from "./instance.ts";
 
 export const postBookmarkAPI = async ({ problemId, codeType, code }: SubmissionProps_I) => {
   try {

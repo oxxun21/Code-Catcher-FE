@@ -1,4 +1,4 @@
-import { instance } from "./instance";
+import { instance } from "./instance.ts";
 import { QuestionOutline_I } from "../interface";
 
 export const getQuestionListAPI = async (): Promise<QuestionOutline_I[] | undefined> => {

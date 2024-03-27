@@ -9,27 +9,29 @@ import {
   SquareButton,
   TestDescSection,
   TestResultSection,
+  Loading,
 } from "../components";
 import styled from "@emotion/styled";
 import { useDraggable } from "../hook";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { getQuestionAPI } from "../api";
+import { getQuestionAPI, postTestScoreSubmitAPI, postRetryScoreSubmitAPI, postScoreSubmitAPI } from "../api";
 import { QuestionOutline_I, Question_I, ScoreSubmit_I, SubmissionProps_I, TestScoreSubmit_I } from "../interface";
 import icon_test_complete from "../assets/icon_test_complete.svg";
 import icon_grayStar from "../assets/icon_grayStar.svg";
 import icon_test_failed from "../assets/icon_test_failed.svg";
 import { AxiosError } from "axios";
-import { postRetryScoreSubmitAPI, postScoreSubmitAPI } from "../api/scoreSubmit";
-import { postTestScoreSubmitAPI } from "../api/testScoreSubmit";
-import { Loading } from "../components/common/Loading";
 import Swal from "sweetalert2";
-import { metaData } from "../meta/metaData";
+import { metaData } from "../meta/metaData.ts";
+
+interface TodayQuestionList_I {
+  [key: string]: QuestionOutline_I;
+}
 
 export const CodingTest = () => {
   const { id } = useParams();
   const [question, setQuestion] = useState<Question_I | undefined>();
-  const [todayQuestionList, setTodayQuestionList] = useState<QuestionOutline_I[] | undefined>();
+  const [todayQuestionList, setTodayQuestionList] = useState<TodayQuestionList_I | undefined>();
   const [language, setLanguage] = useState<"Java" | "Python">("Java");
   const [isModal, setIsModal] = useState(false);
   const [codeValue, setCodeValue] = useState("");
@@ -66,7 +68,7 @@ export const CodingTest = () => {
       try {
         const response = await getQuestionAPI(id);
         const questionData: Question_I = response.questionData.data;
-        const todayQuestionListData: QuestionOutline_I[] = response.todayQuestionListData.data;
+        const todayQuestionListData: TodayQuestionList_I = response.todayQuestionListData.data;
         setQuestion(questionData);
         setTodayQuestionList(todayQuestionListData);
       } catch (error) {
@@ -78,14 +80,9 @@ export const CodingTest = () => {
   }, [id]);
 
   useEffect(() => {
-    for (const key in todayQuestionList) {
-      if (Object.prototype.hasOwnProperty.call(todayQuestionList, key)) {
-        const question = todayQuestionList[key];
-        if (question.id === Number(id)) {
-          setSelectedTodayQuestion(question);
-          break;
-        }
-      }
+    if (todayQuestionList) {
+      const foundQuestion = Object.values(todayQuestionList).find(question => question.id === Number(id));
+      setSelectedTodayQuestion(foundQuestion);
     }
   }, [id, todayQuestionList]);
 
@@ -172,8 +169,6 @@ export const CodingTest = () => {
     submitValue?.correct ? (message = "정답입니다!") : (message = "틀렸습니다");
   }
 
-  console.log(question);
-
   return (
     <>
       <HelmetMetaTags meta={metaData.codingTest} />
@@ -183,8 +178,8 @@ export const CodingTest = () => {
           <h2>{question?.title}</h2>
           <span>
             Lv
-            {Array.from({ length: question?.level as number }, _ => (
-              <img src={icon_grayStar} alt={`레벨 ${question?.level}`} />
+            {Array.from({ length: question?.level as number }, (_, index) => (
+              <img key={index} src={icon_grayStar} alt={`레벨 ${question?.level}`} />
             ))}
           </span>
           <span>{question?.subject}</span>

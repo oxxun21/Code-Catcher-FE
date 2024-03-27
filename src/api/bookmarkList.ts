@@ -1,6 +1,6 @@
-import { instance } from "./instance";
+import { instance } from "./instance.ts";
 import { BookmarkInfo_I, BookmarkListAll_I } from "../interface";
-import { formatDate } from "../utils/formatDate";
+import { formatDate } from "../utils/formatDate.ts";
 
 export const getBookmarkListAPI = async (page: number): Promise<BookmarkListAll_I> => {
   try {

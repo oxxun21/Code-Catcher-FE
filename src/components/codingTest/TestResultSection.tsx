@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import { ScoreSubmit_I, TestScoreSubmit_I } from "../../interface";
-import { ShowResult } from "./ShowResult";
+import { ShowResult } from "./ShowResult.tsx";
 
 interface TestResultProps {
   editorHeight: number;
