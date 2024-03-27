@@ -8,8 +8,15 @@ export const RouteChangeTracker = () => {
   useEffect(() => {
     const gaTrackingId = import.meta.env.VITE_GA_TRACKING_ID;
     if (gaTrackingId) {
-      ReactGA.initialize(gaTrackingId);
-      ReactGA.send({ hitType: "pageview", page: location.pathname });
+      ReactGA.initialize(gaTrackingId, {
+        gaOptions: {
+          debug_mode: true,
+        },
+        gtagOptions: {
+          debug_mode: true,
+        },
+      });
+      ReactGA.send({ hitType: "pageview", page: location.pathname + location.search });
     }
   }, [location]);
 
