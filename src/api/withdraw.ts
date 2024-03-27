@@ -2,7 +2,7 @@ import { instance } from "./instance.ts";
 
 export const withdrawAPI = async () => {
   try {
-    const response = await instance.post(`/user/withdraw`);
+    const response = await instance.delete(`/user/withdraw`);
     if (response.status === 200) {
       return response.status;
     } else {
