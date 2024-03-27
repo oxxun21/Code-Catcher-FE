@@ -33,6 +33,15 @@ export const Header = () => {
     setIsLoggedIn(!!token);
   }, []);
 
+  const handleNavigateToHome = () => {
+    trackEvent({
+      category: "Navigate",
+      action: "gotToHome",
+    });
+
+    navigate("/");
+  };
+
   const handleKakaoLogin = () => {
     const kakaoRestApi = import.meta.env.VITE_KAKAO_REST_API;
     const rediretUri = import.meta.env.VITE_KAKAO_REDIRECT_URI;
@@ -139,7 +148,7 @@ export const Header = () => {
   return (
     <StyledHeader isDarkMode={isDarkMode}>
       <h1>
-        <img src={logoImage} alt="로고 이미지" onClick={() => navigate("/")} />
+        <img src={logoImage} alt="로고 이미지" onClick={handleNavigateToHome} />
       </h1>
       {!isLoggedIn ? (
         <StyledLoginBtn onClick={handleKakaoLogin}>로그인</StyledLoginBtn>
