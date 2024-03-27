@@ -263,6 +263,16 @@ export const CodeCompare = () => {
     }
   };
 
+  const getBookmarkButtonText = () => {
+    if (!isbookmark && bookmarkInfo) {
+      return "북마크에 추가하기";
+    } else if (isbookmark) {
+      return "북마크에 추가됨";
+    } else {
+      return "북마크에 추가하기";
+    }
+  };
+
   return (
     <>
       <Header />
@@ -299,13 +309,13 @@ export const CodeCompare = () => {
                       : handleBookmarkSave
                   }
                 >
-                  북마크에 추가하기
+                  {getBookmarkButtonText()}
                   <img src={isbookmark ? icon_bookmark_true : icon_bookmark} alt="북마크 아이콘" />
                 </button>
               </CompareHeader>
               <ReadOnlyEditor code={aiRes?.gptCode as string} language={location.state?.language} />
             </div>
-            <Gutter orientation="vertical" onMouseDown={startDragVertical} changeBackColor={false} />
+            <Gutter orientation="vertical" onMouseDown={startDragVertical} changeBackColor={true} />
             <FeedbackTitle>
               AI Feedback
               <span>

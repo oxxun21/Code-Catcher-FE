@@ -115,7 +115,7 @@ export const Bookmark = () => {
               </TabContainer>
               {renderTabContent()}
             </div>
-            <Gutter orientation="vertical" onMouseDown={startDragVertical} changeBackColor={false} />
+            <Gutter orientation="vertical" onMouseDown={startDragVertical} changeBackColor={true} />
             <FeedbackTitle>AI Feedback</FeedbackTitle>
             <FeedbackSection editorHeight={editorHeight}>
               <p>{getBookmark?.gptExplain}</p>
