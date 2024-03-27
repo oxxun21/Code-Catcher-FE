@@ -1,11 +1,8 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import styled from "@emotion/styled";
-import { Header, HelmetMetaTags } from "../components";
-import { QuestionCard } from "../components";
-import { QuestionOutline_I } from "../interface";
-import { getQuestionListAPI } from "../api";
-import { metaData } from "../meta/metaData";
+import { Header, HelmetMetaTags, SplashCarousel } from "../components";
+import KakaoImg from "../assets/kakao_logo.svg";
+import { metaData } from "../meta/metaData.ts";
 import { useEventTracker } from "../hook";
 
 export const Splash = () => {
