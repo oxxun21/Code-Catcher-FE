@@ -1,21 +1,21 @@
 import { Global, css } from "@emotion/react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
-import reset from "./style/reset";
-import datePicker from "./style/datepicker";
-import { Home } from "./page/Home";
-import { Splash } from "./page/Splash";
-import { KakaoRedirection } from "./page/KakaoRedirection";
-import { CodingTest } from "./page/CodingTest";
-import { CodeCompare } from "./page/CodeCompare";
-import { NotFound } from "./page/NotFound";
-import { QuestionSelect } from "./page/QuestionSelect";
-import { MyPage } from "./page/MyPage";
+import reset from "./style/reset.tsx";
+import datePicker from "./style/datepicker.tsx";
+import { Home } from "./page/Home.tsx";
+import { Splash } from "./page/Splash.tsx";
+import { KakaoRedirection } from "./page/KakaoRedirection.tsx";
+import { CodingTest } from "./page/CodingTest.tsx";
+import { CodeCompare } from "./page/CodeCompare.tsx";
+import { NotFound } from "./page/NotFound.tsx";
+import { QuestionSelect } from "./page/QuestionSelect.tsx";
+import { MyPage } from "./page/MyPage.tsx";
 import { MobilePopup } from "./components";
-import { Bookmark } from "./page/Bookmark";
-import { BookmarkList } from "./page/BookmarkList";
-import { LastQuestionList } from "./page/LastQuestionList";
-import { metaData } from "./meta/metaData";
+import { Bookmark } from "./page/Bookmark.tsx";
+import { BookmarkList } from "./page/BookmarkList.tsx";
+import { LastQuestionList } from "./page/LastQuestionList.tsx";
+import { metaData } from "./meta/metaData.ts";
 import { HelmetRootMetaTags } from "./components";
 
 function App() {

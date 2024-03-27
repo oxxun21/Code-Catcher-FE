@@ -5,9 +5,8 @@ import { useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
 import StarPixel from "../assets/star_pixel.svg";
 import CheckedImage from "../assets/checked.svg";
-import { Pagination } from "../components/list/Pagination";
-import { Header, HelmetMetaTags, Modal } from "../components";
-import { metaData } from "../meta/metaData";
+import { Header, HelmetMetaTags, Modal, Pagination } from "../components";
+import { metaData } from "../meta/metaData.ts";
 
 export const BookmarkList = () => {
   const [data, setData] = useState<BookmarkListAll_I | undefined>(undefined);

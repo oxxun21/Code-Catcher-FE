@@ -1,6 +1,6 @@
-import { instance } from "./instance";
+import { instance } from "./instance.ts";
 import { MyPageInfo_I, BookmarkInfo_I, ProblemInfo_I } from "../interface";
-import { formatDate } from "../utils/formatDate";
+import { formatDate } from "../utils/formatDate.ts";
 
 export const getMyPageInfoAPI = async (): Promise<MyPageInfo_I | undefined> => {
   try {

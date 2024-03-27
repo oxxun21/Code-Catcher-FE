@@ -9,22 +9,20 @@ import {
   SquareButton,
   TestDescSection,
   TestResultSection,
+  Loading,
 } from "../components";
 import styled from "@emotion/styled";
 import { useDraggable } from "../hook";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { getQuestionAPI } from "../api";
+import { getQuestionAPI, postTestScoreSubmitAPI, postRetryScoreSubmitAPI, postScoreSubmitAPI } from "../api";
 import { QuestionOutline_I, Question_I, ScoreSubmit_I, SubmissionProps_I, TestScoreSubmit_I } from "../interface";
 import icon_test_complete from "../assets/icon_test_complete.svg";
 import icon_grayStar from "../assets/icon_grayStar.svg";
 import icon_test_failed from "../assets/icon_test_failed.svg";
 import { AxiosError } from "axios";
-import { postRetryScoreSubmitAPI, postScoreSubmitAPI } from "../api/scoreSubmit";
-import { postTestScoreSubmitAPI } from "../api/testScoreSubmit";
-import { Loading } from "../components/common/Loading";
 import Swal from "sweetalert2";
-import { metaData } from "../meta/metaData";
+import { metaData } from "../meta/metaData.ts";
 
 interface TodayQuestionList_I {
   [key: string]: QuestionOutline_I;

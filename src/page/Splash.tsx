@@ -2,7 +2,7 @@ import { useState } from "react";
 import styled from "@emotion/styled";
 import { Header, HelmetMetaTags, SplashCarousel } from "../components";
 import KakaoImg from "../assets/kakao_logo.svg";
-import { metaData } from "../meta/metaData";
+import { metaData } from "../meta/metaData.ts";
 
 export const Splash = () => {
   const [currentSlide, setCurrentSlide] = useState(0);

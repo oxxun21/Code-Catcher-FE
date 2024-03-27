@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getMyPageInfoAPI } from "../api";
 import { MyPageInfo_I } from "../interface";
-import { metaData } from "../meta/metaData";
+import { metaData } from "../meta/metaData.ts";
 
 export const MyPage = ({}) => {
   const [myInfo, setMyInfo] = useState<MyPageInfo_I>({

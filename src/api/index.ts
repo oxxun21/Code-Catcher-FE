@@ -10,3 +10,5 @@ export * from "./user.ts";
 export * from "./aiFeedback.ts";
 export * from "./withdraw.ts";
 export * from "./bookmark.ts";
+export * from "./scoreSubmit.ts";
+export * from "./testScoreSubmit.ts";

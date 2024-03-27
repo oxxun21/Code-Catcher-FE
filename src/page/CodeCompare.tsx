@@ -2,7 +2,16 @@ import styled from "@emotion/styled";
 import icon_bookmark from "../assets/icon_bookmark.svg";
 import icon_bookmark_true from "../assets/icon_bookmark_true.svg";
 import { useDraggable } from "../hook";
-import { Gutter, Header, Modal, ReadOnlyEditor, RoundButton, SquareButton, UserAICodeReview } from "../components";
+import {
+  Gutter,
+  Header,
+  Modal,
+  ReadOnlyEditor,
+  RoundButton,
+  SquareButton,
+  UserAICodeReview,
+  Loading,
+} from "../components";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import {
@@ -15,7 +24,6 @@ import {
 } from "../api";
 import { AiFeedback_I, BookmarkInfoOne_I, UserAiFeedback_I } from "../interface";
 import icon_tooltip from "../assets/icon_tooltip.svg";
-import { Loading } from "../components/common/Loading";
 import icon_grayStar from "../assets/icon_grayStar.svg";
 import Swal from "sweetalert2";
 import { AxiosError } from "axios";

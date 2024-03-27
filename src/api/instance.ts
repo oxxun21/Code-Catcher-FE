@@ -1,6 +1,6 @@
 import axios from "axios";
-import { getLoginCookie } from "../utils/loginCookie";
-import BASE_URL from "../utils/BASE_URL";
+import { getLoginCookie } from "../utils/loginCookie.ts";
+import BASE_URL from "../utils/BASE_URL.ts";
 
 export const instance = axios.create({
   baseURL: BASE_URL,

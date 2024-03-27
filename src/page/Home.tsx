@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { getLoginCookie } from "../utils/loginCookie";
+import { getLoginCookie } from "../utils/loginCookie.ts";
 import styled from "@emotion/styled";
 import { Header, GalmuriButton, HelmetMetaTags } from "../components";
 import { UserCard } from "../components";
-import { metaData } from "../meta/metaData";
+import { metaData } from "../meta/metaData.ts";
 
 export const Home = () => {
   const navigate = useNavigate();

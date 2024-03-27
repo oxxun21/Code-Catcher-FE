@@ -1,11 +1,11 @@
 import styled from "@emotion/styled";
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { getLoginCookie, removeLoginCookie } from "../../utils/loginCookie";
-import { useUserStore } from "../../stores/useUserStore";
+import { getLoginCookie, removeLoginCookie } from "../../utils/loginCookie.ts";
+import { useUserStore } from "../../stores/useUserStore.ts";
 import LogoLight from "../../assets/Logo_light.svg";
 import LogoDark from "../../assets/Logo_dark.svg";
-import { Modal } from "..";
+import { Modal } from "./Modal.tsx";
 import { withdrawAPI } from "../../api";
 
 type ModalContentType = "logout" | "withdraw" | "";

@@ -5,7 +5,7 @@ import { Header, HelmetMetaTags } from "../components";
 import { QuestionCard } from "../components";
 import { QuestionOutline_I } from "../interface";
 import { getQuestionListAPI } from "../api";
-import { metaData } from "../meta/metaData";
+import { metaData } from "../meta/metaData.ts";
 
 export const QuestionSelect = () => {
   const [questions, setQuestions] = useState<QuestionOutline_I[]>([]);

@@ -1,6 +1,6 @@
-import { instance } from "./instance";
+import { instance } from "./instance.ts";
 import { ProblemInfo_I, ProblemListAll_I } from "../interface";
-import { formatDate } from "../utils/formatDate";
+import { formatDate } from "../utils/formatDate.ts";
 
 export const getLastQuestionListAPI = async (page: number): Promise<ProblemListAll_I> => {
   try {

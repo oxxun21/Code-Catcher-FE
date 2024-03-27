@@ -4,9 +4,9 @@ import { getLastQuestionListAPI } from "../api";
 import { useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
 import StarPixel from "../assets/star_pixel.svg";
-import { Pagination } from "../components/list/Pagination";
+import { Pagination } from "../components";
 import { Header, HelmetMetaTags } from "../components";
-import { metaData } from "../meta/metaData";
+import { metaData } from "../meta/metaData.ts";
 
 export const LastQuestionList = () => {
   const [data, setData] = useState<ProblemListAll_I | undefined>(undefined);

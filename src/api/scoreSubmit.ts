@@ -1,4 +1,4 @@
-import { instance } from "./instance";
+import { instance } from "./instance.ts";
 import { ScoreSubmit_I, SubmissionProps_I } from "../interface";
 
 const postScore = async (path: string, { problemId, codeType, code }: SubmissionProps_I): Promise<ScoreSubmit_I> => {

@@ -1,5 +1,5 @@
 import { AchieveInfo_I } from "../interface";
-import { instance } from "./instance";
+import { instance } from "./instance.ts";
 
 export const getMonthlyAchieveAPI = async (year: number, month: number): Promise<AchieveInfo_I[] | undefined> => {
   try {

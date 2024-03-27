@@ -1,7 +1,7 @@
 import { NavigateFunction } from "react-router-dom";
-import { instance } from "./instance";
+import { instance } from "./instance.ts";
 import { UserState } from "../interface";
-import { setLoginCookie } from "../utils/loginCookie";
+import { setLoginCookie } from "../utils/loginCookie.ts";
 
 export const getLoginAPI = async (code: string, navigate: NavigateFunction, setUserInfo: UserState["setUserInfo"]) => {
   try {
