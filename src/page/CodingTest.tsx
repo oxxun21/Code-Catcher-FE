@@ -15,24 +15,30 @@ import { useDraggable } from "../hook";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { getQuestionAPI } from "../api";
-import { Question_I, ScoreSubmit_I, SubmissionProps_I, TestScoreSubmit_I } from "../interface";
+import { QuestionOutline_I, Question_I, ScoreSubmit_I, SubmissionProps_I, TestScoreSubmit_I } from "../interface";
 import icon_test_complete from "../assets/icon_test_complete.svg";
+import icon_grayStar from "../assets/icon_grayStar.svg";
 import icon_test_failed from "../assets/icon_test_failed.svg";
 import { AxiosError } from "axios";
 import { postRetryScoreSubmitAPI, postScoreSubmitAPI } from "../api/scoreSubmit";
 import { postTestScoreSubmitAPI } from "../api/testScoreSubmit";
+import { Loading } from "../components/common/Loading";
+import Swal from "sweetalert2";
 import { metaData } from "../meta/metaData";
 
 export const CodingTest = () => {
   const { id } = useParams();
   const [question, setQuestion] = useState<Question_I | undefined>();
+  const [todayQuestionList, setTodayQuestionList] = useState<QuestionOutline_I[] | undefined>();
   const [language, setLanguage] = useState<"Java" | "Python">("Java");
   const [isModal, setIsModal] = useState(false);
   const [codeValue, setCodeValue] = useState("");
   const [testValue, setTestValue] = useState<TestScoreSubmit_I | undefined>();
   const [submitValue, setSubmitValue] = useState<ScoreSubmit_I | undefined>();
   const [isMedia, setIsMedia] = useState(window.innerWidth <= 768);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const [selectedTodayQuestion, setSelectedTodayQuestion] = useState<QuestionOutline_I | undefined>();
 
   const {
     width: descWidth,
@@ -59,7 +65,10 @@ export const CodingTest = () => {
     (async () => {
       try {
         const response = await getQuestionAPI(id);
-        setQuestion(response);
+        const questionData: Question_I = response.questionData.data;
+        const todayQuestionListData: QuestionOutline_I[] = response.todayQuestionListData.data;
+        setQuestion(questionData);
+        setTodayQuestionList(todayQuestionListData);
       } catch (error) {
         const axiosError = error as AxiosError;
         console.log(axiosError);
@@ -67,6 +76,18 @@ export const CodingTest = () => {
       }
     })();
   }, [id]);
+
+  useEffect(() => {
+    for (const key in todayQuestionList) {
+      if (Object.prototype.hasOwnProperty.call(todayQuestionList, key)) {
+        const question = todayQuestionList[key];
+        if (question.id === Number(id)) {
+          setSelectedTodayQuestion(question);
+          break;
+        }
+      }
+    }
+  }, [id, todayQuestionList]);
 
   async function submissionFunc<T extends object>(
     apiFunc: (props: SubmissionProps_I) => Promise<T>,
@@ -90,7 +111,29 @@ export const CodingTest = () => {
         setIsModal(true);
       }
     } catch (error) {
-      console.log(error);
+      const axiosError = error as AxiosError;
+      console.log(axiosError);
+      if (axiosError.response?.status === 404) {
+        navigate("/404");
+      }
+      Swal.fire({
+        title: "Sorry",
+        text: `Test Submission ${axiosError?.message}`,
+        width: 600,
+        padding: "3em",
+        color: "#44b044",
+        background: "#fff",
+        backdrop: `
+        rgba(0,0,0,0.4)
+          url("https://sweetalert2.github.io/images/nyan-cat.gif")
+          left top
+          no-repeat
+        `,
+        confirmButtonColor: "#32cd32",
+        confirmButtonText: "Close",
+      });
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -101,23 +144,35 @@ export const CodingTest = () => {
 
   const handleSubmit = () => {
     setTestValue(undefined);
-    console.log(submitValue);
+    setIsLoading(true);
 
-    if (submitValue?.first === false) {
+    if (selectedTodayQuestion) {
+      submissionFunc<ScoreSubmit_I>(postScoreSubmitAPI, setSubmitValue, true);
+    } else {
       submissionFunc<ScoreSubmit_I>(postRetryScoreSubmitAPI, setSubmitValue, true);
     }
-    submissionFunc<ScoreSubmit_I>(postScoreSubmitAPI, setSubmitValue, true);
   };
 
   let message = "";
 
-  if (submitValue?.first) {
-    message = submitValue?.correct ? "10 EXP 획득!" : "EXP 획득 실패";
+  if (selectedTodayQuestion) {
+    if (submitValue?.first && submitValue?.correct) {
+      message = "10 EXP 획득!";
+    } else if (!submitValue?.first && submitValue?.correct) {
+      message = "정답입니다!";
+    } else if (selectedTodayQuestion?.isSuccess && !submitValue?.correct) {
+      message = "틀렸습니다";
+    } else if (
+      !(selectedTodayQuestion?.isSuccess || selectedTodayQuestion?.isSuccess === null) &&
+      !submitValue?.correct
+    ) {
+      message = "EXP 획득 실패";
+    }
   } else {
-    message = submitValue?.correct ? "정답입니다!" : "틀렸습니다";
+    submitValue?.correct ? (message = "정답입니다!") : (message = "틀렸습니다");
   }
 
-  console.log(submitValue);
+  console.log(question);
 
   return (
     <>
@@ -126,6 +181,12 @@ export const CodingTest = () => {
       <Main>
         <PageHeader>
           <h2>{question?.title}</h2>
+          <span>
+            Lv
+            {Array.from({ length: question?.level as number }, _ => (
+              <img src={icon_grayStar} alt={`레벨 ${question?.level}`} />
+            ))}
+          </span>
           <span>{question?.subject}</span>
         </PageHeader>
         <Contain>
@@ -155,12 +216,13 @@ export const CodingTest = () => {
       {isModal && (
         <Modal onClose={handleClose} modalHeader={submitValue?.correct ? "Test Complete" : "Test Failed"}>
           <ModalContain>
-            {submitValue?.first && (
-              <img
-                src={submitValue?.correct ? icon_test_complete : icon_test_failed}
-                alt={submitValue?.correct ? "테스트 통과" : "테스트 실패"}
-              />
-            )}
+            {selectedTodayQuestion &&
+              (selectedTodayQuestion?.isSuccess === false || selectedTodayQuestion.isSuccess === null) && (
+                <img
+                  src={submitValue?.correct ? icon_test_complete : icon_test_failed}
+                  alt={submitValue?.correct ? "테스트 통과" : "테스트 실패"}
+                />
+              )}
             <strong>{message}</strong>
             <p>{submitValue?.correct ? "축하합니다! 문제를 맞추셨어요" : "다음 테스트엔 더 잘 할 수 있어요"}</p>
             <div>
@@ -174,6 +236,7 @@ export const CodingTest = () => {
                         question: {
                           title: question?.title,
                           subject: question?.subject,
+                          level: question?.level,
                         },
                         language: language.toLowerCase(),
                         myCode: codeValue,
@@ -190,6 +253,7 @@ export const CodingTest = () => {
           </ModalContain>
         </Modal>
       )}
+      {isLoading && <Loading />}
     </>
   );
 };
@@ -205,14 +269,35 @@ const PageHeader = styled.div`
   padding: 1rem 22px;
   font-weight: 600;
   border-bottom: 2px solid var(--background-color);
+  display: flex;
+  justify-content: flex-start;
+  gap: 12px;
+  align-items: flex-end;
   & > h2 {
     font-size: 1rem;
-    display: inline-block;
-    margin-right: 12px;
   }
   & > span {
     color: var(--gray400-color);
     font-size: 14px;
+    font-weight: 400;
+  }
+
+  & > span:first-of-type {
+    display: flex;
+    gap: 2px;
+    align-items: center;
+    justify-content: center;
+    margin-right: 8px;
+    position: relative;
+    &::after {
+      content: "";
+      position: absolute;
+      right: -10px;
+      top: 0;
+      width: 1px;
+      height: 100%;
+      background-color: var(--gray700-color);
+    }
   }
 `;
 
