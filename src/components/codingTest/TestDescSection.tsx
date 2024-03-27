@@ -74,7 +74,7 @@ const DescSection = styled.section`
 const DescArticle = styled.article`
   font-size: 12px;
   line-height: 2;
-  margin-bottom: 24px;
+  margin-bottom: 40px;
   white-space: pre-wrap;
   word-wrap: break-word;
   color: var(--gray200-color);
