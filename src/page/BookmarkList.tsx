@@ -235,7 +235,7 @@ const ModalContents = styled.div`
       padding: 1rem 4.3125rem;
       cursor: pointer;
     }
-    & button:nth-child(1) {
+    & button:nth-of-type(1) {
       color: var(--black-color);
       border: 2px solid var(--gray200-color);
       background-color: #f4f4f4;
@@ -243,7 +243,7 @@ const ModalContents = styled.div`
         background-color: var(--gray100-color);
       }
     }
-    & button:nth-child(2) {
+    & button:nth-of-type(2) {
       color: #ffffff;
       background-color: var(--secondary-color);
       &:hover {
@@ -295,7 +295,7 @@ const StyledTableRow = styled.tr<{ checked: boolean }>`
   &:hover {
     background-color: ${props => (props.checked ? "rgba(50, 205, 50, 0.1)" : "#f5f5f5")};
   }
-  &:nth-child(even) {
+  &:nth-of-type(even) {
     background-color: ${props => (props.checked ? "rgba(50, 205, 50, 0.1)" : "#f4f4f4")};
     &:hover {
       background-color: ${props => (props.checked ? "rgba(50, 205, 50, 0.1)" : "#ececec")};
@@ -305,7 +305,7 @@ const StyledTableRow = styled.tr<{ checked: boolean }>`
   & > td {
     padding: 0.625rem 0;
     color: var(--black-color);
-    &:nth-child(1) {
+    &:nth-of-type(1) {
       width: 3rem;
       & img {
         vertical-align: middle;
@@ -313,7 +313,7 @@ const StyledTableRow = styled.tr<{ checked: boolean }>`
       padding-left: 0.875rem;
       color: var(--secondary-color);
     }
-    &:nth-child(2) {
+    &:nth-of-type(2) {
       width: 22rem;
 
       & span {
@@ -333,18 +333,18 @@ const StyledTableRow = styled.tr<{ checked: boolean }>`
         text-overflow: ellipsis;
       }
     }
-    &:nth-child(3) {
+    &:nth-of-type(3) {
       width: 37.75rem;
       font-size: 0.875rem;
       font-weight: 400;
     }
-    &:nth-child(4) {
+    &:nth-of-type(4) {
       width: 5rem;
       font-size: 0.75rem;
       font-weight: 400;
       color: #9f9f9f;
     }
-    &:nth-child(5) {
+    &:nth-of-type(5) {
       padding: 0.625rem 1.9375rem 0.625rem 4.5625rem;
       display: flex;
       justify-content: center;

@@ -250,7 +250,7 @@ const ModalContents = styled.div`
       padding: 1rem 4.3125rem;
       cursor: pointer;
     }
-    & button:nth-child(1) {
+    & button:nth-of-type(1) {
       color: var(--black-color);
       border: 2px solid var(--gray200-color);
       background-color: #f4f4f4;
@@ -258,7 +258,7 @@ const ModalContents = styled.div`
         background-color: var(--gray100-color);
       }
     }
-    & button:nth-child(2) {
+    & button:nth-of-type(2) {
       color: #ffffff;
       background-color: var(--secondary-color);
       &:hover {
