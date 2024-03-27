@@ -29,7 +29,7 @@ const GutterStyle = styled.div<GutterProps>`
     ` url(${props.orientation === "horizontal" ? gutter_horizontal : gutter_vertical})` +
     " no-repeat center /" +
     (props.orientation === "horizontal" ? "auto 40px" : "40px auto")}; */
-  background: ${props => props.orientation !== "horizontal" && "#3F3F47"};
+  background: ${props => props.changeBackColor && "#3F3F47"};
   position: relative;
   border-right: ${props => props.orientation === "horizontal" && "2px solid var(--background-color)"};
   border-top: ${props => props.orientation === "vertical" && "2px solid var(--background-color)"};
