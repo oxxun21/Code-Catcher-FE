@@ -7,10 +7,12 @@ import StarPixel from "../assets/star_pixel.svg";
 import { Pagination } from "../components/list/Pagination";
 import { Header, HelmetMetaTags } from "../components";
 import { metaData } from "../meta/metaData";
+import { useEventTracker } from "../hook";
 
 export const LastQuestionList = () => {
   const [data, setData] = useState<ProblemListAll_I | undefined>(undefined);
   const [currentPage, setCurrentPage] = useState<number>(data?.currentPage || 0);
+  const trackEvent = useEventTracker();
 
   useEffect(() => {
     const fetchQuestions = async () => {
@@ -32,6 +34,11 @@ export const LastQuestionList = () => {
 
   const navigate = useNavigate();
   const handleItemClick = (item: ProblemInfo_I) => {
+    trackEvent({
+      category: "LastQuestionLis",
+      action: "lastQuestionItemClicked",
+      label: `${item.problemId}`,
+    });
     navigate(`/codingTest/${item.problemId}`);
   };
 

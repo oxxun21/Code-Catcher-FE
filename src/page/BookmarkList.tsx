@@ -8,6 +8,7 @@ import CheckedImage from "../assets/checked.svg";
 import { Pagination } from "../components/list/Pagination";
 import { Header, HelmetMetaTags, Modal } from "../components";
 import { metaData } from "../meta/metaData";
+import { useEventTracker } from "../hook";
 
 export const BookmarkList = () => {
   const [data, setData] = useState<BookmarkListAll_I | undefined>(undefined);
@@ -15,6 +16,7 @@ export const BookmarkList = () => {
   const [checkedItems, setCheckedItems] = useState<{ [key: string]: boolean }>({});
   const isAnyChecked = Object.values(checkedItems).some(checked => checked);
   const [currentPage, setCurrentPage] = useState<number>(data?.currentPage || 0);
+  const trackEvent = useEventTracker();
 
   useEffect(() => {
     const fetchQuestions = async () => {
@@ -36,6 +38,11 @@ export const BookmarkList = () => {
 
   const navigate = useNavigate();
   const handleItemClick = (item: BookmarkInfo_I) => {
+    trackEvent({
+      category: "BookmarkList",
+      action: "bookmarkItemClicked",
+      label: `${item.bookmarkId}`,
+    });
     navigate(`/bookmark/${item.bookmarkId}`);
   };
 
@@ -55,8 +62,11 @@ export const BookmarkList = () => {
       if (resData) {
         setData(resData);
         setCheckedItems({});
-      } else {
-        console.log("삭제 후 데이터를 받지 못했습니다.");
+
+        trackEvent({
+          category: "BookmarkList",
+          action: "bookmarkDeleteMany",
+        });
       }
     } catch (error) {
       console.error("북마크 삭제 실패", error);
@@ -229,10 +239,16 @@ const ModalContents = styled.div`
       color: var(--black-color);
       border: 2px solid var(--gray200-color);
       background-color: #f4f4f4;
+      &:hover {
+        background-color: var(--gray100-color);
+      }
     }
     & button:nth-child(2) {
       color: #ffffff;
       background-color: var(--secondary-color);
+      &:hover {
+        background-color: var(--secondary-light-color);
+      }
     }
   }
 `;
