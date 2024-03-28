@@ -8,7 +8,6 @@ interface TrackEventParams {
 }
 
 export const useEventTracker = () => {
-  console.log("useEventTracker is initialized");
   const trackEvent = ({ category, action, label, value }: TrackEventParams) => {
     console.log("Event tracked:", { category, action, label, value });
     ReactGA.event({
