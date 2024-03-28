@@ -30,7 +30,10 @@ export const SelectLang = ({ language, setLanguage }: LangProps) => {
 
   return (
     <LangSelect ref={dropdownRef}>
-      <button onClick={toggleDropdown}>{language}</button>
+      <button onClick={toggleDropdown}>
+        {language}
+        <img src={icon_dropdown} alt="드롭다운" />
+      </button>
       {showDropdown && (
         <ul>
           <li onClick={() => handleLanguageSelect("Java")}>Java</li>
@@ -56,10 +59,13 @@ const LangSelect = styled.article`
     -moz-appearance: none;
     appearance: none;
     cursor: pointer;
+    position: relative;
     background-color: #2c2c34;
-    background-image: url(${icon_dropdown});
-    background-repeat: no-repeat;
-    background-position: right 10px center;
+    & > img {
+      position: absolute;
+      right: 10px;
+      top: 5px;
+    }
   }
   & > ul {
     font-size: 0.875rem;
