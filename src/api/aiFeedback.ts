@@ -14,7 +14,7 @@ export const getAiFeedbackAPI = async ({ problemId, codeType }: AiFeedbackProps_
 
 export const postUserAiFeedbackAPI = async ({ myCode, problemId }: UserAiFeedbackProps_I) => {
   try {
-    const response = await instance.post("/gpt/mock/feedback", { myCode, problemId }, { timeout: 120000 });
+    const response = await instance.post("/gpt/feedback", { myCode, problemId }, { timeout: 120000 });
     return response.data;
   } catch (error) {
     throw error;
