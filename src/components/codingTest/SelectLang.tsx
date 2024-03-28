@@ -56,7 +56,10 @@ const LangSelect = styled.article`
     -moz-appearance: none;
     appearance: none;
     cursor: pointer;
-    background: #2c2c34 url(${icon_dropdown}) no-repeat right 10px center;
+    background-color: #2c2c34;
+    background-image: url(${icon_dropdown});
+    background-repeat: no-repeat;
+    background-position: right 10px center;
   }
   & > ul {
     font-size: 0.875rem;
