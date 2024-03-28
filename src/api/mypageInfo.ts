@@ -8,7 +8,6 @@ export const getMyPageInfoAPI = async (): Promise<MyPageInfo_I | undefined> => {
     if (response.data) {
       // bookmarkInfo와 problemInfo 내의 모든 createdAt 값을 변환
       const { bookmarkInfo, problemInfo } = response.data;
-
       const formattedBookmarkInfo = bookmarkInfo.map((item: BookmarkInfo_I) => ({
         ...item,
         createdAt: formatDate(item.createdAt),
@@ -19,13 +18,14 @@ export const getMyPageInfoAPI = async (): Promise<MyPageInfo_I | undefined> => {
         createdAt: formatDate(item.createdAt),
       }));
 
-      return {
+      const finalResponse = {
         ...response.data,
         bookmarkInfo: formattedBookmarkInfo,
         problemInfo: formattedProblemInfo,
       };
+
+      return finalResponse;
     }
-    console.log(response);
   } catch (error) {
     console.log(error);
   }

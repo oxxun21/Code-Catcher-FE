@@ -4,13 +4,15 @@ import { getLastQuestionListAPI } from "../api";
 import { useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
 import StarPixel from "../assets/star_pixel.svg";
-import { Pagination } from "../components";
+import { Pagination } from "../components/list/Pagination";
 import { Header, HelmetMetaTags } from "../components";
-import { metaData } from "../meta/metaData.ts";
+import { metaData } from "../meta/metaData";
+import { useEventTracker } from "../hook";
 
 export const LastQuestionList = () => {
   const [data, setData] = useState<ProblemListAll_I | undefined>(undefined);
   const [currentPage, setCurrentPage] = useState<number>(data?.currentPage || 0);
+  const trackEvent = useEventTracker();
 
   useEffect(() => {
     const fetchQuestions = async () => {
@@ -32,6 +34,11 @@ export const LastQuestionList = () => {
 
   const navigate = useNavigate();
   const handleItemClick = (item: ProblemInfo_I) => {
+    trackEvent({
+      category: "LastQuestionLis",
+      action: "lastQuestionItemClicked",
+      label: `${item.problemId}`,
+    });
     navigate(`/codingTest/${item.problemId}`);
   };
 
@@ -40,7 +47,7 @@ export const LastQuestionList = () => {
       return {
         text: "Complete",
         textColor: "var(--black-color)",
-        indicatorColor: "var(--point-color)",
+        indicatorColor: "var(--system-positivie-color)",
       };
     } else if (status === false) {
       return {
@@ -160,18 +167,18 @@ const StyledTableHead = styled.thead`
     text-align: left;
     padding: 0.375rem 0;
     width: auto;
-    &:first-child {
+    &:first-of-type {
       padding-left: 1rem;
       padding-right: 3.875rem;
     }
-    &:nth-child(2) {
+    &:nth-of-type(2) {
       padding-right: 21.25rem;
     }
-    &:nth-child(3) {
+    &:nth-of-type(3) {
       padding-right: 2.875rem;
       width: 37.75rem;
     }
-    &:nth-child(4) {
+    &:nth-of-type(4) {
       padding-right: 2.875rem;
     }
   }
@@ -186,7 +193,7 @@ const StyledTableBody = styled.tbody`
     &:hover {
       background-color: #f5f5f5;
     }
-    &:nth-child(even) {
+    &:nth-of-type(even) {
       background-color: #f4f4f4;
       &:hover {
         background-color: #ececec;
@@ -197,7 +204,7 @@ const StyledTableBody = styled.tbody`
   & > tr > td {
     padding: 0.625rem 0;
     color: var(--black-color);
-    &:nth-child(1) {
+    &:nth-of-type(1) {
       width: 3rem;
       & img {
         vertical-align: middle;
@@ -205,7 +212,7 @@ const StyledTableBody = styled.tbody`
       padding-left: 0.875rem;
       color: var(--secondary-color);
     }
-    &:nth-child(2) {
+    &:nth-of-type(2) {
       display: flex;
       width: 22rem;
 
@@ -226,21 +233,21 @@ const StyledTableBody = styled.tbody`
         text-overflow: ellipsis;
       }
     }
-    &:nth-child(3) {
+    &:nth-of-type(3) {
       width: 37.75rem;
       font-size: 0.875rem;
       font-weight: 400;
     }
-    &:nth-child(4) {
+    &:nth-of-type(4) {
       width: 5rem;
       font-size: 0.75rem;
       font-weight: 400;
       color: #9f9f9f;
     }
-    &:nth-child(5) {
+    &:nth-of-type(5) {
       padding-right: 27px;
       display: flex;
-      justify-content: center;
+      justify-content: left;
       align-items: center;
       font-size: 0.75rem;
       font-weight: 400;
@@ -255,7 +262,7 @@ const StatusIndicator = styled.div<{ status: boolean }>`
   border-radius: 999px;
   background-color: ${({ status }) =>
     status === true
-      ? "var(--point-color)"
+      ? "var(--system-positivie-color)"
       : status === false
       ? "var(--system-negative-color)"
       : "var(--gray200-color)"};

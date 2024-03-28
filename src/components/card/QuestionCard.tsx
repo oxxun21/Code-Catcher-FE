@@ -117,7 +117,7 @@ const StyledSpan = styled.span`
   }
 `;
 const StyledRank = styled.div`
-  & > img:not(:last-child) {
+  & > img:not(:last-of-type) {
     margin-right: 0.375rem;
   }
 `;

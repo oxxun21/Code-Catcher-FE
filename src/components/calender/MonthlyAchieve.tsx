@@ -18,11 +18,14 @@ export const MonthlyAchieve = ({ data }: MonthlyAchieveProps) => {
   }, [data]);
 
   // achieveInfo를 날짜 객체로 변환하여 cnt 값을 매핑
-  const achieveMap = achieveData.reduce((acc, cur) => {
-    const date = new Date(cur.createdAt).getDate();
-    acc[date] = cur.cnt;
+  const achieveMap = achieveData.reduce<{ [key: number]: number }>((acc, cur) => {
+    // UTC 기준으로 날짜 객체 생성
+    const date = new Date(cur.createdAt);
+    // UTC 기준으로 일(day) 추출
+    const day = date.getUTCDate();
+    acc[day] = cur.cnt;
     return acc;
-  }, {} as { [key: number]: number });
+  }, {});
 
   const formatWeekDay = (nameOfDay: string) => {
     return nameOfDay.substring(0, 3).toLowerCase();

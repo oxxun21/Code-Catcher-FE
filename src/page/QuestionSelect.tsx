@@ -5,7 +5,8 @@ import { Header, HelmetMetaTags } from "../components";
 import { QuestionCard } from "../components";
 import { QuestionOutline_I } from "../interface";
 import { getQuestionListAPI } from "../api";
-import { metaData } from "../meta/metaData.ts";
+import { metaData } from "../meta/metaData";
+import { useEventTracker } from "../hook";
 
 export const QuestionSelect = () => {
   const [questions, setQuestions] = useState<QuestionOutline_I[]>([]);
@@ -36,6 +37,11 @@ export const QuestionSelect = () => {
 
   const handleToCodingTest = () => {
     if (selectedQuestionId !== null) {
+      const trackEvent = useEventTracker();
+      trackEvent({
+        category: "CodingTest",
+        action: "startCodingTest",
+      });
       navigate(`/codingTest/${selectedQuestionId}`);
     }
   };

@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 import { Header, HelmetMetaTags, SplashCarousel } from "../components";
 import KakaoImg from "../assets/kakao_logo.svg";
 import { metaData } from "../meta/metaData.ts";
+import { useEventTracker } from "../hook";
 
 export const Splash = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -13,6 +14,14 @@ export const Splash = () => {
     const kakaoRestApi = import.meta.env.VITE_KAKAO_REST_API;
     const rediretUri = import.meta.env.VITE_KAKAO_REDIRECT_URI;
     const link = `https://kauth.kakao.com/oauth/authorize?client_id=${kakaoRestApi}&redirect_uri=${rediretUri}&response_type=code`;
+
+    const trackEvent = useEventTracker();
+    trackEvent({
+      category: "Auth",
+      action: "login",
+      label: "Kakao",
+    });
+
     window.location.href = link;
   };
   return (

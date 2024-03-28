@@ -5,6 +5,7 @@ import StarPixel from "../../assets/star_pixel.svg";
 import BookMarkEmptyImage from "../../assets/bookmark_empty.svg";
 import LastEmptyImage from "../../assets/last_empty.svg";
 import ArrowRightIcon from "../../assets/arrow_right_lastTests.svg";
+import { useEventTracker } from "../../hook";
 
 type ListType = "bookmark" | "lastTests";
 
@@ -16,6 +17,7 @@ interface MyPageListProps {
 export const MypageList = ({ listType, data }: MyPageListProps) => {
   const isBookmark = listType === "bookmark";
   const title = isBookmark ? "북마크" : "지난 테스트 내역";
+  const trackEvent = useEventTracker();
 
   const navigate = useNavigate();
   const handleItemClick = (item: BookmarkInfo_I | ProblemInfo_I) => {
@@ -23,7 +25,39 @@ export const MypageList = ({ listType, data }: MyPageListProps) => {
     const routeId = isBookmark ? (item as BookmarkInfo_I).bookmarkId : (item as ProblemInfo_I).problemId;
 
     navigate(`${routePrefix}${routeId}`);
+
+    trackEvent({
+      category: isBookmark ? "BookmarkList" : "LastQuestion",
+      action: isBookmark ? "bookmarkItemClicked" : "lastQuestionItemClicked",
+      label: `${routeId}`,
+    });
   };
+
+  const handleMoreClick = () => {
+    navigate(isBookmark ? "/bookmarkList" : "/lastQuestionList");
+
+    if (isBookmark) {
+      trackEvent({
+        category: "BookmarkList",
+        action: "bookmarkListMore",
+      });
+    } else {
+      trackEvent({
+        category: "LastQuestionList",
+        action: "lastQuestionListMore",
+      });
+    }
+  };
+
+  const handleNavigateToQuestionSelect = () => {
+    trackEvent({
+      category: "CodingTest",
+      action: "goToQuestionSelect",
+    });
+
+    navigate("/question/select");
+  };
+
   const isEmpty = data.length === 0;
   const EmptyComponent = () => (
     <StyledEmptyComponent>
@@ -34,7 +68,7 @@ export const MypageList = ({ listType, data }: MyPageListProps) => {
       ) : (
         <StyledLastEmpty>
           <img src={LastEmptyImage} alt="지난 테스트 내역 데이터 없음" />
-          <button onClick={() => navigate("/question/select")}>
+          <button onClick={handleNavigateToQuestionSelect}>
             테스트하러가기
             <img src={ArrowRightIcon} alt="테스트하러가기" />
           </button>
@@ -47,9 +81,7 @@ export const MypageList = ({ listType, data }: MyPageListProps) => {
     <StyledContainer>
       <div>
         <strong>{title}</strong>
-        {isEmpty ? null : (
-          <button onClick={() => navigate(isBookmark ? "/bookmarkList" : "/lastQuestionList")}>more &gt;</button>
-        )}
+        {isEmpty ? null : <button onClick={handleMoreClick}>more &gt;</button>}
       </div>
       {isEmpty ? (
         <EmptyComponent />
@@ -127,14 +159,14 @@ const StyledTableHead = styled.thead`
     text-align: left;
     padding: 0.375rem 0;
 
-    &:first-child {
+    &:first-of-type {
       padding-left: 0.375rem;
       padding-right: 3.125rem;
     }
-    &:nth-child(2) {
+    &:nth-of-type(2) {
       padding-right: 11.4375rem;
     }
-    &:nth-child(3) {
+    &:nth-of-type(3) {
       padding-right: 3rem;
     }
   }
@@ -151,7 +183,7 @@ const StyledTableBody = styled.tbody`
     &:hover {
       background-color: #f5f5f5;
     }
-    &:nth-child(even) {
+    &:nth-of-type(even) {
       background-color: #f4f4f4;
       &:hover {
         background-color: #ececec;
@@ -162,14 +194,14 @@ const StyledTableBody = styled.tbody`
   & > tr > td {
     padding: 0.5rem 0;
 
-    &:first-child {
+    &:first-of-type {
       & img {
         vertical-align: middle;
       }
       padding-left: 0.25rem;
       color: var(--secondary-color);
     }
-    &:nth-child(2) {
+    &:nth-of-type(2) {
       display: flex;
       & span {
         font-size: 0.75rem;
@@ -189,7 +221,7 @@ const StyledTableBody = styled.tbody`
         text-overflow: ellipsis;
       }
     }
-    &:nth-child(3) {
+    &:nth-of-type(3) {
       font-size: 0.75rem;
       font-weight: 400;
       color: #9f9f9f;

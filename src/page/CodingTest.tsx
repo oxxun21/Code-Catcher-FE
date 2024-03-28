@@ -12,7 +12,7 @@ import {
   Loading,
 } from "../components";
 import styled from "@emotion/styled";
-import { useDraggable } from "../hook";
+import { useDraggable, useEventTracker } from "../hook";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { getQuestionAPI, postTestScoreSubmitAPI, postRetryScoreSubmitAPI, postScoreSubmitAPI } from "../api";
@@ -41,6 +41,7 @@ export const CodingTest = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const [selectedTodayQuestion, setSelectedTodayQuestion] = useState<QuestionOutline_I | undefined>();
+  const trackEvent = useEventTracker();
 
   const {
     width: descWidth,
@@ -137,6 +138,11 @@ export const CodingTest = () => {
   const handleTestSubmit = () => {
     setSubmitValue(undefined);
     submissionFunc<TestScoreSubmit_I>(postTestScoreSubmitAPI, setTestValue);
+
+    trackEvent({
+      category: "CodingTest",
+      action: "testCaseClicked",
+    });
   };
 
   const handleSubmit = () => {
@@ -148,6 +154,11 @@ export const CodingTest = () => {
     } else {
       submissionFunc<ScoreSubmit_I>(postRetryScoreSubmitAPI, setSubmitValue, true);
     }
+
+    trackEvent({
+      category: "CodingTest",
+      action: "submitAnswer",
+    });
   };
 
   let message = "";
@@ -225,7 +236,12 @@ export const CodingTest = () => {
               {submitValue?.correct ? (
                 <RoundButton
                   text="AI 설명 보기"
-                  onClick={() =>
+                  onClick={() => {
+                    trackEvent({
+                      category: "CodingTestComplete",
+                      action: "goToAiExplain",
+                      label: `${id}`,
+                    });
                     navigate(`/CodeCompare/${id}`, {
                       state: {
                         question: {
@@ -236,13 +252,25 @@ export const CodingTest = () => {
                         language: language.toLowerCase(),
                         myCode: codeValue,
                       },
-                    })
-                  }
+                    });
+                  }}
                   dark
                   width="50%"
                 />
               ) : (
-                <RoundButton text="다시 풀기" onClick={() => setIsModal(false)} dark width="50%" />
+                <RoundButton
+                  text="다시 풀기"
+                  onClick={() => {
+                    trackEvent({
+                      category: "CodingTestFailed",
+                      action: "retry",
+                      label: `${id}`,
+                    });
+                    setIsModal(false);
+                  }}
+                  dark
+                  width="50%"
+                />
               )}
             </div>
           </ModalContain>

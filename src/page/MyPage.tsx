@@ -1,10 +1,11 @@
 import styled from "@emotion/styled";
 import { UserCard, MypageList, GalmuriButton, MonthlyAchieve, Header, HelmetMetaTags } from "../components";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getMyPageInfoAPI } from "../api";
 import { MyPageInfo_I } from "../interface";
-import { metaData } from "../meta/metaData.ts";
+import { metaData } from "../meta/metaData";
+import { useEventTracker } from "../hook";
 
 export const MyPage = ({}) => {
   const [myInfo, setMyInfo] = useState<MyPageInfo_I>({
@@ -12,6 +13,9 @@ export const MyPage = ({}) => {
     problemInfo: [],
     achieveInfo: [],
   });
+
+  const navigate = useNavigate();
+  const trackEvent = useEventTracker();
 
   useEffect(() => {
     const fetchMyInfo = async () => {
@@ -25,7 +29,15 @@ export const MyPage = ({}) => {
 
     fetchMyInfo();
   }, []);
-  console.log("이거 useState myInfo임", myInfo);
+
+  const handleNavigateToQuestionSelect = () => {
+    trackEvent({
+      category: "CodingTest",
+      action: "goToQuestionSelect",
+    });
+    navigate("/question/select");
+  };
+
   return (
     <>
       <HelmetMetaTags meta={metaData.myPage} />
@@ -39,7 +51,7 @@ export const MyPage = ({}) => {
           </div>
           <MonthlyAchieve data={myInfo.achieveInfo} />
         </section>
-        <GalmuriButton as={Link} to="/question/select" text="오늘의 코테 시작하기" />
+        <GalmuriButton onClick={handleNavigateToQuestionSelect} text="오늘의 코테 시작하기" />
       </StyledMain>
     </>
   );
