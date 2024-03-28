@@ -6,7 +6,6 @@ export const getUserAPI = async (setUserInfo: UserState["setUserInfo"]) => {
     const response = await instance.get(`user/info`);
     const resData = response.data;
     if (resData) {
-      console.log(resData);
       const { ...userInfo } = resData;
       setUserInfo(userInfo);
     } else {

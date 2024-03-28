@@ -64,10 +64,18 @@ const datePicker = css`
   }
   //요일 가로
   .react-datepicker__day-names {
+    width: 20.3125rem;
     margin: 0 7px;
     margin-bottom: 1.5rem;
     display: flex;
     justify-content: space-between;
+
+    & div:nth-of-type(6) {
+      margin-left: 0.1875rem;
+    }
+    & div:nth-of-type(7) {
+      margin-left: 0.625rem;
+    }
   }
   //각 요일
   .react-datepicker__day-name {

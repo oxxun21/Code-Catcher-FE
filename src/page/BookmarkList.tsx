@@ -5,8 +5,12 @@ import { useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
 import StarPixel from "../assets/star_pixel.svg";
 import CheckedImage from "../assets/checked.svg";
-import { Header, HelmetMetaTags, Modal, Pagination } from "../components";
-import { metaData } from "../meta/metaData.ts";
+import BookMarkEmptyImage from "../assets/bookmark_empty.svg";
+import ArrowRightIcon from "../assets/arrow_right_lastTests.svg";
+import { Pagination } from "../components/list/Pagination";
+import { Header, HelmetMetaTags, Modal } from "../components";
+import { metaData } from "../meta/metaData";
+import { useEventTracker } from "../hook";
 
 export const BookmarkList = () => {
   const [data, setData] = useState<BookmarkListAll_I | undefined>(undefined);
@@ -14,6 +18,7 @@ export const BookmarkList = () => {
   const [checkedItems, setCheckedItems] = useState<{ [key: string]: boolean }>({});
   const isAnyChecked = Object.values(checkedItems).some(checked => checked);
   const [currentPage, setCurrentPage] = useState<number>(data?.currentPage || 0);
+  const trackEvent = useEventTracker();
 
   useEffect(() => {
     const fetchQuestions = async () => {
@@ -35,6 +40,11 @@ export const BookmarkList = () => {
 
   const navigate = useNavigate();
   const handleItemClick = (item: BookmarkInfo_I) => {
+    trackEvent({
+      category: "BookmarkList",
+      action: "bookmarkItemClicked",
+      label: `${item.bookmarkId}`,
+    });
     navigate(`/bookmark/${item.bookmarkId}`);
   };
 
@@ -54,14 +64,27 @@ export const BookmarkList = () => {
       if (resData) {
         setData(resData);
         setCheckedItems({});
-      } else {
-        console.log("삭제 후 데이터를 받지 못했습니다.");
+
+        trackEvent({
+          category: "BookmarkList",
+          action: "bookmarkDeleteMany",
+        });
       }
     } catch (error) {
       console.error("북마크 삭제 실패", error);
     }
     closeModal();
   };
+
+  const handleNavigateToMyPage = () => {
+    trackEvent({
+      category: "Navigate",
+      action: "goToMyPage",
+    });
+
+    navigate("/myPage");
+  };
+
   return (
     <>
       <HelmetMetaTags meta={metaData.bookmark} />
@@ -89,19 +112,19 @@ export const BookmarkList = () => {
               </Modal>
             )}
           </div>
-          <StyledTable>
-            <StyledTableHead>
-              <tr>
-                <th>Lv</th>
-                <th>Title</th>
-                <th>Detail</th>
-                <th>Added Date</th>
-                <th />
-              </tr>
-            </StyledTableHead>
-            <StyledTableBody>
-              {data?.questionData.map((item, index) => {
-                return (
+          {data?.questionData && data.questionData.length > 0 ? (
+            <StyledTable>
+              <StyledTableHead>
+                <tr>
+                  <th>Lv</th>
+                  <th>Title</th>
+                  <th>Detail</th>
+                  <th>Added Date</th>
+                  <th />
+                </tr>
+              </StyledTableHead>
+              <StyledTableBody>
+                {data.questionData.map((item, index) => (
                   <StyledTableRow
                     key={index}
                     checked={!!checkedItems[item.bookmarkId]}
@@ -121,16 +144,29 @@ export const BookmarkList = () => {
                     <td>
                       <CheckboxDiv
                         checked={!!checkedItems[item.bookmarkId]}
-                        onClick={e => handleCheckboxClick(e, item.bookmarkId)}
+                        onClick={e => {
+                          e.stopPropagation(); // 체크박스 클릭 시 버블링 방지
+                          handleCheckboxClick(e, item.bookmarkId);
+                        }}
                       >
                         {checkedItems[item.bookmarkId] && <Checkmark src={CheckedImage} alt="선택" />}
                       </CheckboxDiv>
                     </td>
                   </StyledTableRow>
-                );
-              })}
-            </StyledTableBody>
-          </StyledTable>
+                ))}
+              </StyledTableBody>
+            </StyledTable>
+          ) : (
+            <StyledEmpty>
+              <div>
+                <img src={BookMarkEmptyImage} alt="데이터 없음" />
+                <button onClick={handleNavigateToMyPage}>
+                  마이페이지로 돌아가기
+                  <img src={ArrowRightIcon} alt="마이페이지로 돌아가기" />
+                </button>
+              </div>
+            </StyledEmpty>
+          )}
           <Pagination totalPage={totalPage} currentPage={currentPage} onPageChange={handlePageChange} />
         </section>
       </StyledMain>
@@ -224,14 +260,20 @@ const ModalContents = styled.div`
       padding: 1rem 4.3125rem;
       cursor: pointer;
     }
-    & button:nth-child(1) {
+    & button:nth-of-type(1) {
       color: var(--black-color);
       border: 2px solid var(--gray200-color);
       background-color: #f4f4f4;
+      &:hover {
+        background-color: var(--gray100-color);
+      }
     }
-    & button:nth-child(2) {
+    & button:nth-of-type(2) {
       color: #ffffff;
       background-color: var(--secondary-color);
+      &:hover {
+        background-color: var(--secondary-light-color);
+      }
     }
   }
 `;
@@ -278,7 +320,7 @@ const StyledTableRow = styled.tr<{ checked: boolean }>`
   &:hover {
     background-color: ${props => (props.checked ? "rgba(50, 205, 50, 0.1)" : "#f5f5f5")};
   }
-  &:nth-child(even) {
+  &:nth-of-type(even) {
     background-color: ${props => (props.checked ? "rgba(50, 205, 50, 0.1)" : "#f4f4f4")};
     &:hover {
       background-color: ${props => (props.checked ? "rgba(50, 205, 50, 0.1)" : "#ececec")};
@@ -288,7 +330,7 @@ const StyledTableRow = styled.tr<{ checked: boolean }>`
   & > td {
     padding: 0.625rem 0;
     color: var(--black-color);
-    &:nth-child(1) {
+    &:nth-of-type(1) {
       width: 3rem;
       & img {
         vertical-align: middle;
@@ -296,7 +338,7 @@ const StyledTableRow = styled.tr<{ checked: boolean }>`
       padding-left: 0.875rem;
       color: var(--secondary-color);
     }
-    &:nth-child(2) {
+    &:nth-of-type(2) {
       width: 22rem;
 
       & span {
@@ -316,18 +358,18 @@ const StyledTableRow = styled.tr<{ checked: boolean }>`
         text-overflow: ellipsis;
       }
     }
-    &:nth-child(3) {
+    &:nth-of-type(3) {
       width: 37.75rem;
       font-size: 0.875rem;
       font-weight: 400;
     }
-    &:nth-child(4) {
+    &:nth-of-type(4) {
       width: 5rem;
       font-size: 0.75rem;
       font-weight: 400;
       color: #9f9f9f;
     }
-    &:nth-child(5) {
+    &:nth-of-type(5) {
       padding: 0.625rem 1.9375rem 0.625rem 4.5625rem;
       display: flex;
       justify-content: center;
@@ -350,4 +392,40 @@ const Checkmark = styled.img`
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+const StyledEmpty = styled.div`
+  width: 100%;
+  padding: 10.125rem 0 10.3125rem;
+  background-color: #f4f4f4;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  & > div {
+    text-align: center;
+    & > button {
+      display: block;
+      width: 100%;
+      text-align: center;
+      margin-top: 0.625rem;
+      padding: 0.3125rem;
+      color: #000000;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+
+      & > img {
+        text-align: center;
+        transition: fill 0.2s;
+        /* margin: 0.0625rem 0 0 0.125rem; */
+      }
+      &:hover,
+      & > img:hover {
+        color: var(--point-color);
+        filter: brightness(0) saturate(100%) invert(43%) sepia(85%) saturate(1352%) hue-rotate(80deg) brightness(119%)
+          contrast(89%);
+      }
+    }
+  }
 `;

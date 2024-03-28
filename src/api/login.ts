@@ -8,7 +8,6 @@ export const getLoginAPI = async (code: string, navigate: NavigateFunction, setU
     const response = await instance.get(`kakao/callback?code=${code}`);
     const resData = response.data;
     if (resData) {
-      console.log(resData);
       const { jwt, ...userInfo } = resData;
       setLoginCookie(jwt, { path: "/" });
       setUserInfo(userInfo);

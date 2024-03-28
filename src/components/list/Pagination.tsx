@@ -27,7 +27,7 @@ export const Pagination = ({ totalPage, currentPage, onPageChange }: PaginationP
   };
   // 현재 페이지 그룹에 따라 표시할 페이지 번호들을 계산
   const startPage = pageGroup * 5 + 1;
-  const endPage = Math.min(startPage + 4, totalPage);
+  const endPage = Math.max(Math.min(startPage + 4, totalPage), 1);
   const pageNumbers = Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i);
 
   const showBackButton = totalPage > 5;
@@ -67,14 +67,14 @@ const StyledNav = styled.nav`
   align-items: center;
   & > button {
     padding: 0;
-
     font-weight: 500;
     cursor: pointer;
     color: var(--black-color);
-    &:first-child {
+
+    &:first-of-type {
       margin-right: 0.875rem;
     }
-    &:last-child {
+    &:last-of-type {
       margin-left: 0.875rem;
     }
     &:hover {
@@ -87,7 +87,7 @@ const StyledNav = styled.nav`
   & ul {
     display: flex;
     font-size: 0.75rem;
-    li:not(:last-child) button {
+    li:not(:last-of-type) button {
       margin-right: 9px;
     }
   }
