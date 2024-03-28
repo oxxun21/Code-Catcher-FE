@@ -6,7 +6,7 @@ import icon_Save from "../../assets/icon_Save.svg";
 
 export const UserAICodeReview = ({
   userAiReview,
-  isUsed = true,
+  isUsed = false,
 }: {
   userAiReview: UserAiFeedback_I;
   isUsed: boolean;
