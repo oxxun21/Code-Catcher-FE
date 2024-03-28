@@ -13,6 +13,7 @@ export const SelectLang = ({ language, setLanguage }: LangProps) => {
 
   const handleLanguageSelect = (newLanguage: string) => {
     setLanguage(newLanguage);
+    setShowDropdown(false);
   };
 
   const toggleDropdown = () => setShowDropdown(!showDropdown);
