@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import icon_bookmark from "../assets/icon_bookmark.svg";
 import icon_bookmark_true from "../assets/icon_bookmark_true.svg";
-import { useDraggable } from "../hook";
+import { useDraggable, useEventTracker } from "../hook";
 import {
   Gutter,
   Header,
@@ -47,6 +47,7 @@ export const CodeCompare = () => {
   const { id } = useParams();
   const [userAiReview, setUserAiReview] = useState<UserAiFeedback_I | undefined>();
   const navigate = useNavigate();
+  const trackEvent = useEventTracker();
 
   useEffect(() => {
     const handleResize = () => {
@@ -141,6 +142,10 @@ export const CodeCompare = () => {
       });
       setBookmarkId(response);
       setIsbookmark(true);
+      trackEvent({
+        category: "Bookmark",
+        action: "addBookmark",
+      });
     } catch (error) {
       const axiosError = error as AxiosError;
       console.log(axiosError);
@@ -171,6 +176,10 @@ export const CodeCompare = () => {
       deleteBookmarkAPI(bookmarkId);
       setIsbookmark(false);
       setIsModal(false);
+      trackEvent({
+        category: "Bookmark",
+        action: "deleteBookmark",
+      });
     } catch (error) {
       const axiosError = error as AxiosError;
       console.log(axiosError);
@@ -206,6 +215,10 @@ export const CodeCompare = () => {
       });
       setIsbookmark(true);
       setIsConfirmBookmarkModal(false);
+      trackEvent({
+        category: "Bookmark",
+        action: "overWriteBookmark",
+      });
     } catch (error) {
       const axiosError = error as AxiosError;
       console.log(axiosError);
@@ -236,6 +249,10 @@ export const CodeCompare = () => {
     try {
       const response = await postUserAiFeedbackAPI({ myCode: location.state.myCode, problemId: Number(id) });
       setUserAiReview(response);
+      trackEvent({
+        category: "CodingTest",
+        action: "startAiCodeReview",
+      });
     } catch (error) {
       const axiosError = error as AxiosError;
       console.log(axiosError);
