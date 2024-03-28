@@ -7,22 +7,22 @@ import arrowPrev from "../../assets/arrow_slide_prev.svg";
 const carouselData = [
   {
     title: "초보자도 쉽게 하는\n코딩 테스트",
-    desc: "하루 딱 세 문제, 코딩 테스트 연습하고\n나만의 캐릭터를 키워봐요!",
+    desc: "개발 입문자도 쉽게 풀 수 있는 수준의\n다양한 문제를 만나보실 수 있어요.",
     imgUrl: images.carouselImg1,
   },
   {
-    title: "맞춤 설문을 통해\n문제 난이도를 설정해요",
-    desc: "나의 레벨에 맞는 문제를 받기 위해\n10초만 투자해보세요!",
+    title: "하루 3문제!\n습관처럼 풀어보세요",
+    desc: "매일 세 문제씩, AI가 추천하는 문제로\n규칙적인 코딩 루틴을 만들어봐요.",
     imgUrl: images.carouselImg2,
   },
   {
-    title: "하루에 세문제!\n습관처럼 풀어보세요",
-    desc: "로그인이 완료되었다면 세 문제 중 한 문제를 골라\n오늘의 코딩 테스트를 시작해주세요.",
+    title: "문제를 맞추고\n코디를 키워보세요",
+    desc: "정답을 맞출 때마다 쌓이는 경험치로\n코디의 개발 레벨을 올려봐요.",
     imgUrl: images.carouselImg3,
   },
   {
-    title: "GPT 답안과\n비교해보세요",
-    desc: "GPT 답안과 비교해 나의 정답을 확인하면서\n오늘도 한 단계 성장한 자신을 느껴보세요!",
+    title: "AI 코드와\n비교해보세요",
+    desc: "AI가 제공하는 코드와 피드백을 통해\n오늘도 한 단계 성장한 자신을 느껴보세요!",
     imgUrl: images.carouselImg4,
   },
 ];
