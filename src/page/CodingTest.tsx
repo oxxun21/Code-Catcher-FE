@@ -279,7 +279,7 @@ const PageHeader = styled.div`
 
   & > span:first-of-type {
     display: flex;
-    gap: 2px;
+    gap: 4px;
     align-items: center;
     justify-content: center;
     margin-right: 8px;
