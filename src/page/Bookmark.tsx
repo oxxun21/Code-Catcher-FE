@@ -36,7 +36,6 @@ export const Bookmark = () => {
     (async () => {
       try {
         const response = await getBookmarkAPI(id);
-        console.log(response);
         setGetBookmark(response);
       } catch (error) {
         const axiosError = error as AxiosError;
