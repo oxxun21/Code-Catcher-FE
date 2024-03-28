@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
 import StarPixel from "../assets/star_pixel.svg";
 import CheckedImage from "../assets/checked.svg";
+import BookMarkEmptyImage from "../assets/bookmark_empty.svg";
+import ArrowRightIcon from "../assets/arrow_right_lastTests.svg";
 import { Pagination } from "../components/list/Pagination";
 import { Header, HelmetMetaTags, Modal } from "../components";
 import { metaData } from "../meta/metaData";
@@ -73,6 +75,16 @@ export const BookmarkList = () => {
     }
     closeModal();
   };
+
+  const handleNavigateToMyPage = () => {
+    trackEvent({
+      category: "Navigate",
+      action: "goToMyPage",
+    });
+
+    navigate("/myPage");
+  };
+
   return (
     <>
       <HelmetMetaTags meta={metaData.bookmark} />
@@ -100,19 +112,19 @@ export const BookmarkList = () => {
               </Modal>
             )}
           </div>
-          <StyledTable>
-            <StyledTableHead>
-              <tr>
-                <th>Lv</th>
-                <th>Title</th>
-                <th>Detail</th>
-                <th>Added Date</th>
-                <th />
-              </tr>
-            </StyledTableHead>
-            <StyledTableBody>
-              {data?.questionData.map((item, index) => {
-                return (
+          {data?.questionData && data.questionData.length > 0 ? (
+            <StyledTable>
+              <StyledTableHead>
+                <tr>
+                  <th>Lv</th>
+                  <th>Title</th>
+                  <th>Detail</th>
+                  <th>Added Date</th>
+                  <th />
+                </tr>
+              </StyledTableHead>
+              <StyledTableBody>
+                {data.questionData.map((item, index) => (
                   <StyledTableRow
                     key={index}
                     checked={!!checkedItems[item.bookmarkId]}
@@ -132,16 +144,29 @@ export const BookmarkList = () => {
                     <td>
                       <CheckboxDiv
                         checked={!!checkedItems[item.bookmarkId]}
-                        onClick={e => handleCheckboxClick(e, item.bookmarkId)}
+                        onClick={e => {
+                          e.stopPropagation(); // 체크박스 클릭 시 버블링 방지
+                          handleCheckboxClick(e, item.bookmarkId);
+                        }}
                       >
                         {checkedItems[item.bookmarkId] && <Checkmark src={CheckedImage} alt="선택" />}
                       </CheckboxDiv>
                     </td>
                   </StyledTableRow>
-                );
-              })}
-            </StyledTableBody>
-          </StyledTable>
+                ))}
+              </StyledTableBody>
+            </StyledTable>
+          ) : (
+            <StyledEmpty>
+              <div>
+                <img src={BookMarkEmptyImage} alt="데이터 없음" />
+                <button onClick={handleNavigateToMyPage}>
+                  마이페이지로 돌아가기
+                  <img src={ArrowRightIcon} alt="마이페이지로 돌아가기" />
+                </button>
+              </div>
+            </StyledEmpty>
+          )}
           <Pagination totalPage={totalPage} currentPage={currentPage} onPageChange={handlePageChange} />
         </section>
       </StyledMain>
@@ -367,4 +392,40 @@ const Checkmark = styled.img`
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+const StyledEmpty = styled.div`
+  width: 100%;
+  padding: 10.125rem 0 10.3125rem;
+  background-color: #f4f4f4;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  & > div {
+    text-align: center;
+    & > button {
+      display: block;
+      width: 100%;
+      text-align: center;
+      margin-top: 0.625rem;
+      padding: 0.3125rem;
+      color: #000000;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+
+      & > img {
+        text-align: center;
+        transition: fill 0.2s;
+        /* margin: 0.0625rem 0 0 0.125rem; */
+      }
+      &:hover,
+      & > img:hover {
+        color: var(--point-color);
+        filter: brightness(0) saturate(100%) invert(43%) sepia(85%) saturate(1352%) hue-rotate(80deg) brightness(119%)
+          contrast(89%);
+      }
+    }
+  }
 `;
