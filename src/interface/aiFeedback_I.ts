@@ -11,7 +11,7 @@ export interface UserAiFeedbackProps_I {
 export interface AiFeedback_I {
   gptCode: string;
   gptCodeExplain: string;
-  isUsed: boolean;
+  used: boolean;
 }
 
 export interface UserAiFeedback_I {

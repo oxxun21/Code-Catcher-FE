@@ -4,18 +4,16 @@ import icon_Lightbulb from "../../assets/icon_Lightbulb.svg";
 import icon_Clock from "../../assets/icon_Clock.svg";
 import icon_Save from "../../assets/icon_Save.svg";
 
-export const UserAICodeReview = ({
-  userAiReview,
-  isUsed = false,
-}: {
-  userAiReview: UserAiFeedback_I;
-  isUsed: boolean;
-}) => {
+export const UserAICodeReview = ({ userAiReview, used }: { userAiReview: UserAiFeedback_I; used: boolean }) => {
   return (
     <UserAiCodeSection>
       <h3>AI 코드 리뷰</h3>
-      {!userAiReview && !isUsed ? <div>AI에게 내 코드를 리뷰 받아보세요!</div> : null}
-      {isUsed && !userAiReview ? <div>오늘의 코드 리뷰 1회를 이미 받았어요. 내일 다시 받아보세요!</div> : null}
+      {!userAiReview && !used ? (
+        <div>
+          AI에게 내 코드를 리뷰 받아보세요! <span>&#40;약 1분의 시간이 소요됩니다.&#41;</span>
+        </div>
+      ) : null}
+      {used && !userAiReview ? <div>오늘의 코드 리뷰 1회를 이미 받았어요. 내일 다시 받아보세요!</div> : null}
       {userAiReview && (
         <>
           <div>
@@ -75,6 +73,9 @@ const UserAiCodeSection = styled.section`
     }
     & > p {
       font-weight: 300;
+    }
+    & > span {
+      color: var(--gray500-color);
     }
   }
 

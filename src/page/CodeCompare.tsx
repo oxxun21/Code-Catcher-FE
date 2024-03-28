@@ -310,7 +310,7 @@ export const CodeCompare = () => {
               <strong>My Code</strong>
             </CompareHeader>
             <ReadOnlyEditor code={location.state.myCode} language={location.state?.language} />
-            <UserAICodeReview userAiReview={userAiReview as UserAiFeedback_I} isUsed={aiRes?.isUsed as boolean} />
+            <UserAICodeReview userAiReview={userAiReview as UserAiFeedback_I} used={aiRes?.used as boolean} />
           </section>
           <Gutter orientation="horizontal" onMouseDown={startDragHorizontal} />
           <section style={{ width: isMedia ? "100%" : `${100 - descWidth}%` }}>
@@ -346,7 +346,7 @@ export const CodeCompare = () => {
           </section>
         </Contain>
         <ButtonContain>
-          <SquareButton onClick={handleAICodeReview} text="AI 코드 리뷰 시작하기" disabled={aiRes?.isUsed} />
+          <SquareButton onClick={handleAICodeReview} text="AI 코드 리뷰 시작하기" disabled={aiRes?.used} />
           <div className="notice">
             하루 1회에 한하여 <span>내가 작성한 코드에 대한 AI의 리뷰</span>를 제공합니다.
             <br /> 코드 리뷰를 받으면 해당 기능은 다음날까지 비활성화됩니다.
