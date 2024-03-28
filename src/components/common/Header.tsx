@@ -209,7 +209,7 @@ const StyledBtnGroup = styled.div`
     padding: 0.625rem;
   }
 
-  & > button:not(:first-child) {
+  & > button:not(:first-of-type) {
     margin-left: 1.25rem;
   }
 `;
