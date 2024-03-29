@@ -171,7 +171,7 @@ export const CodingTest = () => {
     } else if (selectedTodayQuestion?.isSuccess && !submitValue?.correct) {
       message = "틀렸습니다";
     } else if (
-      !(selectedTodayQuestion?.isSuccess || selectedTodayQuestion?.isSuccess === null) &&
+      (!selectedTodayQuestion?.isSuccess || selectedTodayQuestion?.isSuccess === null) &&
       !submitValue?.correct
     ) {
       message = "EXP 획득 실패";
@@ -230,7 +230,7 @@ export const CodingTest = () => {
                 />
               )}
             <strong>{message}</strong>
-            <p>{submitValue?.correct ? "축하합니다! 문제를 맞추셨어요" : "다음 테스트엔 더 잘 할 수 있어요"}</p>
+            <p>{submitValue?.correct ? "축하합니다! 문제를 맞추셨어요" : "괜찮아요! 다음엔 더 잘 할 수 있어요"}</p>
             <div>
               <RoundButton as={Link} to="/" text="홈으로" width="50%" />
               {submitValue?.correct ? (
