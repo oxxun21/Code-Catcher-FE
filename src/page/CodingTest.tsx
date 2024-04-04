@@ -21,8 +21,8 @@ import icon_test_complete from "../assets/icon_test_complete.svg";
 import icon_grayStar from "../assets/icon_grayStar.svg";
 import icon_test_failed from "../assets/icon_test_failed.svg";
 import { AxiosError } from "axios";
-import Swal from "sweetalert2";
 import { metaData } from "../meta/metaData.ts";
+import { handleAxiosError } from "../utils/handleAxiosError.ts";
 
 interface TodayQuestionList_I {
   [key: string]: QuestionOutline_I;
@@ -73,9 +73,7 @@ export const CodingTest = () => {
         setQuestion(questionData);
         setTodayQuestionList(todayQuestionListData);
       } catch (error) {
-        const axiosError = error as AxiosError;
-        console.log(axiosError);
-        if (axiosError.response?.status === 404) navigate("/404");
+        handleAxiosError({ text: "Get Quesstion", error: error as AxiosError, navigate });
       }
     })();
   }, [id]);
@@ -109,27 +107,7 @@ export const CodingTest = () => {
         setIsModal(true);
       }
     } catch (error) {
-      const axiosError = error as AxiosError;
-      console.log(axiosError);
-      if (axiosError.response?.status === 404) {
-        navigate("/404");
-      }
-      Swal.fire({
-        title: "Sorry",
-        text: `Test Submission ${axiosError?.message}`,
-        width: 600,
-        padding: "3em",
-        color: "#44b044",
-        background: "#fff",
-        backdrop: `
-        rgba(0,0,0,0.4)
-          url("https://sweetalert2.github.io/images/nyan-cat.gif")
-          left top
-          no-repeat
-        `,
-        confirmButtonColor: "#32cd32",
-        confirmButtonText: "Close",
-      });
+      handleAxiosError({ text: "Test Submission", error: error as AxiosError, navigate });
     } finally {
       setIsLoading(false);
     }
@@ -171,7 +149,7 @@ export const CodingTest = () => {
     } else if (selectedTodayQuestion?.isSuccess && !submitValue?.correct) {
       message = "틀렸습니다";
     } else if (
-      !(selectedTodayQuestion?.isSuccess || selectedTodayQuestion?.isSuccess === null) &&
+      (!selectedTodayQuestion?.isSuccess || selectedTodayQuestion?.isSuccess === null) &&
       !submitValue?.correct
     ) {
       message = "EXP 획득 실패";
@@ -230,7 +208,7 @@ export const CodingTest = () => {
                 />
               )}
             <strong>{message}</strong>
-            <p>{submitValue?.correct ? "축하합니다! 문제를 맞추셨어요" : "다음 테스트엔 더 잘 할 수 있어요"}</p>
+            <p>{submitValue?.correct ? "축하합니다! 문제를 맞추셨어요" : "괜찮아요! 다음엔 더 잘 할 수 있어요"}</p>
             <div>
               <RoundButton as={Link} to="/" text="홈으로" width="50%" />
               {submitValue?.correct ? (

@@ -25,8 +25,8 @@ import {
 import { AiFeedback_I, BookmarkInfoOne_I, UserAiFeedback_I } from "../interface";
 import icon_tooltip from "../assets/icon_tooltip.svg";
 import icon_grayStar from "../assets/icon_grayStar.svg";
-import Swal from "sweetalert2";
 import { AxiosError } from "axios";
+import { handleAxiosError } from "../utils/handleAxiosError";
 
 export const CodeCompare = () => {
   const [isMedia, setIsMedia] = useState(window.innerWidth <= 768);
@@ -68,27 +68,7 @@ export const CodeCompare = () => {
         });
         setAiRes(response);
       } catch (error) {
-        const axiosError = error as AxiosError;
-        console.log(axiosError);
-        if (axiosError.response?.status === 404) {
-          navigate("/404");
-        }
-        Swal.fire({
-          title: "Sorry",
-          text: `AI Feedback ${axiosError?.message}`,
-          width: 600,
-          padding: "3em",
-          color: "#44b044",
-          background: "#fff",
-          backdrop: `
-          rgba(0,0,0,0.4)
-            url("https://sweetalert2.github.io/images/nyan-cat.gif")
-            left top
-            no-repeat
-          `,
-          confirmButtonColor: "#32cd32",
-          confirmButtonText: "Close",
-        });
+        handleAxiosError({ text: "AI Feedback", error: error as AxiosError, navigate });
       }
     })();
   }, [id]);
@@ -99,27 +79,7 @@ export const CodeCompare = () => {
         const response = await getBookmarkInfoAPI(Number(id));
         setBookmarkInfo(response);
       } catch (error) {
-        const axiosError = error as AxiosError;
-        console.log(axiosError);
-        if (axiosError.response?.status === 404) {
-          navigate("/404");
-        }
-        Swal.fire({
-          title: "Sorry",
-          text: `Bookmark Info ${axiosError?.message}`,
-          width: 600,
-          padding: "3em",
-          color: "#44b044",
-          background: "#fff",
-          backdrop: `
-          rgba(0,0,0,0.4)
-            url("https://sweetalert2.github.io/images/nyan-cat.gif")
-            left top
-            no-repeat
-          `,
-          confirmButtonColor: "#32cd32",
-          confirmButtonText: "Close",
-        });
+        handleAxiosError({ text: "Bookmark Info", error: error as AxiosError, navigate });
       }
     })();
   }, [id]);
@@ -147,28 +107,7 @@ export const CodeCompare = () => {
         action: "addBookmark",
       });
     } catch (error) {
-      const axiosError = error as AxiosError;
-      console.log(axiosError);
-      if (axiosError.response?.status === 404) {
-        navigate("/404");
-      }
-
-      Swal.fire({
-        title: "Sorry",
-        text: `Bookmark save ${axiosError?.message}`,
-        width: 600,
-        padding: "3em",
-        color: "#44b044",
-        background: "#fff",
-        backdrop: `
-          rgba(0,0,0,0.4)
-            url("https://sweetalert2.github.io/images/nyan-cat.gif")
-            left top
-            no-repeat
-          `,
-        confirmButtonColor: "#32cd32",
-        confirmButtonText: "Close",
-      });
+      handleAxiosError({ text: "Bookmark save", error: error as AxiosError, navigate });
     }
   };
   const handleBookmarkOff = async () => {
@@ -181,28 +120,7 @@ export const CodeCompare = () => {
         action: "deleteBookmark",
       });
     } catch (error) {
-      const axiosError = error as AxiosError;
-      console.log(axiosError);
-      if (axiosError.response?.status === 404) {
-        navigate("/404");
-      }
-
-      Swal.fire({
-        title: "Sorry",
-        text: `Bookmark Off ${axiosError?.message}`,
-        width: 600,
-        padding: "3em",
-        color: "#44b044",
-        background: "#fff",
-        backdrop: `
-          rgba(0,0,0,0.4)
-            url("https://sweetalert2.github.io/images/nyan-cat.gif")
-            left top
-            no-repeat
-          `,
-        confirmButtonColor: "#32cd32",
-        confirmButtonText: "Close",
-      });
+      handleAxiosError({ text: "Bookmark off", error: error as AxiosError, navigate });
     }
   };
 
@@ -220,27 +138,7 @@ export const CodeCompare = () => {
         action: "overWriteBookmark",
       });
     } catch (error) {
-      const axiosError = error as AxiosError;
-      console.log(axiosError);
-      if (axiosError.response?.status === 404) {
-        navigate("/404");
-      }
-      Swal.fire({
-        title: "Sorry",
-        text: `Bookmark ReSave ${axiosError?.message}`,
-        width: 600,
-        padding: "3em",
-        color: "#44b044",
-        background: "#fff",
-        backdrop: `
-        rgba(0,0,0,0.4)
-          url("https://sweetalert2.github.io/images/nyan-cat.gif")
-          left top
-          no-repeat
-        `,
-        confirmButtonColor: "#32cd32",
-        confirmButtonText: "Close",
-      });
+      handleAxiosError({ text: "Bookmark ReSave", error: error as AxiosError, navigate });
     }
   };
 
@@ -254,27 +152,7 @@ export const CodeCompare = () => {
         action: "startAiCodeReview",
       });
     } catch (error) {
-      const axiosError = error as AxiosError;
-      console.log(axiosError);
-      if (axiosError.response?.status === 404) {
-        navigate("/404");
-      }
-      Swal.fire({
-        title: "Sorry",
-        text: `User AI Code Review ${axiosError?.message}`,
-        width: 600,
-        padding: "3em",
-        color: "#44b044",
-        background: "#fff",
-        backdrop: `
-          rgba(0,0,0,0.4)
-            url("https://sweetalert2.github.io/images/nyan-cat.gif")
-            left top
-            no-repeat
-          `,
-        confirmButtonColor: "#32cd32",
-        confirmButtonText: "Close",
-      });
+      handleAxiosError({ text: "User AI Code Review", error: error as AxiosError, navigate });
     } finally {
       setIsLoading(false);
     }
@@ -310,7 +188,7 @@ export const CodeCompare = () => {
               <strong>My Code</strong>
             </CompareHeader>
             <ReadOnlyEditor code={location.state.myCode} language={location.state?.language} />
-            <UserAICodeReview userAiReview={userAiReview as UserAiFeedback_I} isUsed={aiRes?.isUsed as boolean} />
+            <UserAICodeReview userAiReview={userAiReview as UserAiFeedback_I} used={aiRes?.used as boolean} />
           </section>
           <Gutter orientation="horizontal" onMouseDown={startDragHorizontal} />
           <section style={{ width: isMedia ? "100%" : `${100 - descWidth}%` }}>
@@ -346,7 +224,7 @@ export const CodeCompare = () => {
           </section>
         </Contain>
         <ButtonContain>
-          <SquareButton onClick={handleAICodeReview} text="AI 코드 리뷰 시작하기" disabled={aiRes?.isUsed} />
+          <SquareButton onClick={handleAICodeReview} text="AI 코드 리뷰 시작하기" disabled={aiRes?.used} />
           <div className="notice">
             하루 1회에 한하여 <span>내가 작성한 코드에 대한 AI의 리뷰</span>를 제공합니다.
             <br /> 코드 리뷰를 받으면 해당 기능은 다음날까지 비활성화됩니다.
