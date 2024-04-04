@@ -7,7 +7,7 @@ import { useDraggable } from "../hook";
 import { Gutter, Header, ReadOnlyEditor, SquareButton, TestDescSection } from "../components";
 import icon_grayStar from "../assets/icon_grayStar.svg";
 import { AxiosError } from "axios";
-import Swal from "sweetalert2";
+import { handleAxiosError } from "../utils/handleAxiosError";
 
 export const Bookmark = () => {
   const { id } = useParams();
@@ -38,28 +38,7 @@ export const Bookmark = () => {
         const response = await getBookmarkAPI(id);
         setGetBookmark(response);
       } catch (error) {
-        const axiosError = error as AxiosError;
-        console.log(axiosError);
-        if (axiosError.response?.status === 404) {
-          navigate("/404");
-        }
-
-        Swal.fire({
-          title: "Sorry",
-          text: `Bookmark Info ${axiosError?.message}`,
-          width: 600,
-          padding: "3em",
-          color: "#44b044",
-          background: "#fff",
-          backdrop: `
-          rgba(0,0,0,0.4)
-            url("https://sweetalert2.github.io/images/nyan-cat.gif")
-            left top
-            no-repeat
-          `,
-          confirmButtonColor: "#32cd32",
-          confirmButtonText: "Close",
-        });
+        handleAxiosError({ text: "Bookmark Info", error: error as AxiosError, navigate });
       }
     })();
   }, [id]);
