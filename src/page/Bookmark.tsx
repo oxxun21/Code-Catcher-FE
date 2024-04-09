@@ -238,7 +238,7 @@ const TabContainer = styled.div`
 
 const TabButton = styled.button<{ isActive: boolean }>`
   padding: 0.875rem 2.5rem;
-  background-color: #2a2a31;
+  background-color: ${props => (props.isActive ? "#3F3F47" : "#2a2a31")};
   color: ${props => (props.isActive ? "#fff" : "#363738")};
   border: none;
   font-family: var(--font--Galmuri);
