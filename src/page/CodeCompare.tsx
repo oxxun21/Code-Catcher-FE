@@ -22,7 +22,7 @@ import {
   postBookmarkAPI,
   postUserAiFeedbackAPI,
 } from "../api";
-import { AiFeedback_I, BookmarkInfoOne_I, UserAiFeedback_I } from "../interface";
+import { AiFeedback_I, BookmarkInfoOne_I, SubmissionProps_I, UserAiFeedback_I } from "../interface";
 import icon_tooltip from "../assets/icon_tooltip.svg";
 import icon_grayStar from "../assets/icon_grayStar.svg";
 import { AxiosError } from "axios";
@@ -93,12 +93,24 @@ export const CodeCompare = () => {
     return `${year}.${month}.${day}`;
   }
 
+  console.log(userAiReview);
+
   const handleBookmarkSave = async () => {
+    // const requestData: SubmissionProps_I = {
+    //   problemId: Number(id),
+    //   codeType: location.state?.language,
+    //   code: location.state.myCode,
+    // };
+
+    // if (userAiReview !== null) {
+    //   requestData.gptReview = userAiReview;
+    // }
     try {
       const response = await postBookmarkAPI({
         problemId: Number(id),
         codeType: location.state?.language,
         code: location.state.myCode,
+        gptReview: userAiReview,
       });
       setBookmarkId(response);
       setIsbookmark(true);
@@ -130,6 +142,7 @@ export const CodeCompare = () => {
         problemId: bookmarkInfo?.bookmarkId as string,
         codeType: location.state?.language,
         code: location.state.myCode,
+        gptReview: userAiReview,
       });
       setIsbookmark(true);
       setIsConfirmBookmarkModal(false);
@@ -224,7 +237,8 @@ export const CodeCompare = () => {
           </section>
         </Contain>
         <ButtonContain>
-          <SquareButton onClick={handleAICodeReview} text="AI 코드 리뷰 시작하기" disabled={aiRes?.used} />
+          {/* <SquareButton onClick={handleAICodeReview} text="AI 코드 리뷰 시작하기" disabled={aiRes?.used} /> */}
+          <SquareButton onClick={handleAICodeReview} text="AI 코드 리뷰 시작하기" disabled={false} />
           <div className="notice">
             하루 1회에 한하여 <span>내가 작성한 코드에 대한 AI의 리뷰</span>를 제공합니다.
             <br /> 코드 리뷰를 받으면 해당 기능은 다음날까지 비활성화됩니다.
