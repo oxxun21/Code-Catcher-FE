@@ -41,8 +41,6 @@ export const Bookmark = () => {
     })();
   }, [id]);
 
-  console.log(getBookmark);
-
   const renderTabContent = () => {
     switch (activeTab) {
       case "myCode":

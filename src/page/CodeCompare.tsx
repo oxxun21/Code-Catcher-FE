@@ -22,7 +22,7 @@ import {
   postBookmarkAPI,
   postUserAiFeedbackAPI,
 } from "../api";
-import { AiFeedback_I, BookmarkInfoOne_I, SubmissionProps_I, UserAiFeedback_I } from "../interface";
+import { AiFeedback_I, BookmarkInfoOne_I, UserAiFeedback_I } from "../interface";
 import icon_tooltip from "../assets/icon_tooltip.svg";
 import icon_grayStar from "../assets/icon_grayStar.svg";
 import { AxiosError } from "axios";
@@ -93,18 +93,7 @@ export const CodeCompare = () => {
     return `${year}.${month}.${day}`;
   }
 
-  console.log(userAiReview);
-
   const handleBookmarkSave = async () => {
-    // const requestData: SubmissionProps_I = {
-    //   problemId: Number(id),
-    //   codeType: location.state?.language,
-    //   code: location.state.myCode,
-    // };
-
-    // if (userAiReview !== null) {
-    //   requestData.gptReview = userAiReview;
-    // }
     try {
       const response = await postBookmarkAPI({
         problemId: Number(id),
