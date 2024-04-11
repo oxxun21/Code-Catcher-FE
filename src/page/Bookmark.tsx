@@ -203,7 +203,7 @@ const Contain = styled.div`
   height: calc(100vh - 10.875rem);
   @media only screen and (max-width: 768px) {
     flex-direction: column;
-    height: 100%;
+    overflow: auto;
   }
 `;
 
@@ -213,6 +213,13 @@ const CodeContain = styled.section`
   justify-content: space-between;
   & > div {
     min-height: 60%;
+    @media only screen and (max-width: 768px) {
+      min-height: initial;
+    }
+  }
+  @media only screen and (max-width: 768px) {
+    justify-content: initial;
+    gap: 20px;
   }
 `;
 
@@ -264,13 +271,11 @@ const FeedbackSection = styled.section`
   }
 
   @media only screen and (max-width: 768px) {
-    padding-top: 20px;
-    border-top: 2px solid var(--background-color);
+    height: initial;
   }
 `;
 
 const FeedbackSectionContent = styled.div`
-  height: 100%;
   overflow: auto;
   max-height: 85%;
   color: #fff;
@@ -294,7 +299,10 @@ const FeedbackSectionContent = styled.div`
       color: var(--gray500-color);
     }
   }
-
+  @media only screen and (max-width: 768px) {
+    overflow: initial;
+    max-height: initial;
+  }
   ::-webkit-scrollbar {
     width: 5px;
   }

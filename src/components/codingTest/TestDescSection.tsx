@@ -69,6 +69,9 @@ const DescSection = styled.section`
     scrollbar-width: thin;
     scrollbar-color: #555 transparent;
   }
+  @media only screen and (max-width: 768px) {
+    overflow: initial;
+  }
 `;
 
 const DescArticle = styled.article`
