@@ -1,3 +1,5 @@
+import { UserAiFeedback_I } from ".";
+
 export interface Bookmark_I {
   codeType: string;
   myCode: string;
@@ -13,6 +15,7 @@ export interface Bookmark_I {
   gptCode: string;
   gptExplain: string;
   level: number;
+  gptReviewRes: UserAiFeedback_I | null;
 }
 
 export interface BookmarkInfoOne_I {

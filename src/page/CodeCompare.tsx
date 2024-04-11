@@ -99,6 +99,7 @@ export const CodeCompare = () => {
         problemId: Number(id),
         codeType: location.state?.language,
         code: location.state.myCode,
+        gptReview: userAiReview,
       });
       setBookmarkId(response);
       setIsbookmark(true);
@@ -130,6 +131,7 @@ export const CodeCompare = () => {
         problemId: bookmarkInfo?.bookmarkId as string,
         codeType: location.state?.language,
         code: location.state.myCode,
+        gptReview: userAiReview,
       });
       setIsbookmark(true);
       setIsConfirmBookmarkModal(false);
@@ -181,6 +183,18 @@ export const CodeCompare = () => {
             ))}
           </span>
           <span>{location.state.question.subject}</span>
+          <button
+            onClick={
+              !isbookmark && bookmarkInfo
+                ? () => setIsConfirmBookmarkModal(true)
+                : isbookmark
+                ? () => setIsModal(true)
+                : handleBookmarkSave
+            }
+          >
+            {getBookmarkButtonText()}
+            <img src={isbookmark ? icon_bookmark_true : icon_bookmark} alt="북마크 아이콘" />
+          </button>
         </PageHeader>
         <Contain>
           <section style={{ width: isMedia ? "100%" : `${descWidth}%` }}>
@@ -193,20 +207,8 @@ export const CodeCompare = () => {
           <Gutter orientation="horizontal" onMouseDown={startDragHorizontal} />
           <section style={{ width: isMedia ? "100%" : `${100 - descWidth}%` }}>
             <div style={{ height: `${editorHeight}%` }}>
-              <CompareHeader className="gptCode">
+              <CompareHeader>
                 <strong>AI Code</strong>
-                <button
-                  onClick={
-                    !isbookmark && bookmarkInfo
-                      ? () => setIsConfirmBookmarkModal(true)
-                      : isbookmark
-                      ? () => setIsModal(true)
-                      : handleBookmarkSave
-                  }
-                >
-                  {getBookmarkButtonText()}
-                  <img src={isbookmark ? icon_bookmark_true : icon_bookmark} alt="북마크 아이콘" />
-                </button>
               </CompareHeader>
               <ReadOnlyEditor code={aiRes?.gptCode as string} language={location.state?.language} />
             </div>
@@ -277,13 +279,13 @@ const Main = styled.main`
 `;
 
 const PageHeader = styled.div`
-  padding: 1rem 22px;
+  padding: 5px 16px 5px 24px;
   font-weight: 600;
   border-bottom: 2px solid var(--background-color);
   display: flex;
   justify-content: flex-start;
   gap: 12px;
-  align-items: flex-end;
+  align-items: center;
   & > h2 {
     font-size: 1rem;
   }
@@ -307,6 +309,26 @@ const PageHeader = styled.div`
       width: 1px;
       height: 100%;
       background-color: var(--gray700-color);
+    }
+  }
+  & > button {
+    cursor: pointer;
+    margin-left: auto;
+    font-size: 12px;
+    background-color: #282828;
+    border-radius: 57px;
+    padding: 13px 18px;
+    color: #bdbdbd;
+    font-weight: 600;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    & > img {
+      width: 15px;
+    }
+    &:hover {
+      color: #fff;
     }
   }
 `;
@@ -388,32 +410,6 @@ const Contain = styled.div`
     * {
       scrollbar-width: thin;
       scrollbar-color: #555 transparent;
-    }
-  }
-
-  .gptCode {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 5px 22px;
-    & > button {
-      cursor: pointer;
-      font-size: 12px;
-      background-color: #282828;
-      border-radius: 57px;
-      padding: 12px 16px;
-      color: #bdbdbd;
-      font-weight: 600;
-      transition: all 0.3s;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      & > img {
-        width: 15px;
-      }
-      &:hover {
-        color: #fff;
-      }
     }
   }
 

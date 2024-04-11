@@ -1,12 +1,15 @@
 import { BookmarkInfoOne_I, Bookmark_I, SubmissionProps_I } from "../interface";
 import { instance } from "./instance.ts";
 
-export const postBookmarkAPI = async ({ problemId, codeType, code }: SubmissionProps_I) => {
+export const postBookmarkAPI = async ({ problemId, codeType, code, gptReview }: SubmissionProps_I) => {
+  console.log(problemId, codeType, code, gptReview);
+
   try {
     const response = await instance.post("/bookmark", {
       problemId,
       codeType,
       code,
+      gptReview,
     });
     return response.data;
   } catch (error) {
@@ -44,9 +47,10 @@ export const getBookmarkInfoAPI = async (id: number): Promise<BookmarkInfoOne_I>
   }
 };
 
-export const patchBookmarkAPI = async ({ problemId, codeType, code }: SubmissionProps_I) => {
+export const patchBookmarkAPI = async ({ problemId, codeType, code, gptReview }: SubmissionProps_I) => {
+  console.log(problemId, codeType, code, gptReview);
   try {
-    const response = await instance.patch(`/bookmark?id=${problemId}`, { myCode: code, codeType });
+    const response = await instance.patch(`/bookmark?id=${problemId}`, { myCode: code, codeType, gptReview });
     return response.data;
   } catch (error) {
     throw error;

@@ -12,9 +12,13 @@ export function handleAxiosError({ text, error, navigate }: ErrorProps) {
   if (error.response?.status === 404) {
     navigate("/404");
   } else {
+    const htmlContent = `
+    <div style="margin-bottom: 10px">${text} ${error?.message}</div>
+    <div style="text-align: center;">다시 시도해주세요</div>
+  `;
     Swal.fire({
       title: "Sorry",
-      text: `${text} ${error?.message}`,
+      html: htmlContent,
       width: 600,
       padding: "3em",
       color: "#44b044",
