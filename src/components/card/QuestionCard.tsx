@@ -56,7 +56,7 @@ export const QuestionCard = ({
           </StyledRank>
         </StyledSpan>
         <StyledDesc isSuccess={isSuccess}>
-          {isSuccess !== null && <span>{isSuccess ? "Complete" : "Failed"}</span>}
+          <span>{isSuccess !== null ? (isSuccess ? "Complete" : "Failed") : ""}</span>
           <div>
             <h2>{title}</h2>
             <h3>{subject}</h3>
@@ -112,7 +112,7 @@ const StyledSpan = styled.span`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10.3125rem;
+  margin-bottom: 8.0625rem;
   & > span {
     font-size: 1.25rem;
     color: var(--secondary-color);
@@ -156,6 +156,7 @@ const StyledDesc = styled.div<{ isSuccess: boolean | null }>`
     background-color: ${({ isSuccess }) => (isSuccess === true ? "rgba(57,143,245, 0.25)" : "rgba(245,57,102,0.2)")};
     border-radius: 999px;
     padding: 0.375rem 0.625rem;
+    visibility: ${({ isSuccess }) => (isSuccess === null ? "hidden" : "visible")};
   }
 
   & h2 {
@@ -169,7 +170,6 @@ const StyledDesc = styled.div<{ isSuccess: boolean | null }>`
     font-size: 1.25rem;
     font-weight: 500;
     color: var(--secondary-color);
-    /* margin-bottom: 3.17rem; */
   }
 
   & strong {
