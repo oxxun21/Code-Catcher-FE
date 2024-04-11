@@ -56,9 +56,11 @@ export const QuestionCard = ({
           </StyledRank>
         </StyledSpan>
         <StyledDesc isSuccess={isSuccess}>
-          {isSuccess !== null && <span>{isSuccess ? "Complete" : "Failed"}</span>}
-          <h2>{title}</h2>
-          <h3>{subject}</h3>
+          <span>{isSuccess !== null ? (isSuccess ? "Complete" : "Failed") : ""}</span>
+          <div>
+            <h2>{title}</h2>
+            <h3>{subject}</h3>
+          </div>
           <div>
             <strong>문제 미리보기</strong>
             <p>{script}</p>
@@ -110,7 +112,7 @@ const StyledSpan = styled.span`
   display: flex;
   justify-content: space-between;
   align-items: center;
-
+  margin-bottom: 8.0625rem;
   & > span {
     font-size: 1.25rem;
     color: var(--secondary-color);
@@ -123,15 +125,25 @@ const StyledRank = styled.div`
 `;
 
 const StyledDesc = styled.div<{ isSuccess: boolean | null }>`
-  position: absolute;
-  bottom: 5.6875rem;
   max-width: 19.5rem;
-  align-self: flex-end;
+  height: 13.3125rem;
   word-break: keep-all;
-  flex-shrink: 1;
 
   @media (max-width: 768px) {
     bottom: 2.5rem;
+  }
+
+  & > div:nth-of-type(1) {
+    max-width: 312px;
+    min-width: 66px;
+  }
+
+  & > div:nth-of-type(2) {
+    position: absolute;
+    bottom: 5.6875rem;
+    @media (max-width: 768px) {
+      top: 12.5rem;
+    }
   }
 
   & > span {
@@ -144,6 +156,7 @@ const StyledDesc = styled.div<{ isSuccess: boolean | null }>`
     background-color: ${({ isSuccess }) => (isSuccess === true ? "rgba(57,143,245, 0.25)" : "rgba(245,57,102,0.2)")};
     border-radius: 999px;
     padding: 0.375rem 0.625rem;
+    visibility: ${({ isSuccess }) => (isSuccess === null ? "hidden" : "visible")};
   }
 
   & h2 {
@@ -157,14 +170,6 @@ const StyledDesc = styled.div<{ isSuccess: boolean | null }>`
     font-size: 1.25rem;
     font-weight: 500;
     color: var(--secondary-color);
-    margin-bottom: 3.17rem;
-  }
-
-  & > div {
-    height: 6.125rem;
-    @media (max-width: 768px) {
-      top: 12.5rem;
-    }
   }
 
   & strong {
