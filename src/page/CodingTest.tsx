@@ -21,8 +21,8 @@ import icon_test_complete from "../assets/icon_test_complete.svg";
 import icon_grayStar from "../assets/icon_grayStar.svg";
 import icon_test_failed from "../assets/icon_test_failed.svg";
 import { AxiosError } from "axios";
-import Swal from "sweetalert2";
 import { metaData } from "../meta/metaData.ts";
+import { handleAxiosError } from "../utils/handleAxiosError.ts";
 
 interface TodayQuestionList_I {
   [key: string]: QuestionOutline_I;
@@ -73,9 +73,7 @@ export const CodingTest = () => {
         setQuestion(questionData);
         setTodayQuestionList(todayQuestionListData);
       } catch (error) {
-        const axiosError = error as AxiosError;
-        console.log(axiosError);
-        if (axiosError.response?.status === 404) navigate("/404");
+        handleAxiosError({ text: "Get Quesstion", error: error as AxiosError, navigate });
       }
     })();
   }, [id]);
@@ -109,27 +107,7 @@ export const CodingTest = () => {
         setIsModal(true);
       }
     } catch (error) {
-      const axiosError = error as AxiosError;
-      console.log(axiosError);
-      if (axiosError.response?.status === 404) {
-        navigate("/404");
-      }
-      Swal.fire({
-        title: "Sorry",
-        text: `Test Submission ${axiosError?.message}`,
-        width: 600,
-        padding: "3em",
-        color: "#44b044",
-        background: "#fff",
-        backdrop: `
-        rgba(0,0,0,0.4)
-          url("https://sweetalert2.github.io/images/nyan-cat.gif")
-          left top
-          no-repeat
-        `,
-        confirmButtonColor: "#32cd32",
-        confirmButtonText: "Close",
-      });
+      handleAxiosError({ text: "Test Submission", error: error as AxiosError, navigate });
     } finally {
       setIsLoading(false);
     }

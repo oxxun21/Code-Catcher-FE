@@ -25,8 +25,8 @@ import {
 import { AiFeedback_I, BookmarkInfoOne_I, UserAiFeedback_I } from "../interface";
 import icon_tooltip from "../assets/icon_tooltip.svg";
 import icon_grayStar from "../assets/icon_grayStar.svg";
-import Swal from "sweetalert2";
 import { AxiosError } from "axios";
+import { handleAxiosError } from "../utils/handleAxiosError";
 
 export const CodeCompare = () => {
   const [isMedia, setIsMedia] = useState(window.innerWidth <= 768);
@@ -68,27 +68,7 @@ export const CodeCompare = () => {
         });
         setAiRes(response);
       } catch (error) {
-        const axiosError = error as AxiosError;
-        console.log(axiosError);
-        if (axiosError.response?.status === 404) {
-          navigate("/404");
-        }
-        Swal.fire({
-          title: "Sorry",
-          text: `AI Feedback ${axiosError?.message}`,
-          width: 600,
-          padding: "3em",
-          color: "#44b044",
-          background: "#fff",
-          backdrop: `
-          rgba(0,0,0,0.4)
-            url("https://sweetalert2.github.io/images/nyan-cat.gif")
-            left top
-            no-repeat
-          `,
-          confirmButtonColor: "#32cd32",
-          confirmButtonText: "Close",
-        });
+        handleAxiosError({ text: "AI Feedback", error: error as AxiosError, navigate });
       }
     })();
   }, [id]);
@@ -99,27 +79,7 @@ export const CodeCompare = () => {
         const response = await getBookmarkInfoAPI(Number(id));
         setBookmarkInfo(response);
       } catch (error) {
-        const axiosError = error as AxiosError;
-        console.log(axiosError);
-        if (axiosError.response?.status === 404) {
-          navigate("/404");
-        }
-        Swal.fire({
-          title: "Sorry",
-          text: `Bookmark Info ${axiosError?.message}`,
-          width: 600,
-          padding: "3em",
-          color: "#44b044",
-          background: "#fff",
-          backdrop: `
-          rgba(0,0,0,0.4)
-            url("https://sweetalert2.github.io/images/nyan-cat.gif")
-            left top
-            no-repeat
-          `,
-          confirmButtonColor: "#32cd32",
-          confirmButtonText: "Close",
-        });
+        handleAxiosError({ text: "Bookmark Info", error: error as AxiosError, navigate });
       }
     })();
   }, [id]);
@@ -139,6 +99,7 @@ export const CodeCompare = () => {
         problemId: Number(id),
         codeType: location.state?.language,
         code: location.state.myCode,
+        gptReview: userAiReview,
       });
       setBookmarkId(response);
       setIsbookmark(true);
@@ -147,28 +108,7 @@ export const CodeCompare = () => {
         action: "addBookmark",
       });
     } catch (error) {
-      const axiosError = error as AxiosError;
-      console.log(axiosError);
-      if (axiosError.response?.status === 404) {
-        navigate("/404");
-      }
-
-      Swal.fire({
-        title: "Sorry",
-        text: `Bookmark save ${axiosError?.message}`,
-        width: 600,
-        padding: "3em",
-        color: "#44b044",
-        background: "#fff",
-        backdrop: `
-          rgba(0,0,0,0.4)
-            url("https://sweetalert2.github.io/images/nyan-cat.gif")
-            left top
-            no-repeat
-          `,
-        confirmButtonColor: "#32cd32",
-        confirmButtonText: "Close",
-      });
+      handleAxiosError({ text: "Bookmark save", error: error as AxiosError, navigate });
     }
   };
   const handleBookmarkOff = async () => {
@@ -181,28 +121,7 @@ export const CodeCompare = () => {
         action: "deleteBookmark",
       });
     } catch (error) {
-      const axiosError = error as AxiosError;
-      console.log(axiosError);
-      if (axiosError.response?.status === 404) {
-        navigate("/404");
-      }
-
-      Swal.fire({
-        title: "Sorry",
-        text: `Bookmark Off ${axiosError?.message}`,
-        width: 600,
-        padding: "3em",
-        color: "#44b044",
-        background: "#fff",
-        backdrop: `
-          rgba(0,0,0,0.4)
-            url("https://sweetalert2.github.io/images/nyan-cat.gif")
-            left top
-            no-repeat
-          `,
-        confirmButtonColor: "#32cd32",
-        confirmButtonText: "Close",
-      });
+      handleAxiosError({ text: "Bookmark off", error: error as AxiosError, navigate });
     }
   };
 
@@ -212,6 +131,7 @@ export const CodeCompare = () => {
         problemId: bookmarkInfo?.bookmarkId as string,
         codeType: location.state?.language,
         code: location.state.myCode,
+        gptReview: userAiReview,
       });
       setIsbookmark(true);
       setIsConfirmBookmarkModal(false);
@@ -220,27 +140,7 @@ export const CodeCompare = () => {
         action: "overWriteBookmark",
       });
     } catch (error) {
-      const axiosError = error as AxiosError;
-      console.log(axiosError);
-      if (axiosError.response?.status === 404) {
-        navigate("/404");
-      }
-      Swal.fire({
-        title: "Sorry",
-        text: `Bookmark ReSave ${axiosError?.message}`,
-        width: 600,
-        padding: "3em",
-        color: "#44b044",
-        background: "#fff",
-        backdrop: `
-        rgba(0,0,0,0.4)
-          url("https://sweetalert2.github.io/images/nyan-cat.gif")
-          left top
-          no-repeat
-        `,
-        confirmButtonColor: "#32cd32",
-        confirmButtonText: "Close",
-      });
+      handleAxiosError({ text: "Bookmark ReSave", error: error as AxiosError, navigate });
     }
   };
 
@@ -254,27 +154,7 @@ export const CodeCompare = () => {
         action: "startAiCodeReview",
       });
     } catch (error) {
-      const axiosError = error as AxiosError;
-      console.log(axiosError);
-      if (axiosError.response?.status === 404) {
-        navigate("/404");
-      }
-      Swal.fire({
-        title: "Sorry",
-        text: `User AI Code Review ${axiosError?.message}`,
-        width: 600,
-        padding: "3em",
-        color: "#44b044",
-        background: "#fff",
-        backdrop: `
-          rgba(0,0,0,0.4)
-            url("https://sweetalert2.github.io/images/nyan-cat.gif")
-            left top
-            no-repeat
-          `,
-        confirmButtonColor: "#32cd32",
-        confirmButtonText: "Close",
-      });
+      handleAxiosError({ text: "User AI Code Review", error: error as AxiosError, navigate });
     } finally {
       setIsLoading(false);
     }
@@ -303,6 +183,18 @@ export const CodeCompare = () => {
             ))}
           </span>
           <span>{location.state.question.subject}</span>
+          <button
+            onClick={
+              !isbookmark && bookmarkInfo
+                ? () => setIsConfirmBookmarkModal(true)
+                : isbookmark
+                ? () => setIsModal(true)
+                : handleBookmarkSave
+            }
+          >
+            {getBookmarkButtonText()}
+            <img src={isbookmark ? icon_bookmark_true : icon_bookmark} alt="북마크 아이콘" />
+          </button>
         </PageHeader>
         <Contain>
           <section style={{ width: isMedia ? "100%" : `${descWidth}%` }}>
@@ -315,20 +207,8 @@ export const CodeCompare = () => {
           <Gutter orientation="horizontal" onMouseDown={startDragHorizontal} />
           <section style={{ width: isMedia ? "100%" : `${100 - descWidth}%` }}>
             <div style={{ height: `${editorHeight}%` }}>
-              <CompareHeader className="gptCode">
+              <CompareHeader>
                 <strong>AI Code</strong>
-                <button
-                  onClick={
-                    !isbookmark && bookmarkInfo
-                      ? () => setIsConfirmBookmarkModal(true)
-                      : isbookmark
-                      ? () => setIsModal(true)
-                      : handleBookmarkSave
-                  }
-                >
-                  {getBookmarkButtonText()}
-                  <img src={isbookmark ? icon_bookmark_true : icon_bookmark} alt="북마크 아이콘" />
-                </button>
               </CompareHeader>
               <ReadOnlyEditor code={aiRes?.gptCode as string} language={location.state?.language} />
             </div>
@@ -399,13 +279,13 @@ const Main = styled.main`
 `;
 
 const PageHeader = styled.div`
-  padding: 1rem 22px;
+  padding: 5px 16px 5px 24px;
   font-weight: 600;
   border-bottom: 2px solid var(--background-color);
   display: flex;
   justify-content: flex-start;
   gap: 12px;
-  align-items: flex-end;
+  align-items: center;
   & > h2 {
     font-size: 1rem;
   }
@@ -429,6 +309,26 @@ const PageHeader = styled.div`
       width: 1px;
       height: 100%;
       background-color: var(--gray700-color);
+    }
+  }
+  & > button {
+    cursor: pointer;
+    margin-left: auto;
+    font-size: 12px;
+    background-color: #282828;
+    border-radius: 57px;
+    padding: 13px 18px;
+    color: #bdbdbd;
+    font-weight: 600;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    & > img {
+      width: 15px;
+    }
+    &:hover {
+      color: #fff;
     }
   }
 `;
@@ -510,32 +410,6 @@ const Contain = styled.div`
     * {
       scrollbar-width: thin;
       scrollbar-color: #555 transparent;
-    }
-  }
-
-  .gptCode {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 5px 22px;
-    & > button {
-      cursor: pointer;
-      font-size: 12px;
-      background-color: #282828;
-      border-radius: 57px;
-      padding: 12px 16px;
-      color: #bdbdbd;
-      font-weight: 600;
-      transition: all 0.3s;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      & > img {
-        width: 15px;
-      }
-      &:hover {
-        color: #fff;
-      }
     }
   }
 

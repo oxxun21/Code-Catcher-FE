@@ -7,7 +7,10 @@ import { useDraggable } from "../hook";
 import { Gutter, Header, ReadOnlyEditor, SquareButton, TestDescSection } from "../components";
 import icon_grayStar from "../assets/icon_grayStar.svg";
 import { AxiosError } from "axios";
-import Swal from "sweetalert2";
+import { handleAxiosError } from "../utils/handleAxiosError";
+import icon_Lightbulb from "../assets/icon_Lightbulb.svg";
+import icon_Clock from "../assets/icon_Clock.svg";
+import icon_Save from "../assets/icon_Save.svg";
 
 export const Bookmark = () => {
   const { id } = useParams();
@@ -15,12 +18,7 @@ export const Bookmark = () => {
   const [activeTab, setActiveTab] = useState("myCode");
   const [isMedia, setIsMedia] = useState(window.innerWidth <= 768);
   const navigate = useNavigate();
-  const {
-    width: descWidth,
-    height: editorHeight,
-    startDragHorizontal,
-    startDragVertical,
-  } = useDraggable({ initialWidth: 40, initialHeight: 60 });
+  const { width: descWidth, startDragHorizontal } = useDraggable({ initialWidth: 40, initialHeight: 60 });
 
   useEffect(() => {
     const handleResize = () => {
@@ -38,28 +36,7 @@ export const Bookmark = () => {
         const response = await getBookmarkAPI(id);
         setGetBookmark(response);
       } catch (error) {
-        const axiosError = error as AxiosError;
-        console.log(axiosError);
-        if (axiosError.response?.status === 404) {
-          navigate("/404");
-        }
-
-        Swal.fire({
-          title: "Sorry",
-          text: `Bookmark Info ${axiosError?.message}`,
-          width: 600,
-          padding: "3em",
-          color: "#44b044",
-          background: "#fff",
-          backdrop: `
-          rgba(0,0,0,0.4)
-            url("https://sweetalert2.github.io/images/nyan-cat.gif")
-            left top
-            no-repeat
-          `,
-          confirmButtonColor: "#32cd32",
-          confirmButtonText: "Close",
-        });
+        handleAxiosError({ text: "Bookmark Info", error: error as AxiosError, navigate });
       }
     })();
   }, [id]);
@@ -85,6 +62,62 @@ export const Bookmark = () => {
     }
   };
 
+  const renderTabContentReview = () => {
+    switch (activeTab) {
+      case "myCode":
+        return (
+          <>
+            {getBookmark?.gptReviewRes ? (
+              <FeedbackSection>
+                <strong>AI 코드리뷰</strong>
+                <FeedbackSectionContent>
+                  <div>
+                    <strong>
+                      <img src={icon_Clock} alt="시간 효율성 아이콘" />
+                      시간 효율성
+                    </strong>
+                    <p>{getBookmark?.gptReviewRes.time}</p>
+                  </div>
+                  <div>
+                    <strong>
+                      <img src={icon_Save} alt="메모리 효율성 아이콘" />
+                      메모리 효율성
+                    </strong>
+                    <p>{getBookmark?.gptReviewRes.memory}</p>
+                  </div>
+                  <div>
+                    <strong>
+                      <img src={icon_Lightbulb} alt="개선점 아이콘" />
+                      개선점
+                    </strong>
+                    <p>{getBookmark?.gptReviewRes.suggest}</p>
+                  </div>
+                </FeedbackSectionContent>
+              </FeedbackSection>
+            ) : (
+              <FeedbackSection>
+                <strong>AI 코드리뷰</strong>
+                <p>코드 리뷰 받은 내역이 없습니다.</p>
+              </FeedbackSection>
+            )}
+          </>
+        );
+      case "aiCode":
+        return (
+          <>
+            <FeedbackSection>
+              <strong>AI Feedback</strong>
+              <FeedbackSectionContent>
+                <p>{getBookmark?.gptExplain}</p>
+              </FeedbackSectionContent>
+            </FeedbackSection>
+          </>
+        );
+      default:
+        return null;
+    }
+  };
+
   return (
     <>
       <Header />
@@ -103,7 +136,7 @@ export const Bookmark = () => {
           <TestDescSection descWidth={isMedia ? 100 : descWidth} question={getBookmark as Bookmark_I} />
           <Gutter orientation="horizontal" onMouseDown={startDragHorizontal} />
           <CodeContain style={{ width: isMedia ? "100%" : `${100 - descWidth}%` }}>
-            <div style={{ height: `${editorHeight}%` }}>
+            <div>
               <TabContainer>
                 <TabButton onClick={() => setActiveTab("myCode")} isActive={activeTab === "myCode"}>
                   My Code
@@ -114,11 +147,7 @@ export const Bookmark = () => {
               </TabContainer>
               {renderTabContent()}
             </div>
-            <Gutter orientation="vertical" onMouseDown={startDragVertical} changeBackColor={true} />
-            <FeedbackTitle>AI Feedback</FeedbackTitle>
-            <FeedbackSection editorHeight={editorHeight}>
-              <p>{getBookmark?.gptExplain}</p>
-            </FeedbackSection>
+            {renderTabContentReview()}
           </CodeContain>
         </Contain>
         <ButtonContain>
@@ -181,6 +210,10 @@ const Contain = styled.div`
 const CodeContain = styled.section`
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+  & > div {
+    min-height: 60%;
+  }
 `;
 
 const ButtonContain = styled.div`
@@ -203,7 +236,7 @@ const TabContainer = styled.div`
 
 const TabButton = styled.button<{ isActive: boolean }>`
   padding: 0.875rem 2.5rem;
-  background-color: #2a2a31;
+  background-color: ${props => (props.isActive ? "#3F3F47" : "#2a2a31")};
   color: ${props => (props.isActive ? "#fff" : "#363738")};
   border: none;
   font-family: var(--font--Galmuri);
@@ -213,27 +246,55 @@ const TabButton = styled.button<{ isActive: boolean }>`
   cursor: pointer;
 `;
 
-const FeedbackTitle = styled.strong`
-  background-color: #3f3f47;
-  display: block;
-  font-size: 0.75rem;
-  padding: 0 22px 20px;
-  font-weight: 600;
-  border-bottom: 2px solid var(--background-color);
-  font-family: var(--font--Galmuri);
-`;
-
-const FeedbackSection = styled.section<{ editorHeight: number }>`
-  background-color: #3f3f47;
+const FeedbackSection = styled.section`
+  height: 35%;
+  background-color: #2a2a31;
   color: var(--gray400-color);
   font-size: 0.75rem;
-  overflow: auto;
-  padding: 1.5rem;
-  height: calc(100% - ${props => props.editorHeight + "%"} - 60px);
-  & > p {
-    color: #fff;
-    line-height: 2;
+  padding: 1.875rem;
+  border-radius: 5px;
+  margin: 0 22px 22px 22px;
+  & > strong {
+    display: block;
+    font-size: 0.75rem;
+    margin-bottom: 28px;
+    font-weight: 600;
+    font-family: var(--font--Galmuri);
+    color: var(--point-color);
   }
+
+  @media only screen and (max-width: 768px) {
+    padding-top: 20px;
+    border-top: 2px solid var(--background-color);
+  }
+`;
+
+const FeedbackSectionContent = styled.div`
+  height: 100%;
+  overflow: auto;
+  max-height: 85%;
+  color: #fff;
+  line-height: 1.6;
+  font-size: 0.875rem;
+  & > div {
+    margin-bottom: 1.625rem;
+    & > strong {
+      color: var(--gray400-color);
+      font-size: 0.8125rem;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 5px;
+      margin-bottom: 10px;
+    }
+    & > p {
+      font-weight: 300;
+    }
+    & > span {
+      color: var(--gray500-color);
+    }
+  }
+
   ::-webkit-scrollbar {
     width: 5px;
   }
@@ -253,9 +314,5 @@ const FeedbackSection = styled.section<{ editorHeight: number }>`
   * {
     scrollbar-width: thin;
     scrollbar-color: #555 transparent;
-  }
-  @media only screen and (max-width: 768px) {
-    padding-top: 20px;
-    border-top: 2px solid var(--background-color);
   }
 `;

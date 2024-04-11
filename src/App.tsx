@@ -11,7 +11,7 @@ import { CodeCompare } from "./page/CodeCompare";
 import { NotFound } from "./page/NotFound";
 import { QuestionSelect } from "./page/QuestionSelect";
 import { MyPage } from "./page/MyPage";
-import { MobilePopup, RouteChangeTracker } from "./components";
+import { RouteChangeTracker } from "./components";
 import { Bookmark } from "./page/Bookmark";
 import { BookmarkList } from "./page/BookmarkList";
 import { LastQuestionList } from "./page/LastQuestionList";
@@ -52,7 +52,6 @@ function App() {
             <Route path={"*"} element={<Navigate to="/404" />} />
           </Routes>
         </BrowserRouter>
-        <MobilePopup />
       </HelmetProvider>
     </>
   );

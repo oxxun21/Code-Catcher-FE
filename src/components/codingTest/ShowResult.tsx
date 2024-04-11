@@ -24,10 +24,12 @@ export const ShowResult = ({ value }: { value: TestScoreSubmit_I | ScoreSubmit_I
       return `${testCase.error_message}`;
     } else if (testCase.correct) {
       return "테스트를 통과하였습니다.";
-    } else {
+    } else if (testCase.actual_output.split("\n").length === 1) {
       return `실행한 결과값 ${testCase.actual_output === "" ? "Null" : testCase.actual_output}이 기대값 ${
         testCase.expected_output
       }과 다릅니다.`;
+    } else {
+      return "결과값이 여러개 입력 되었습니다.";
     }
   };
 
@@ -41,11 +43,13 @@ export const ShowResult = ({ value }: { value: TestScoreSubmit_I | ScoreSubmit_I
           <tr>
             <th>입력값</th>
             <th>기대값</th>
+            {testCase.actual_output && <th>출력값</th>}
             <th>실행결과</th>
           </tr>
           <tr>
             <td>{testCase.input}</td>
             <td>{testCase.expected_output}</td>
+            {testCase.actual_output && <td>{testCase.actual_output}</td>}
             <CorrectnessIndicator correct={testCase.correct}>{resultShow(testCase)}</CorrectnessIndicator>
           </tr>
         </tbody>
@@ -70,7 +74,13 @@ export const ShowResult = ({ value }: { value: TestScoreSubmit_I | ScoreSubmit_I
               <td>???</td>
               <td>???</td>
               <CorrectnessIndicator correct={value.testCase_3.correct}>
-                {resultShow(value.testCase_3)}
+                {value.testCase_3.error
+                  ? `${value.testCase_3.error_message}`
+                  : value.testCase_3.correct
+                  ? "테스트를 통과하였습니다."
+                  : value.testCase_3.actual_output.split("\n").length === 1
+                  ? "오답입니다."
+                  : "결과값이 여러개 입력 되었습니다."}
               </CorrectnessIndicator>
             </tr>
           </tbody>

@@ -8,35 +8,31 @@ interface PaginationProps {
 }
 
 export const Pagination = ({ totalPage, currentPage, onPageChange }: PaginationProps) => {
-  const [pageGroup, setPageGroup] = useState(Math.floor(currentPage / 5));
-  const maxPageGroup = Math.ceil(totalPage / 5) - 1;
+  const pageGroupSize = 5;
+  const [pageGroup, setPageGroup] = useState(Math.floor(currentPage / pageGroupSize));
+  const maxPageGroup = Math.ceil((totalPage + 1) / pageGroupSize) - 1;
 
-  const handleNextGroup = () => {
-    if (pageGroup < maxPageGroup) {
-      setPageGroup(pageGroup + 1);
-      onPageChange(pageGroup * 5 + 5); // 다음 그룹의 첫 페이지로 이동
-    }
-  };
-
-  const handlePrevGroup = () => {
-    if (pageGroup > 0) {
-      const newPageGroup = pageGroup - 1;
-      setPageGroup(newPageGroup);
-      onPageChange(newPageGroup * 5); // 이전 그룹의 첫 페이지로 이동
-    }
+  const handlePageGroupChange = (direction: "next" | "prev") => {
+    setPageGroup(currentGroup => {
+      const newPageGroup = direction === "next" ? currentGroup + 1 : currentGroup - 1;
+      onPageChange(
+        direction === "next" ? currentGroup * pageGroupSize + pageGroupSize - 1 : newPageGroup * pageGroupSize
+      );
+      return newPageGroup;
+    });
   };
   // 현재 페이지 그룹에 따라 표시할 페이지 번호들을 계산
-  const startPage = pageGroup * 5 + 1;
-  const endPage = Math.max(Math.min(startPage + 4, totalPage), 1);
+  const startPage = pageGroup * pageGroupSize + 1;
+  const endPage = Math.min(startPage + pageGroupSize - 1, totalPage + 1);
   const pageNumbers = Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i);
 
-  const showBackButton = totalPage > 5;
-  const showNextButton = totalPage > 5;
+  const showBackButton = totalPage >= 5;
+  const showNextButton = totalPage >= 5;
 
   return (
     <StyledNav>
       {showBackButton && (
-        <button onClick={handlePrevGroup} disabled={pageGroup === 0}>
+        <button onClick={() => handlePageGroupChange("prev")} disabled={pageGroup === 0}>
           BACK
         </button>
       )}
@@ -50,7 +46,7 @@ export const Pagination = ({ totalPage, currentPage, onPageChange }: PaginationP
         ))}
       </ul>
       {showNextButton && (
-        <button onClick={handleNextGroup} disabled={pageGroup === maxPageGroup}>
+        <button onClick={() => handlePageGroupChange("next")} disabled={pageGroup === maxPageGroup}>
           NEXT
         </button>
       )}
