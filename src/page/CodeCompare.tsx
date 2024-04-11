@@ -183,6 +183,18 @@ export const CodeCompare = () => {
             ))}
           </span>
           <span>{location.state.question.subject}</span>
+          <button
+            onClick={
+              !isbookmark && bookmarkInfo
+                ? () => setIsConfirmBookmarkModal(true)
+                : isbookmark
+                ? () => setIsModal(true)
+                : handleBookmarkSave
+            }
+          >
+            {getBookmarkButtonText()}
+            <img src={isbookmark ? icon_bookmark_true : icon_bookmark} alt="북마크 아이콘" />
+          </button>
         </PageHeader>
         <Contain>
           <section style={{ width: isMedia ? "100%" : `${descWidth}%` }}>
@@ -195,20 +207,8 @@ export const CodeCompare = () => {
           <Gutter orientation="horizontal" onMouseDown={startDragHorizontal} />
           <section style={{ width: isMedia ? "100%" : `${100 - descWidth}%` }}>
             <div style={{ height: `${editorHeight}%` }}>
-              <CompareHeader className="gptCode">
+              <CompareHeader>
                 <strong>AI Code</strong>
-                <button
-                  onClick={
-                    !isbookmark && bookmarkInfo
-                      ? () => setIsConfirmBookmarkModal(true)
-                      : isbookmark
-                      ? () => setIsModal(true)
-                      : handleBookmarkSave
-                  }
-                >
-                  {getBookmarkButtonText()}
-                  <img src={isbookmark ? icon_bookmark_true : icon_bookmark} alt="북마크 아이콘" />
-                </button>
               </CompareHeader>
               <ReadOnlyEditor code={aiRes?.gptCode as string} language={location.state?.language} />
             </div>
@@ -226,8 +226,7 @@ export const CodeCompare = () => {
           </section>
         </Contain>
         <ButtonContain>
-          {/* <SquareButton onClick={handleAICodeReview} text="AI 코드 리뷰 시작하기" disabled={aiRes?.used} /> */}
-          <SquareButton onClick={handleAICodeReview} text="AI 코드 리뷰 시작하기" disabled={false} />
+          <SquareButton onClick={handleAICodeReview} text="AI 코드 리뷰 시작하기" disabled={aiRes?.used} />
           <div className="notice">
             하루 1회에 한하여 <span>내가 작성한 코드에 대한 AI의 리뷰</span>를 제공합니다.
             <br /> 코드 리뷰를 받으면 해당 기능은 다음날까지 비활성화됩니다.
@@ -280,13 +279,13 @@ const Main = styled.main`
 `;
 
 const PageHeader = styled.div`
-  padding: 1rem 22px;
+  padding: 5px 16px 5px 24px;
   font-weight: 600;
   border-bottom: 2px solid var(--background-color);
   display: flex;
   justify-content: flex-start;
   gap: 12px;
-  align-items: flex-end;
+  align-items: center;
   & > h2 {
     font-size: 1rem;
   }
@@ -310,6 +309,26 @@ const PageHeader = styled.div`
       width: 1px;
       height: 100%;
       background-color: var(--gray700-color);
+    }
+  }
+  & > button {
+    cursor: pointer;
+    margin-left: auto;
+    font-size: 12px;
+    background-color: #282828;
+    border-radius: 57px;
+    padding: 13px 18px;
+    color: #bdbdbd;
+    font-weight: 600;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    & > img {
+      width: 15px;
+    }
+    &:hover {
+      color: #fff;
     }
   }
 `;
@@ -391,32 +410,6 @@ const Contain = styled.div`
     * {
       scrollbar-width: thin;
       scrollbar-color: #555 transparent;
-    }
-  }
-
-  .gptCode {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 5px 22px;
-    & > button {
-      cursor: pointer;
-      font-size: 12px;
-      background-color: #282828;
-      border-radius: 57px;
-      padding: 12px 16px;
-      color: #bdbdbd;
-      font-weight: 600;
-      transition: all 0.3s;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      & > img {
-        width: 15px;
-      }
-      &:hover {
-        color: #fff;
-      }
     }
   }
 
