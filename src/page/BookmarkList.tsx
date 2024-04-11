@@ -328,8 +328,10 @@ const StyledTableRow = styled.tr<{ checked: boolean }>`
   }
 
   & > td {
+    height: 38px;
     padding: 0.625rem 0;
     color: var(--black-color);
+    vertical-align: middle;
     &:nth-of-type(1) {
       width: 3rem;
       & img {
@@ -340,8 +342,8 @@ const StyledTableRow = styled.tr<{ checked: boolean }>`
     }
     &:nth-of-type(2) {
       width: 22rem;
-
       & span {
+        vertical-align: middle;
         font-size: 0.75rem;
         font-weight: 500;
         color: var(--gray400-color);
@@ -418,7 +420,6 @@ const StyledEmpty = styled.div`
       & > img {
         text-align: center;
         transition: fill 0.2s;
-        /* margin: 0.0625rem 0 0 0.125rem; */
       }
       &:hover,
       & > img:hover {

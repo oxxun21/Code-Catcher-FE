@@ -214,6 +214,7 @@ const StyledTableBody = styled.tbody`
     }
     &:nth-of-type(2) {
       display: flex;
+      align-items: center;
       width: 22rem;
 
       & span {

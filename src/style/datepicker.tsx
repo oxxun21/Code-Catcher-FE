@@ -1,7 +1,5 @@
 import { css } from "@emotion/react";
 import "react-datepicker/dist/react-datepicker.css";
-import ArrowLeft from "../assets/arrow_left.svg";
-import ArrowRight from "../assets/arrow_right.svg";
 
 const datePicker = css`
   .react-datepicker {
@@ -29,20 +27,20 @@ const datePicker = css`
   .react-datepicker__navigation {
     line-height: 1.5rem;
   }
+  .react-datepicker__navigation-icon--previous::before,
+  .react-datepicker__navigation-icon--next::before {
+    visibility: hidden;
+  }
   .react-datepicker__navigation--previous {
     width: 24px;
     height: 24px;
-    background-image: url(${ArrowLeft});
-    background-repeat: no-repeat;
-    background-position: center;
+    background: url("/assets/arrow_left.svg") no-repeat !important;
   }
 
   .react-datepicker__navigation--next {
     width: 24px;
     height: 24px;
-    background-image: url(${ArrowRight});
-    background-repeat: no-repeat;
-    background-position: center;
+    background: url("/assets/arrow_right.svg") no-repeat !important;
   }
 
   //yyyy.mm

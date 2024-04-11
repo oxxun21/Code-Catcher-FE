@@ -203,6 +203,7 @@ const StyledTableBody = styled.tbody`
     }
     &:nth-of-type(2) {
       display: flex;
+      align-items: center;
       & span {
         font-size: 0.75rem;
         font-weight: 500;
