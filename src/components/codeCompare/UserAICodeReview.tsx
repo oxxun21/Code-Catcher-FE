@@ -10,7 +10,7 @@ export const UserAICodeReview = ({ userAiReview, used }: { userAiReview: UserAiF
       <h3>AI 코드 리뷰</h3>
       {!userAiReview && !used ? (
         <div>
-          AI에게 내 코드를 리뷰 받아보세요! <span>&#40;약 1분의 시간이 소요됩니다.&#41;</span>
+          AI에게 내 코드를 리뷰 받아보세요! <span>&#40;최대 3분의 시간이 소요됩니다.&#41;</span>
         </div>
       ) : null}
       {used && !userAiReview ? <div>오늘의 코드 리뷰 1회를 이미 받았어요. 내일 다시 받아보세요!</div> : null}
