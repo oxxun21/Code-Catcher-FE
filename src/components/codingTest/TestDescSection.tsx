@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import { Question_I, Bookmark_I } from "./../../interface";
 
 interface TestDescSectionProps {
-  descWidth: number;
+  descWidth?: number;
   question: Question_I | Bookmark_I;
 }
 
@@ -49,6 +49,7 @@ export const TestDescSection = ({ descWidth, question }: TestDescSectionProps) =
 const DescSection = styled.section`
   padding: 22px;
   overflow: auto;
+  height: 100%;
   ::-webkit-scrollbar {
     width: 5px;
   }
@@ -69,6 +70,9 @@ const DescSection = styled.section`
     scrollbar-width: thin;
     scrollbar-color: #555 transparent;
   }
+  @media only screen and (max-width: 768px) {
+    overflow: initial;
+  }
 `;
 
 const DescArticle = styled.article`
@@ -88,6 +92,16 @@ const DescArticle = styled.article`
     margin-bottom: 8px;
     display: block;
   }
+
+  @media only screen and (max-width: 480px) {
+    font-size: 16px;
+    color: var(--black-color);
+    line-height: 1.5;
+    & > strong {
+      font-size: 15px;
+      color: var(--main-color);
+    }
+  }
 `;
 
 const InputAndOutput = styled.div`
@@ -102,6 +116,13 @@ const InputAndOutput = styled.div`
     & > p:first-of-type {
       font-size: 0.75rem;
       color: var(--gray400-color);
+      @media only screen and (max-width: 480px) {
+        margin-bottom: 8px;
+      }
+    }
+    @media only screen and (max-width: 480px) {
+      background-color: #fafafa;
+      font-size: 0.875rem;
     }
   }
 `;

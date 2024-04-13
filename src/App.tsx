@@ -11,17 +11,25 @@ import { CodeCompare } from "./page/CodeCompare";
 import { NotFound } from "./page/NotFound";
 import { QuestionSelect } from "./page/QuestionSelect";
 import { MyPage } from "./page/MyPage";
-import { RouteChangeTracker } from "./components";
+import { MobilePopup, RouteChangeTracker } from "./components";
 import { Bookmark } from "./page/Bookmark";
 import { BookmarkList } from "./page/BookmarkList";
 import { LastQuestionList } from "./page/LastQuestionList";
 import { metaData } from "./meta/metaData";
 import { HelmetRootMetaTags } from "./components";
 import { getLoginCookie } from "./utils/loginCookie";
+import { useWindowSize } from "./hook";
 
 function App() {
   const PrivateRoutes = () => {
     return getLoginCookie() ? <Outlet /> : <Navigate to="/splash" replace />;
+  };
+  const MobileSensitiveRoutes = () => {
+    const { width } = useWindowSize();
+    if (width <= 480) {
+      return <MobilePopup />;
+    }
+    return <Outlet />;
   };
   return (
     <>
@@ -38,15 +46,18 @@ function App() {
           <Routes>
             <Route path="/splash" element={<Splash />} />
             <Route path="/kakao/callback" element={<KakaoRedirection />} />
+
             <Route element={<PrivateRoutes />}>
               <Route path="/" element={<Home />} />
-              <Route path="/codingTest/:id" element={<CodingTest />} />
-              <Route path="/codeCompare/:id" element={<CodeCompare />} />
               <Route path="/bookmark/:id" element={<Bookmark />} />
-              <Route path="/question/select" element={<QuestionSelect />} />
               <Route path="/myPage" element={<MyPage />} />
               <Route path="/bookmarkList" element={<BookmarkList />} />
               <Route path="/lastQuestionList" element={<LastQuestionList />} />
+              <Route element={<MobileSensitiveRoutes />}>
+                <Route path="/codingTest/:id" element={<CodingTest />} />
+                <Route path="/codeCompare/:id" element={<CodeCompare />} />
+                <Route path="/question/select" element={<QuestionSelect />} />
+              </Route>
             </Route>
             <Route path="/404" element={<NotFound />} />
             <Route path={"*"} element={<Navigate to="/404" />} />
