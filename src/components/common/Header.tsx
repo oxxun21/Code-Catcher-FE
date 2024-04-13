@@ -8,6 +8,7 @@ import LogoDark from "../../assets/Logo_dark.svg";
 import { Modal } from "./Modal.tsx";
 import { withdrawAPI } from "../../api";
 import { useEventTracker } from "../../hook";
+import GoogleTranslate from "./GoogleTranslate.tsx";
 
 type ModalContentType = "logout" | "withdraw" | "leavePage" | "";
 
@@ -155,23 +156,26 @@ export const Header = () => {
       <h1>
         <img src={logoImage} alt="로고 이미지" onClick={handleNavigateToHome} />
       </h1>
-      {!isLoggedIn ? (
-        <StyledLoginBtn onClick={handleKakaoLogin}>로그인</StyledLoginBtn>
-      ) : (
-        <StyledBtnGroup>
-          <button onClick={() => openModal("logout")}>로그아웃</button>
-          {isMyPage ? (
-            <button onClick={() => openModal("withdraw")}>회원탈퇴</button>
-          ) : (
-            <button onClick={handleMyPageClick}>마이페이지</button>
-          )}
-        </StyledBtnGroup>
-      )}
-      {isModalOpen && (
-        <Modal onClose={closeModal} modalHeader="Want to Leave">
-          <ModalContents>{modalContents()}</ModalContents>
-        </Modal>
-      )}
+      <StyledLeftNav>
+        <GoogleTranslate />
+        {!isLoggedIn ? (
+          <StyledLoginBtn onClick={handleKakaoLogin}>로그인</StyledLoginBtn>
+        ) : (
+          <StyledBtnGroup>
+            <button onClick={() => openModal("logout")}>로그아웃</button>
+            {isMyPage ? (
+              <button onClick={() => openModal("withdraw")}>회원탈퇴</button>
+            ) : (
+              <button onClick={handleMyPageClick}>마이페이지</button>
+            )}
+          </StyledBtnGroup>
+        )}
+        {isModalOpen && (
+          <Modal onClose={closeModal} modalHeader="Want to Leave">
+            <ModalContents>{modalContents()}</ModalContents>
+          </Modal>
+        )}
+      </StyledLeftNav>
     </StyledHeader>
   );
 };
@@ -189,10 +193,6 @@ const StyledHeader = styled.header<{ isDarkMode: boolean }>`
     cursor: pointer;
   }
 
-  & h1 {
-    cursor: pointer;
-  }
-
   & button {
     font-size: 1rem;
     font-weight: 600;
@@ -200,6 +200,11 @@ const StyledHeader = styled.header<{ isDarkMode: boolean }>`
     color: ${({ isDarkMode }) => (isDarkMode ? "#EAEAEA" : "var(--gray800-color)")};
     background-color: ${({ isDarkMode }) => (isDarkMode ? "transparent" : "#ffffff")};
   }
+`;
+
+const StyledLeftNav = styled.div`
+  display: flex;
+  align-items: center;
 `;
 
 const StyledBtnGroup = styled.div`

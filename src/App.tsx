@@ -3,6 +3,7 @@ import { BrowserRouter, Navigate, Outlet, Route, Routes } from "react-router-dom
 import { HelmetProvider } from "react-helmet-async";
 import reset from "./style/reset";
 import datePicker from "./style/datepicker";
+import googleTranslate from "./style/googleTranslate";
 import { Home } from "./page/Home";
 import { Splash } from "./page/Splash";
 import { KakaoRedirection } from "./page/KakaoRedirection";
@@ -32,7 +33,8 @@ function App() {
           <Global
             styles={css`
               ${reset}
-              ${datePicker}
+              ${datePicker} 
+              ${googleTranslate}
             `}
           />
           <Routes>
