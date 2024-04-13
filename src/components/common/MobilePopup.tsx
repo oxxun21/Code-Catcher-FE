@@ -24,8 +24,7 @@ const MobileMessage = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background: #17171b;
-  color: #fff;
+  color: var(--black-color);
   justify-content: center;
   align-items: center;
   flex-direction: column;

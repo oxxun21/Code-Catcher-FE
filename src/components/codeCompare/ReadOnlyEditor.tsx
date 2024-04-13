@@ -1,5 +1,5 @@
 import Editor, { OnMount } from "@monaco-editor/react";
-import { useCallback, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { editor } from "monaco-editor";
 import styled from "@emotion/styled";
 
@@ -9,31 +9,64 @@ interface ReadOnlyEditorProps {
 }
 
 export const ReadOnlyEditor = ({ code, language }: ReadOnlyEditorProps) => {
+  const [isMedia, setIsMedia] = useState(window.innerWidth <= 480);
   const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMedia(window.innerWidth <= 480);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   const handleEditorDidMount: OnMount = useCallback((editor: editor.IStandaloneCodeEditor, monacoInstance) => {
     editorRef.current = editor;
 
-    monacoInstance.editor.defineTheme("customTheme", {
-      base: "vs-dark",
-      inherit: true,
-      rules: [{ token: "comment", background: "28A745" }], // 주석 색상 변경 필요
-      colors: {
-        "editor.foreground": "#ffffff",
-        "editor.background": "#2a2a31",
-        "editorCursor.foreground": "#ffffff",
-        "editor.lineHighlightBackground": "#17171b5d",
-        "editorLineNumber.foreground": "#989898",
-        "editor.selectionBackground": "#9898981a",
-        "editor.inactiveSelectionBackground": "#9898981a",
-      },
-    });
+    const setEditorTheme = () => {
+      const width = window.innerWidth;
+      if (width <= 480) {
+        monacoInstance.editor.defineTheme("lightTheme", {
+          base: "vs",
+          inherit: true,
+          rules: [{ token: "comment", fontStyle: "italic" }],
+          colors: {
+            "editor.background": "#f4f4f4",
+          },
+        });
+        monacoInstance.editor.setTheme("lightTheme");
+      } else {
+        monacoInstance.editor.defineTheme("customTheme", {
+          base: "vs-dark",
+          inherit: true,
+          rules: [{ token: "comment", fontStyle: "italic" }],
+          colors: {
+            "editor.foreground": "#ffffff",
+            "editor.background": "#2a2a31",
+            "editorCursor.foreground": "#ffffff",
+            "editor.lineHighlightBackground": "#17171b5d",
+            "editorLineNumber.foreground": "#989898",
+            "editor.selectionBackground": "#9898981a",
+            "editor.inactiveSelectionBackground": "#9898981a",
+          },
+        });
+        monacoInstance.editor.setTheme("customTheme");
+      }
+    };
 
-    monacoInstance.editor.setTheme("customTheme");
+    setEditorTheme();
+
+    window.addEventListener("resize", setEditorTheme);
+
+    return () => {
+      window.removeEventListener("resize", setEditorTheme);
+    };
   }, []);
 
   return (
-    <CodeReadSection>
+    <CodeReadSection isMedia={isMedia}>
       <Editor
         value={code}
         language={language}
@@ -55,10 +88,10 @@ export const ReadOnlyEditor = ({ code, language }: ReadOnlyEditorProps) => {
   );
 };
 
-const CodeReadSection = styled.div`
+const CodeReadSection = styled.div<{ isMedia: boolean }>`
   height: 80%;
   overflow: auto;
-  background-color: #2a2a31;
+  background-color: ${props => (props.isMedia ? "#f4f4f4" : "#2a2a31")};
   border-radius: 6px;
   padding: 20px 0px;
   margin: 0 22px;

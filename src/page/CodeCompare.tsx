@@ -282,7 +282,7 @@ const Main = styled.main`
 `;
 
 const PageHeader = styled.div`
-  padding: 5px 16px 5px 24px;
+  padding: 8px 16px 8px 24px;
   font-weight: 600;
   border-bottom: 2px solid var(--background-color);
   display: flex;
@@ -320,7 +320,7 @@ const PageHeader = styled.div`
     font-size: 12px;
     background-color: #282828;
     border-radius: 57px;
-    padding: 13px 18px;
+    padding: 10px 14px;
     color: #bdbdbd;
     font-weight: 600;
     transition: all 0.3s;
@@ -328,7 +328,7 @@ const PageHeader = styled.div`
     align-items: center;
     gap: 5px;
     & > img {
-      width: 15px;
+      width: 16px;
     }
     &:hover {
       color: #fff;
@@ -351,7 +351,7 @@ const FeedbackTitle = styled.strong`
   background-color: #3f3f47;
   display: block;
   font-size: 0.75rem;
-  padding: 0 22px 20px;
+  padding: 0 22px 18px;
   font-weight: 600;
   border-bottom: 2px solid var(--background-color);
   font-family: var(--font--Galmuri);
