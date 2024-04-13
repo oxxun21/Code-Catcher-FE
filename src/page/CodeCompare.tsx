@@ -206,7 +206,7 @@ export const CodeCompare = () => {
           </section>
           <Gutter orientation="horizontal" onMouseDown={startDragHorizontal} />
           <section style={{ width: isMedia ? "100%" : `${100 - descWidth}%` }}>
-            <div style={{ height: `${editorHeight}%` }}>
+            <div style={{ height: isMedia ? "100%" : `${editorHeight}%` }}>
               <CompareHeader>
                 <strong>AI Code</strong>
               </CompareHeader>
@@ -276,6 +276,9 @@ const Main = styled.main`
   background-color: #32323a;
   display: flex;
   flex-direction: column;
+  @media only screen and (max-width: 768px) {
+    height: 100%;
+  }
 `;
 
 const PageHeader = styled.div`
@@ -383,6 +386,11 @@ const FeedbackTitle = styled.strong`
       transform: rotate(45deg);
     }
   }
+  @media only screen and (max-width: 768px) {
+    padding-top: 20px;
+    margin-top: 20px;
+    border-top: 2px solid var(--background-color);
+  }
 `;
 
 const Contain = styled.div`
@@ -422,7 +430,7 @@ const Contain = styled.div`
 
   @media only screen and (max-width: 768px) {
     flex-direction: column;
-    height: 100%;
+    height: initial;
   }
 `;
 
@@ -463,10 +471,6 @@ const ButtonContain = styled.div`
   }
   & > button:first-of-type:hover + .notice {
     visibility: visible;
-  }
-
-  @media only screen and (max-width: 768px) {
-    position: relative;
   }
 `;
 
@@ -550,9 +554,5 @@ const FeedbackSection = styled.section<{ editorHeight: number }>`
   * {
     scrollbar-width: thin;
     scrollbar-color: #555 transparent;
-  }
-  @media only screen and (max-width: 768px) {
-    padding-top: 20px;
-    border-top: 2px solid var(--background-color);
   }
 `;
