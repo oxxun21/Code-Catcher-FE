@@ -82,4 +82,8 @@ const UserAiCodeSection = styled.section`
   & > div:last-of-type {
     margin-bottom: 0;
   }
+
+  @media only screen and (max-width: 768px) {
+    margin-right: 22px;
+  }
 `;

@@ -17,12 +17,24 @@ export const Bookmark = () => {
   const [getBookmark, setGetBookmark] = useState<Bookmark_I | undefined>();
   const [activeTab, setActiveTab] = useState("myCode");
   const [isMedia, setIsMedia] = useState(window.innerWidth <= 768);
+  const [isMediaPhone, setIsMediaPhone] = useState(window.innerWidth <= 480);
   const navigate = useNavigate();
   const { width: descWidth, startDragHorizontal } = useDraggable({ initialWidth: 40, initialHeight: 60 });
+  const [showDescSection, setShowDescSection] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
       setIsMedia(window.innerWidth <= 768);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMediaPhone(window.innerWidth <= 480);
     };
     window.addEventListener("resize", handleResize);
     return () => {
@@ -40,6 +52,10 @@ export const Bookmark = () => {
       }
     })();
   }, [id]);
+
+  const toggleDescSection = () => {
+    setShowDescSection(!showDescSection);
+  };
 
   const renderTabContent = () => {
     switch (activeTab) {
@@ -123,7 +139,10 @@ export const Bookmark = () => {
       <Header />
       <Main>
         <PageHeader>
-          <h2>마이페이지 &gt; 북마크 &gt; {getBookmark?.title}</h2>
+          <h2>
+            <span>마이페이지 &gt; 북마크 &gt; </span>
+            {getBookmark?.title}
+          </h2>
           <span>
             Lv
             {Array.from({ length: getBookmark?.level as number }, (_, index) => (
@@ -131,9 +150,19 @@ export const Bookmark = () => {
             ))}
           </span>
           <span>{getBookmark?.subject}</span>
+          {isMediaPhone && (
+            <PhoneDescBtn onClick={toggleDescSection}>{showDescSection ? "문제 숨기기" : "문제보기"}</PhoneDescBtn>
+          )}
         </PageHeader>
         <Contain>
-          <TestDescSection descWidth={isMedia ? 100 : descWidth} question={getBookmark as Bookmark_I} />
+          {showDescSection && (
+            <ShowPhoneDesc showDescSection={showDescSection}>
+              <TestDescSection descWidth={100} question={getBookmark as Bookmark_I} />
+            </ShowPhoneDesc>
+          )}
+          <ShowWebDesc descWidth={isMedia ? 100 : descWidth}>
+            <TestDescSection descWidth={100} question={getBookmark as Bookmark_I} />
+          </ShowWebDesc>
           <Gutter orientation="horizontal" onMouseDown={startDragHorizontal} />
           <CodeContain style={{ width: isMedia ? "100%" : `${100 - descWidth}%` }}>
             <div>
@@ -163,6 +192,10 @@ const Main = styled.main`
   background-color: #32323a;
   display: flex;
   flex-direction: column;
+  @media only screen and (max-width: 480px) {
+    background-color: var(--light-background-color);
+    color: var(--black-color);
+  }
 `;
 
 const PageHeader = styled.div`
@@ -175,9 +208,13 @@ const PageHeader = styled.div`
   align-items: flex-end;
   font-size: 1rem;
   font-weight: 400;
+  line-height: 1.5;
   & > span {
     color: var(--gray400-color);
     font-size: 14px;
+    @media only screen and (max-width: 480px) {
+      color: var(--gray600-color);
+    }
   }
   & > span:first-of-type {
     display: flex;
@@ -194,16 +231,31 @@ const PageHeader = styled.div`
       width: 1px;
       height: 100%;
       background-color: var(--gray700-color);
+      @media only screen and (max-width: 480px) {
+        background-color: var(--gray200-color);
+      }
+    }
+  }
+  & > h2 > span {
+    @media only screen and (max-width: 768px) {
+      display: none;
+    }
+  }
+  @media only screen and (max-width: 480px) {
+    border-bottom: none;
+    align-items: center;
+    & > h2 {
+      max-width: 40%;
     }
   }
 `;
 
 const Contain = styled.div`
   display: flex;
-  height: calc(100vh - 10.875rem);
+  height: calc(100vh - 11.375rem);
   @media only screen and (max-width: 768px) {
     flex-direction: column;
-    height: 100%;
+    overflow: auto;
   }
 `;
 
@@ -213,6 +265,13 @@ const CodeContain = styled.section`
   justify-content: space-between;
   & > div {
     min-height: 60%;
+    @media only screen and (max-width: 768px) {
+      min-height: initial;
+    }
+  }
+  @media only screen and (max-width: 768px) {
+    justify-content: initial;
+    gap: 20px;
   }
 `;
 
@@ -226,12 +285,19 @@ const ButtonContain = styled.div`
   @media only screen and (max-width: 768px) {
     position: relative;
   }
+  @media only screen and (max-width: 480px) {
+    display: none;
+  }
 `;
 
 const TabContainer = styled.div`
   display: flex;
   gap: 1rem;
   padding: 13px 22px;
+  @media only screen and (max-width: 480px) {
+    gap: 0;
+    padding: 0 0 20px 0;
+  }
 `;
 
 const TabButton = styled.button<{ isActive: boolean }>`
@@ -244,6 +310,15 @@ const TabButton = styled.button<{ isActive: boolean }>`
   font-size: 0.875rem;
   font-weight: 600;
   cursor: pointer;
+  @media only screen and (max-width: 480px) {
+    padding: 1rem;
+    background-color: #fff;
+    border-bottom: ${props => (props.isActive ? "2px solid var(--main-color)" : "2px solid var(--gray200-color)")};
+    color: ${props => (props.isActive ? "var(--main-color)" : "var(--gray200-color)")};
+    border-radius: 0;
+    width: 50%;
+    text-align: center;
+  }
 `;
 
 const FeedbackSection = styled.section`
@@ -261,16 +336,22 @@ const FeedbackSection = styled.section`
     font-weight: 600;
     font-family: var(--font--Galmuri);
     color: var(--point-color);
+    @media only screen and (max-width: 480px) {
+      font-size: 1rem;
+    }
   }
-
   @media only screen and (max-width: 768px) {
-    padding-top: 20px;
-    border-top: 2px solid var(--background-color);
+    height: initial;
+  }
+  @media only screen and (max-width: 480px) {
+    padding: 0;
+    background-color: #fff;
+    margin-top: 52px;
+    font-size: 1rem;
   }
 `;
 
 const FeedbackSectionContent = styled.div`
-  height: 100%;
   overflow: auto;
   max-height: 85%;
   color: #fff;
@@ -286,15 +367,28 @@ const FeedbackSectionContent = styled.div`
       justify-content: flex-start;
       gap: 5px;
       margin-bottom: 10px;
+      @media only screen and (max-width: 480px) {
+        font-size: 0.9375rem;
+      }
     }
     & > p {
       font-weight: 300;
+      @media only screen and (max-width: 480px) {
+        font-size: 1rem;
+      }
     }
     & > span {
       color: var(--gray500-color);
     }
   }
-
+  @media only screen and (max-width: 768px) {
+    overflow: initial;
+    max-height: initial;
+  }
+  @media only screen and (max-width: 480px) {
+    color: var(--black-color);
+    font-size: 1rem;
+  }
   ::-webkit-scrollbar {
     width: 5px;
   }
@@ -314,5 +408,36 @@ const FeedbackSectionContent = styled.div`
   * {
     scrollbar-width: thin;
     scrollbar-color: #555 transparent;
+  }
+`;
+
+const PhoneDescBtn = styled.button`
+  cursor: pointer;
+  display: block;
+  margin-left: auto;
+  border-radius: 999px;
+  color: var(--gray600-color);
+  border: 1px solid var(--gray200-color);
+  background-color: #f4f4f4;
+  font-size: 10px;
+  padding: 5px 10px;
+  font-weight: 600;
+`;
+
+const ShowPhoneDesc = styled.div<{ showDescSection: boolean }>`
+  display: ${props => (props.showDescSection ? "block" : "none")};
+  margin-bottom: 30px;
+
+  @media (min-width: 480px) {
+    display: none;
+  }
+`;
+
+const ShowWebDesc = styled.div<{ descWidth: number }>`
+  width: ${props => `${props.descWidth}%`};
+  display: block;
+
+  @media (max-width: 480px) {
+    display: none;
   }
 `;

@@ -2,15 +2,17 @@ import { useRef, useCallback } from "react";
 import Editor, { OnMount, OnChange } from "@monaco-editor/react";
 import { editor } from "monaco-editor";
 import { Question_I } from "../../interface";
+import styled from "@emotion/styled";
 
 interface EditorProps {
   editorHeight: number;
   language: "Java" | "Python";
   setCodeValue: React.Dispatch<React.SetStateAction<any>>;
   question?: Question_I;
+  isMedia?: boolean;
 }
 
-export const CodeEditor = ({ editorHeight, language, setCodeValue, question }: EditorProps) => {
+export const CodeEditor = ({ editorHeight, language, setCodeValue, question, isMedia }: EditorProps) => {
   const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
 
   const handleEditorChange: OnChange = useCallback((value?: string) => {
@@ -55,7 +57,7 @@ export const CodeEditor = ({ editorHeight, language, setCodeValue, question }: E
   let defaultContent = defaultContentFunction();
 
   return (
-    <section style={{ height: `${editorHeight}%` }}>
+    <EditorSection style={{ height: isMedia ? "350px" : `${editorHeight}%` }}>
       <Editor
         defaultLanguage={language === "Java" ? "java" : "python"}
         value={defaultContent}
@@ -73,6 +75,12 @@ export const CodeEditor = ({ editorHeight, language, setCodeValue, question }: E
         onMount={handleEditorDidMount}
         onChange={handleEditorChange}
       />
-    </section>
+    </EditorSection>
   );
 };
+
+const EditorSection = styled.section`
+  @media only screen and (max-width: 768px) {
+    margin-bottom: 30px;
+  }
+`;
