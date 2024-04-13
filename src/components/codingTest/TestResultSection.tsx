@@ -49,8 +49,7 @@ const ResultSection = styled.section<{ editorHeight: number }>`
     padding: 1.5rem;
   }
   @media only screen and (max-width: 768px) {
-    padding-top: 20px;
-    border-top: 2px solid var(--background-color);
+    min-height: 100px;
   }
 `;
 
@@ -61,4 +60,8 @@ const ResultTitle = styled.strong`
   color: var(--gray200-color);
   font-weight: 500;
   border-bottom: 2px solid var(--background-color);
+  @media only screen and (max-width: 768px) {
+    border-top: 2px solid var(--background-color);
+    padding-top: 20px;
+  }
 `;

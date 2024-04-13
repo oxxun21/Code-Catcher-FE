@@ -97,6 +97,6 @@ const CodeReadSection = styled.div<{ isMedia: boolean }>`
   margin: 0 22px;
   white-space: pre-wrap;
   @media only screen and (max-width: 768px) {
-    height: 85%;
+    height: 350px;
   }
 `;

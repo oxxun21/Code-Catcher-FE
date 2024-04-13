@@ -180,6 +180,7 @@ export const CodingTest = () => {
             <SelectLang language={language} setLanguage={setLanguage} />
             <CodeEditor
               language={language}
+              isMedia={isMedia}
               editorHeight={editorHeight}
               setCodeValue={setCodeValue}
               question={question}
@@ -264,6 +265,9 @@ const Main = styled.main`
   background-color: #32323a;
   display: flex;
   flex-direction: column;
+  @media only screen and (max-width: 768px) {
+    height: 100%;
+  }
 `;
 
 const PageHeader = styled.div`
@@ -308,7 +312,7 @@ const Contain = styled.div`
 
   @media only screen and (max-width: 768px) {
     flex-direction: column;
-    height: 100%;
+    height: initial;
   }
 `;
 
@@ -324,9 +328,6 @@ const ButtonContain = styled.div`
   justify-content: flex-end;
   gap: 0.75rem;
   background-color: var(--background-color);
-  @media only screen and (max-width: 768px) {
-    position: relative;
-  }
 `;
 
 const ModalContain = styled.div`
