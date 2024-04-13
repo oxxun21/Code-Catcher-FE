@@ -395,7 +395,7 @@ const FeedbackTitle = styled.strong`
 
 const Contain = styled.div`
   display: flex;
-  height: calc(100vh - 10.875rem);
+  height: calc(100vh - 11.125rem);
 
   & > section:first-of-type {
     overflow: auto;
