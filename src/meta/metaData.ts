@@ -13,7 +13,7 @@ export const metaData: { [key: string]: MetaData_I } = {
     title: "온보딩 | 코디 Codee",
     description:
       "코디(Codee) 온보딩 페이지. 서비스에 대한 설명을 확인할 수 있고 로그인하여 서비스를 시작할 수 있습니다.",
-    image: images.metaCover,
+    image: "https://likelion-codee.com/assets/meta/Home.png",
     url: "https://likelion-codee.com",
   },
   home: {
