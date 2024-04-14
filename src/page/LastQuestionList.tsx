@@ -77,41 +77,43 @@ export const LastQuestionList = () => {
               않습니다.
             </p>
           </div>
-          <StyledTable>
-            <StyledTableHead>
-              <tr>
-                <th>Lv</th>
-                <th>Title</th>
-                <th>Detail</th>
-                <th>Created Date</th>
-                <th>status</th>
-              </tr>
-            </StyledTableHead>
-            <StyledTableBody>
-              {data?.questionData.map((item, index) => {
-                const { text, textColor, indicatorColor } = getStatus(item.status ?? null);
-                return (
-                  <tr key={index} onClick={() => handleItemClick(item)}>
-                    <td>
-                      {[...Array(item.level)].map((_, i) => (
-                        <img key={i} src={StarPixel} alt="레벨" />
-                      ))}
-                    </td>
-                    <td>
-                      <span>#{String(item.problemId).padStart(4, "0")}</span>
-                      <strong>{item.title}</strong>
-                    </td>
-                    <td>{item.subject}</td>
-                    <td>{item.createdAt}</td>
-                    <td style={{ color: textColor }}>
-                      <StatusIndicator status={!!item.status} style={{ backgroundColor: indicatorColor }} />
-                      {text}
-                    </td>
-                  </tr>
-                );
-              })}
-            </StyledTableBody>
-          </StyledTable>
+          <div style={{ overflowX: "auto", scrollbarWidth: "none" }}>
+            <StyledTable>
+              <StyledTableHead>
+                <tr>
+                  <th>Lv</th>
+                  <th>Title</th>
+                  <th>Detail</th>
+                  <th>Created Date</th>
+                  <th>status</th>
+                </tr>
+              </StyledTableHead>
+              <StyledTableBody>
+                {data?.questionData.map((item, index) => {
+                  const { text, textColor, indicatorColor } = getStatus(item.status ?? null);
+                  return (
+                    <tr key={index} onClick={() => handleItemClick(item)}>
+                      <td>
+                        {[...Array(item.level)].map((_, i) => (
+                          <img key={i} src={StarPixel} alt="레벨" />
+                        ))}
+                      </td>
+                      <td>
+                        <span>#{String(item.problemId).padStart(4, "0")}</span>
+                        <strong>{item.title}</strong>
+                      </td>
+                      <td>{item.subject}</td>
+                      <td>{item.createdAt}</td>
+                      <td style={{ color: textColor }}>
+                        <StatusIndicator status={!!item.status} style={{ backgroundColor: indicatorColor }} />
+                        {text}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </StyledTableBody>
+            </StyledTable>
+          </div>
           <Pagination totalPage={totalPage} currentPage={currentPage} onPageChange={handlePageChange} />
         </section>
       </StyledMain>
@@ -130,10 +132,9 @@ const StyledMain = styled.main`
     position: relative;
     background-color: #fff;
     color: #000;
-    min-width: 80rem;
-    min-height: 25.125rem;
+    margin: 20px;
 
-    & > div {
+    & > div:nth-of-type(1) {
       position: relative;
       height: 5.625rem;
       & > h2 {
@@ -148,6 +149,8 @@ const StyledMain = styled.main`
         font-size: 0.875rem;
         color: #898989;
         font-weight: 500;
+        white-space: pre-wrap;
+        word-break: keep-all;
       }
     }
   }
@@ -167,19 +170,21 @@ const StyledTableHead = styled.thead`
     text-align: left;
     padding: 0.375rem 0;
     width: auto;
-    &:first-of-type {
+    &:nth-of-type(1) {
       padding-left: 1rem;
-      padding-right: 3.875rem;
+      width: 5.625rem;
     }
     &:nth-of-type(2) {
-      padding-right: 21.25rem;
+      width: 22.8125rem;
     }
     &:nth-of-type(3) {
-      padding-right: 2.875rem;
-      width: 37.75rem;
+      width: 38.875rem;
     }
     &:nth-of-type(4) {
-      padding-right: 2.875rem;
+      width: 7.25rem;
+    }
+    &:nth-of-type(5) {
+      width: 5.125rem;
     }
   }
 `;
@@ -205,26 +210,27 @@ const StyledTableBody = styled.tbody`
     padding: 0.625rem 0;
     color: var(--black-color);
     &:nth-of-type(1) {
-      width: 3rem;
+      min-width: 3rem;
       & img {
         vertical-align: middle;
       }
+      padding-right: 1.75rem;
       padding-left: 0.875rem;
       color: var(--secondary-color);
     }
     &:nth-of-type(2) {
-      display: flex;
-      align-items: center;
       width: 22rem;
+      padding-right: 0.75rem;
 
       & span {
         font-size: 0.75rem;
         font-weight: 500;
         color: var(--gray400-color);
-        margin-right: 0.75rem;
+        margin-right: 1.25rem;
       }
 
       & strong {
+        vertical-align: middle;
         font-size: 0.875rem;
         font-weight: 600;
         color: var(--black-color);
@@ -235,18 +241,20 @@ const StyledTableBody = styled.tbody`
       }
     }
     &:nth-of-type(3) {
-      width: 37.75rem;
+      padding-right: 1.25rem;
+
       font-size: 0.875rem;
       font-weight: 400;
     }
     &:nth-of-type(4) {
+      padding-right: 1.875rem;
       width: 5rem;
       font-size: 0.75rem;
       font-weight: 400;
       color: #9f9f9f;
     }
     &:nth-of-type(5) {
-      padding-right: 27px;
+      padding-right: 0.625rem;
       display: flex;
       justify-content: left;
       align-items: center;
