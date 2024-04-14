@@ -5,9 +5,12 @@ import { getLoginCookie, removeLoginCookie } from "../../utils/loginCookie.ts";
 import { useUserStore } from "../../stores/useUserStore.ts";
 import LogoLight from "../../assets/Logo_light.svg";
 import LogoDark from "../../assets/Logo_dark.svg";
+import MyPageIcon from "../../assets/icon_myPage.svg";
+import HomePageIcon from "../../assets/icon_homePage.svg";
+import ArrowBack from "../../assets/arrow_back_header.svg";
 import { Modal } from "./Modal.tsx";
 import { withdrawAPI } from "../../api";
-import { useEventTracker } from "../../hook";
+import { useEventTracker, useWindowSize } from "../../hook";
 import GoogleTranslate from "./GoogleTranslate.tsx";
 
 type ModalContentType = "logout" | "withdraw" | "leavePage" | "";
@@ -21,6 +24,8 @@ export const Header = () => {
   const logoImage = isDarkMode ? LogoDark : LogoLight;
 
   const isMyPage = location.pathname === "/myPage";
+  const isBookmarkList = location.pathname === "/bookmarkList";
+  const isBookmark = location.pathname.startsWith("/bookmark/");
   const [modalContent, setModalContent] = useState<ModalContentType>("");
 
   const { clearUserInfo } = useUserStore.getState();
@@ -28,6 +33,8 @@ export const Header = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
   const trackEvent = useEventTracker();
+  const { windowWidth } = useWindowSize();
+  const isMobile = (windowWidth ?? 0) <= 480;
 
   useEffect(() => {
     const token = getLoginCookie();
@@ -151,34 +158,85 @@ export const Header = () => {
     return null;
   };
 
-  return (
-    <StyledHeader isDarkMode={isDarkMode}>
-      <h1>
-        <img src={logoImage} alt="로고 이미지" onClick={handleNavigateToHome} />
-      </h1>
-      <StyledLeftNav>
-        <GoogleTranslate />
-        {!isLoggedIn ? (
-          <StyledLoginBtn onClick={handleKakaoLogin}>로그인</StyledLoginBtn>
+  const handleNavigateBack = () => {
+    window.history.back();
+  };
+
+  if (isMobile && (isMyPage || isBookmarkList || isBookmark)) {
+    let title = "마이페이지";
+    isMyPage ? (title = "마이페이지") : (title = "북마크");
+
+    return (
+      <StyledHeaderWithBack>
+        <button onClick={handleNavigateBack}>
+          <img src={ArrowBack} alt="뒤로가기" />
+        </button>
+        <h1>{title}</h1>
+        {isBookmarkList ? (
+          <button>
+            <img src={HomePageIcon} alt="홈페이지" onClick={handleNavigateToHome} />
+          </button>
         ) : (
-          <StyledBtnGroup>
-            <button onClick={() => openModal("logout")}>로그아웃</button>
-            {isMyPage ? (
-              <button onClick={() => openModal("withdraw")}>회원탈퇴</button>
-            ) : (
-              <button onClick={handleMyPageClick}>마이페이지</button>
-            )}
-          </StyledBtnGroup>
+          <div />
         )}
-        {isModalOpen && (
-          <Modal onClose={closeModal} modalHeader="Want to Leave">
-            <ModalContents>{modalContents()}</ModalContents>
-          </Modal>
-        )}
-      </StyledLeftNav>
-    </StyledHeader>
-  );
+      </StyledHeaderWithBack>
+    );
+  } else {
+    return (
+      <StyledHeader isDarkMode={isDarkMode}>
+        <h1>
+          <img src={logoImage} alt="로고 이미지" onClick={handleNavigateToHome} />
+        </h1>
+        <StyledLeftNav>
+          <GoogleTranslate />
+          {!isLoggedIn ? (
+            <StyledLoginBtn onClick={handleKakaoLogin}>로그인</StyledLoginBtn>
+          ) : (
+            <StyledBtnGroup>
+              <button onClick={() => openModal("logout")}>로그아웃</button>
+              {isMyPage ? (
+                <button onClick={() => openModal("withdraw")}>회원탈퇴</button>
+              ) : (
+                <button onClick={handleMyPageClick}>
+                  {isMobile ? <img src={MyPageIcon} alt="마이페이지" /> : "마이페이지"}
+                </button>
+              )}
+            </StyledBtnGroup>
+          )}
+          {isModalOpen && (
+            <Modal onClose={closeModal} modalHeader="Want to Leave">
+              <ModalContents>{modalContents()}</ModalContents>
+            </Modal>
+          )}
+        </StyledLeftNav>
+      </StyledHeader>
+    );
+  }
 };
+
+const StyledHeaderWithBack = styled.header`
+  width: 100%;
+  padding: 0.375rem 0.625rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #ffffff;
+  filter: drop-shadow(0px 0px 4px rgba(0, 0, 0, 0.1));
+
+  & img,
+  div {
+    cursor: pointer;
+    flex-basis: 44px;
+  }
+
+  & h1 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--black-color);
+    text-align: center;
+    flex-grow: 1;
+  }
+`;
 
 const StyledHeader = styled.header<{ isDarkMode: boolean }>`
   width: 100%;
@@ -189,8 +247,19 @@ const StyledHeader = styled.header<{ isDarkMode: boolean }>`
   background-color: ${({ isDarkMode }) => (isDarkMode ? "var(--background-color)" : "#ffffff")};
   color: ${({ isDarkMode }) => (isDarkMode ? "#ffffff" : "var(--gray800-color)")};
 
+  @media only screen and (max-width: 480px) {
+    padding: 0.375rem 0.625rem;
+    height: 3.5rem;
+    filter: drop-shadow(0px 0px 4px rgba(0, 0, 0, 0.1));
+  }
+
   & h1 {
     cursor: pointer;
+    & img {
+      @media only screen and (max-width: 480px) {
+        width: 91px;
+      }
+    }
   }
 
   & button {
@@ -205,17 +274,40 @@ const StyledHeader = styled.header<{ isDarkMode: boolean }>`
 const StyledLeftNav = styled.div`
   display: flex;
   align-items: center;
+
+  & > div:nth-of-type(1) {
+    @media only screen and (max-width: 480px) {
+      position: absolute;
+      visibility: hidden;
+    }
+  }
 `;
 
 const StyledBtnGroup = styled.div`
+  @media only screen and (max-width: 480px) {
+    display: flex;
+  }
+
   & > button {
     border: none;
     background-color: transparent;
     padding: 0.625rem;
   }
 
+  & > button:nth-of-type(1) {
+    @media only screen and (max-width: 480px) {
+      font-size: 0.625rem;
+      font-weight: medium;
+      padding: 1rem 0.375rem 1rem 0.1875rem;
+    }
+  }
+
   & > button:not(:first-of-type) {
     margin-left: 1.25rem;
+    @media only screen and (max-width: 480px) {
+      margin-left: 0.5rem;
+      padding: 0;
+    }
   }
 `;
 
@@ -229,6 +321,11 @@ const StyledLoginBtn = styled.button`
   &:hover {
     background-color: #f4f4f4;
   }
+
+  @media only screen and (max-width: 480px) {
+    position: absolute;
+    visibility: hidden;
+  }
 `;
 
 const ModalContents = styled.div`
@@ -237,6 +334,7 @@ const ModalContents = styled.div`
   justify-content: center;
   align-items: center;
   padding-top: 1rem;
+
   & > strong {
     font-size: 1.375rem;
     font-weight: bold;
@@ -259,6 +357,7 @@ const ModalContents = styled.div`
       border-radius: 20px;
       padding: 1rem 4.3125rem;
       cursor: pointer;
+      white-space: nowrap;
     }
     & button:nth-of-type(1) {
       color: var(--black-color);
