@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import FlagEn from "../../assets/flag_en.svg";
 import FlagKo from "../../assets/flag_ko.svg";
+import { useWindowSize } from "../../hook";
 
 declare global {
   interface Window {
@@ -12,6 +13,8 @@ declare global {
 const GoogleTranslate = () => {
   const translateElementRef = useRef<HTMLDivElement>(null);
   const [isEnglishVisible, setIsEnglishVisible] = useState(true);
+  const { windowWidth } = useWindowSize();
+  const isMobile = (windowWidth ?? 0) <= 480;
 
   useEffect(() => {
     window.googleTranslateElementInit = () => {
@@ -57,6 +60,7 @@ const GoogleTranslate = () => {
           <li>
             <a href="#" onClick={handleTranslateClick} data-lang="en">
               <img src={FlagEn} alt="영어" />
+              {isMobile ? <p>ENG</p> : null}
             </a>
           </li>
         )}
@@ -64,6 +68,7 @@ const GoogleTranslate = () => {
           <li>
             <a href="#" onClick={handleTranslateClick} data-lang="ko">
               <img src={FlagKo} alt="한국어" />
+              {isMobile ? <p>KOR</p> : null}
             </a>
           </li>
         )}

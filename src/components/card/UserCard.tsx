@@ -150,6 +150,11 @@ const StyledCard = styled.article`
     width: 246px;
     height: 222px;
     border-radius: 10px;
+
+    @media only screen and (max-width: 480px) {
+      width: 288px;
+      height: 260px;
+    }
   }
 
   display: flex;
@@ -164,6 +169,13 @@ const StyledCard = styled.article`
 
   @media (max-width: 768px) {
     width: 26.2494rem;
+  }
+
+  @media only screen and (max-width: 480px) {
+    width: 18rem;
+    background-color: #ffffff;
+    border: none;
+    padding: 0;
   }
 `;
 const StyledUserInfoGroup = styled.div`
@@ -192,6 +204,10 @@ const StyledUserInfoGroup = styled.div`
     font-size: 0.75rem;
     color: var(--gray400-color);
     margin-top: 0.5rem;
+  }
+
+  @media only screen and (max-width: 480px) {
+    margin: 1.625rem 0 2.0625rem;
   }
 `;
 
@@ -267,6 +283,10 @@ const StyledProgress = styled.div`
       color: var(--gray400-color);
     }
   }
+
+  @media only screen and (max-width: 480px) {
+    margin-bottom: 2.4375rem;
+  }
 `;
 
 const StyledTooltip = styled.div`
@@ -303,13 +323,24 @@ const StyledProgressBar = styled.progress`
     background-color: var(--point-color); /* 진행된 부분의 색상 */
     border-radius: 10px;
   }
+  @media only screen and (max-width: 480px) {
+    width: 18rem;
+  }
 `;
 
 const StyledStatistics = styled.div`
   display: flex;
+  justify-content: center;
+  align-items: center;
   border: 1px solid #b3b3b3;
   border-radius: 18px;
   padding: 1.3125rem 1.375rem 1.5rem 1.875rem;
+
+  @media only screen and (max-width: 480px) {
+    min-width: 17.6875rem;
+    height: 5.875rem;
+    padding: 0 1.875rem 0 2.5rem;
+  }
 
   & > div {
     display: flex;
@@ -321,9 +352,17 @@ const StyledStatistics = styled.div`
   }
   & > div:nth-of-type(2) {
     padding: 0 1rem 0;
+
+    @media only screen and (max-width: 480px) {
+      padding: 0 1.375rem 0;
+    }
   }
   & > div:nth-of-type(3) {
     padding-left: 1.25rem;
+
+    @media only screen and (max-width: 480px) {
+      padding-left: 1.375rem;
+    }
   }
 
   & > div:not(:last-of-type) {
