@@ -18,6 +18,8 @@ export const HelmetRootMetaTags = ({ meta }: HelmetMetaTagsProps) => {
 };
 
 export const HelmetMetaTags = ({ meta }: HelmetMetaTagsProps) => {
+  console.log(meta.image);
+
   return (
     <Helmet>
       <title>{meta.title}</title>
