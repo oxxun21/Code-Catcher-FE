@@ -187,7 +187,6 @@ export const Header = () => {
           <img src={logoImage} alt="로고 이미지" onClick={handleNavigateToHome} />
         </h1>
         <StyledLeftNav>
-          {/* <GoogleTranslate /> */}
           {!isLoggedIn ? (
             <StyledLoginBtn onClick={handleKakaoLogin}>로그인</StyledLoginBtn>
           ) : (
