@@ -51,7 +51,7 @@ export const MyPage = ({}) => {
           </div>
           <MonthlyAchieve data={myInfo.achieveInfo} />
         </section>
-        <GalmuriButton onClick={handleNavigateToQuestionSelect} text="오늘의 코테 시작하기" />
+        <StyledGalmuriButton onClick={handleNavigateToQuestionSelect} text="오늘의 코테 시작하기" />
       </StyledMain>
     </>
   );
@@ -64,26 +64,61 @@ const StyledMain = styled.main`
   justify-content: center;
   align-items: center;
 
-  & > section {
-    display: flex;
-    gap: 2.1875rem;
-    margin-bottom: 4.875rem;
-    & > div {
-      display: flex;
-      flex-direction: column;
-      gap: 1.3125rem;
-    }
-    @media (max-width: 768px) {
-      flex-direction: column;
-      align-items: center;
-      gap: 1rem;
-      margin-bottom: 2rem;
-    }
-  }
-
   @media (max-width: 768px) {
     height: auto;
     padding: 2rem 1rem;
     justify-content: flex-start;
+  }
+
+  @media only screen and (max-width: 480px) {
+    padding: 0;
+    justify-content: center;
+  }
+
+  & > section {
+    display: flex;
+    gap: 2.1875rem;
+    margin-bottom: 4.875rem;
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    @media only screen and (max-width: 480px) {
+      padding: 0;
+      justify-content: center;
+      margin: 1.25rem 1.25rem 4.875rem;
+    }
+
+    & > div {
+      display: flex;
+      flex-direction: column;
+      gap: 1.3125rem;
+
+      & > article:nth-of-type(2) {
+        @media only screen and (max-width: 480px) {
+          position: absolute;
+          visibility: hidden;
+        }
+      }
+    }
+
+    & > article:nth-of-type(1) {
+      @media only screen and (max-width: 480px) {
+        position: absolute;
+        visibility: hidden;
+      }
+    }
+  }
+`;
+
+const StyledGalmuriButton = styled(GalmuriButton)`
+  @media only screen and (max-width: 480px) {
+    position: absolute;
+    visibility: hidden;
   }
 `;

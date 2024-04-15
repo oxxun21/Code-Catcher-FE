@@ -79,11 +79,23 @@ const StyledContianer = styled.article`
   border-radius: 1.25rem;
   padding: 3rem 2.5rem;
   width: 26.25rem;
-  height: 547px;
+  height: 34.1875rem;
   position: relative;
   & img {
     position: absolute;
     right: 2.5rem;
     bottom: 3rem;
+    @media only screen and (max-width: 480px) {
+      right: 0;
+      bottom: 0;
+    }
+  }
+  @media only screen and (max-width: 480px) {
+    width: 21.5625rem;
+    height: 25.25rem;
+    border: none;
+    background-color: #ffffff;
+    padding: 0;
+    padding-top: 1.25rem;
   }
 `;

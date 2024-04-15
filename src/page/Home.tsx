@@ -5,9 +5,12 @@ import styled from "@emotion/styled";
 import { Header, GalmuriButton, HelmetMetaTags } from "../components";
 import { UserCard } from "../components";
 import { metaData } from "../meta/metaData.ts";
+import { useWindowSize } from "../hook/index.ts";
 
 export const Home = () => {
   const navigate = useNavigate();
+  const { width } = useWindowSize();
+  const isMobile = (width ?? 0) <= 480;
 
   useEffect(() => {
     const token = getLoginCookie();
@@ -23,7 +26,8 @@ export const Home = () => {
       <StyledMain>
         <strong>START TEST . . .</strong>
         <UserCard />
-        <GalmuriButton as={Link} to="question/select" text="오늘의 코테 시작하기" />
+        <StyledGalmuriButton as={Link} to="question/select" text="오늘의 코테 시작하기" />
+        {/* {isMobile && <GoogleTranslate />} */}
       </StyledMain>
     </>
   );
@@ -35,13 +39,37 @@ const StyledMain = styled.main`
   justify-content: center;
   align-items: center;
 
+  @media only screen and (max-width: 480px) {
+    justify-content: unset;
+    & > div {
+      position: absolute;
+      top: 686px;
+    }
+  }
+
   & > strong {
     font-family: var(--font--Galmuri);
     font-weight: bold;
     font-size: 1.25rem;
     color: var(--black-color);
+
+    @media only screen and (max-width: 480px) {
+      position: absolute;
+      visibility: hidden;
+    }
   }
+
   & > article {
     margin: 1.875rem 0 5.0625rem;
+    @media only screen and (max-width: 480px) {
+      margin: 2.5rem 2.6875rem 10.125rem;
+    }
+  }
+`;
+
+const StyledGalmuriButton = styled(GalmuriButton)`
+  @media only screen and (max-width: 480px) {
+    position: absolute;
+    visibility: hidden;
   }
 `;
