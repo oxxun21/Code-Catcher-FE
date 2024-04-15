@@ -11,6 +11,7 @@ import ArrowBack from "../../assets/arrow_back_header.svg";
 import { Modal } from "./Modal.tsx";
 import { withdrawAPI } from "../../api";
 import { useEventTracker, useWindowSize } from "../../hook";
+import GoogleTranslate from "./GoogleTranslate.tsx";
 
 type ModalContentType = "logout" | "withdraw" | "leavePage" | "";
 
@@ -272,13 +273,6 @@ const StyledHeader = styled.header<{ isDarkMode: boolean }>`
 const StyledLeftNav = styled.div`
   display: flex;
   align-items: center;
-
-  & > div:nth-of-type(1) {
-    @media only screen and (max-width: 480px) {
-      position: absolute;
-      visibility: hidden;
-    }
-  }
 `;
 
 const StyledBtnGroup = styled.div`
