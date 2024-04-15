@@ -343,13 +343,22 @@ const ModalContents = styled.div`
     gap: 20px;
 
     & button {
+      flex: 1;
+      width: 10.375rem;
+      line-height: 3rem;
       font-size: 1rem;
       font-weight: 500;
       border-radius: 20px;
-      padding: 1rem 4.3125rem;
+      text-align: center;
       cursor: pointer;
       white-space: nowrap;
+
+      @media only screen and (max-width: 480px) {
+        width: unset;
+        min-width: 5rem;
+      }
     }
+
     & button:nth-of-type(1) {
       color: var(--black-color);
       border: 2px solid var(--gray200-color);
