@@ -104,8 +104,10 @@ const StyledCard = styled.article<StyledCardProps>`
     }
   }}
 
-  @media (max-width: 768px) {
+  @media  (max-width: 1300px) {
     height: 22.5rem;
+    padding: unset;
+    padding: 2rem 2rem 2rem 2.5rem;
   }
 `;
 const StyledSpan = styled.span`
@@ -129,20 +131,24 @@ const StyledDesc = styled.div<{ isSuccess: boolean | null }>`
   height: 13.3125rem;
   word-break: keep-all;
 
-  @media (max-width: 768px) {
+  @media (max-width: 1300px) {
     bottom: 2.5rem;
   }
 
   & > div:nth-of-type(1) {
     max-width: 312px;
     min-width: 66px;
+    @media (max-width: 1300px) {
+      position: absolute;
+      top: 6.875rem;
+    }
   }
 
   & > div:nth-of-type(2) {
     position: absolute;
     bottom: 5.6875rem;
-    @media (max-width: 768px) {
-      top: 12.5rem;
+    @media (max-width: 1300px) {
+      bottom: 2.5rem;
     }
   }
 
@@ -188,5 +194,9 @@ const StyledDesc = styled.div<{ isSuccess: boolean | null }>`
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 3;
+    @media (max-width: 1300px) {
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+    }
   }
 `;
