@@ -10,7 +10,7 @@ import ArrowRightIcon from "../assets/arrow_right_lastTests.svg";
 import { Pagination } from "../components/list/Pagination";
 import { Header, HelmetMetaTags, Modal } from "../components";
 import { metaData } from "../meta/metaData";
-import { useEventTracker } from "../hook";
+import { useEventTracker, useWindowSize } from "../hook";
 
 export const BookmarkList = () => {
   const [data, setData] = useState<BookmarkListAll_I | undefined>(undefined);
@@ -19,6 +19,8 @@ export const BookmarkList = () => {
   const isAnyChecked = Object.values(checkedItems).some(checked => checked);
   const [currentPage, setCurrentPage] = useState<number>(data?.currentPage || 0);
   const trackEvent = useEventTracker();
+  const { width } = useWindowSize();
+  const isMobile = (width ?? 0) <= 480;
 
   useEffect(() => {
     const fetchQuestions = async () => {
@@ -113,49 +115,58 @@ export const BookmarkList = () => {
             )}
           </div>
           {data?.questionData && data.questionData.length > 0 ? (
-            <StyledTable>
-              <StyledTableHead>
-                <tr>
-                  <th>Lv</th>
-                  <th>Title</th>
-                  <th>Detail</th>
-                  <th>Added Date</th>
-                  <th />
-                </tr>
-              </StyledTableHead>
-              <StyledTableBody>
-                {data.questionData.map((item, index) => (
-                  <StyledTableRow
-                    key={index}
-                    checked={!!checkedItems[item.bookmarkId]}
-                    onClick={() => handleItemClick(item)}
-                  >
-                    <td>
-                      {[...Array(item.level)].map((_, i) => (
-                        <img key={i} src={StarPixel} alt="레벨" />
-                      ))}
-                    </td>
-                    <td>
-                      <span>#{String(item.problemId).padStart(4, "0")}</span>
-                      <strong>{item.title}</strong>
-                    </td>
-                    <td>{item.subject}</td>
-                    <td>{item.createdAt}</td>
-                    <td>
-                      <CheckboxDiv
-                        checked={!!checkedItems[item.bookmarkId]}
-                        onClick={e => {
-                          e.stopPropagation(); // 체크박스 클릭 시 버블링 방지
-                          handleCheckboxClick(e, item.bookmarkId);
-                        }}
-                      >
-                        {checkedItems[item.bookmarkId] && <Checkmark src={CheckedImage} alt="선택" />}
-                      </CheckboxDiv>
-                    </td>
-                  </StyledTableRow>
-                ))}
-              </StyledTableBody>
-            </StyledTable>
+            <div style={{ overflowX: "auto", scrollbarWidth: "none" }}>
+              <StyledTable>
+                <StyledTableHead>
+                  <tr>
+                    <th>Lv</th>
+                    <th>Title</th>
+                    <th>Detail</th>
+                    <th>Added Date</th>
+                    <th />
+                  </tr>
+                </StyledTableHead>
+                <StyledTableBody>
+                  {data.questionData.map((item, index) => (
+                    <StyledTableRow
+                      key={index}
+                      checked={!!checkedItems[item.bookmarkId]}
+                      onClick={() => handleItemClick(item)}
+                    >
+                      <td>
+                        {[...Array(item.level)].map((_, i) => (
+                          <img key={i} src={StarPixel} alt="레벨" />
+                        ))}
+                      </td>
+                      <td>
+                        <span>#{String(item.problemId).padStart(4, "0")}</span>
+                        {isMobile ? (
+                          <div>
+                            <strong>{item.title}</strong>
+                            <p>{item.subject}</p>
+                          </div>
+                        ) : (
+                          <strong>{item.title}</strong>
+                        )}
+                      </td>
+                      <td>{item.subject}</td>
+                      <td>{item.createdAt}</td>
+                      <td>
+                        <CheckboxDiv
+                          checked={!!checkedItems[item.bookmarkId]}
+                          onClick={e => {
+                            e.stopPropagation(); // 체크박스 클릭 시 버블링 방지
+                            handleCheckboxClick(e, item.bookmarkId);
+                          }}
+                        >
+                          {checkedItems[item.bookmarkId] && <Checkmark src={CheckedImage} alt="선택" />}
+                        </CheckboxDiv>
+                      </td>
+                    </StyledTableRow>
+                  ))}
+                </StyledTableBody>
+              </StyledTable>
+            </div>
           ) : (
             <StyledEmpty>
               <div>
@@ -185,17 +196,26 @@ const StyledMain = styled.main`
     position: relative;
     background-color: #fff;
     color: #000;
-    min-width: 80rem;
-    min-height: 25.125rem;
+    margin: 20px;
 
-    & > div {
+    @media only screen and (max-width: 480px) {
+      height: 46.625rem;
+    }
+
+    & > div:nth-of-type(1) {
       position: relative;
       height: 5.625rem;
+      @media only screen and (max-width: 480px) {
+        height: 4.5rem;
+      }
       & > h2 {
         font-family: var(--font--Galmuri);
         font-size: 1.25rem;
         color: var(--black-color);
         font-weight: bold;
+        @media only screen and (max-width: 480px) {
+          font-size: 1.125rem;
+        }
       }
       & > p {
         margin-top: 1rem;
@@ -203,6 +223,10 @@ const StyledMain = styled.main`
         font-size: 0.875rem;
         color: #898989;
         font-weight: 500;
+
+        @media only screen and (max-width: 480px) {
+          margin-top: 12px;
+        }
       }
     }
   }
@@ -228,6 +252,11 @@ const DeleteButton = styled.button`
   }
   &:hover:not(:disabled) {
     background-color: var(--hover-color);
+  }
+
+  @media only screen and (max-width: 480px) {
+    position: absolute;
+    visibility: hidden;
   }
 `;
 
@@ -281,6 +310,9 @@ const ModalContents = styled.div`
 const StyledTable = styled.table`
   width: 100%;
   white-space: nowrap;
+  @media only screen and (max-width: 480px) {
+    width: 20.9375rem;
+  }
 `;
 const StyledTableHead = styled.thead`
   & > tr > th {
@@ -294,17 +326,34 @@ const StyledTableHead = styled.thead`
     width: auto;
     &:nth-of-type(1) {
       padding-left: 1rem;
-      padding-right: 3.875rem;
+      width: 91px;
+      @media only screen and (max-width: 480px) {
+        width: 3.25rem;
+      }
     }
     &:nth-of-type(2) {
-      padding-right: 21.25rem;
+      width: 22.8125rem;
+      @media only screen and (max-width: 480px) {
+        width: 11.0625rem;
+      }
     }
     &:nth-of-type(3) {
-      padding-right: 37.125rem;
-      width: 37.75rem;
+      width: 39rem;
+      @media only screen and (max-width: 480px) {
+        width: 0;
+        visibility: hidden;
+      }
     }
     &:nth-of-type(4) {
-      padding-right: 4.8125rem;
+      @media only screen and (max-width: 480px) {
+        padding-right: 1.0625rem;
+      }
+    }
+    &:nth-of-type(5) {
+      @media only screen and (max-width: 480px) {
+        position: absolute;
+        visibility: hidden;
+      }
     }
   }
 `;
@@ -332,23 +381,25 @@ const StyledTableRow = styled.tr<{ checked: boolean }>`
     padding: 0.625rem 0;
     color: var(--black-color);
     vertical-align: middle;
+
+    @media only screen and (max-width: 480px) {
+      height: 3.75rem;
+    }
+
     &:nth-of-type(1) {
-      width: 3rem;
+      min-width: 3rem;
+      padding-right: 1.8125rem;
+      padding-left: 0.875rem;
+      color: var(--secondary-color);
       & img {
         vertical-align: middle;
       }
-      padding-left: 0.875rem;
-      color: var(--secondary-color);
+      @media only screen and (max-width: 480px) {
+        padding-right: 1rem;
+      }
     }
     &:nth-of-type(2) {
-      width: 22rem;
-      & span {
-        vertical-align: middle;
-        font-size: 0.75rem;
-        font-weight: 500;
-        color: var(--gray400-color);
-        margin-right: 0.75rem;
-      }
+      padding-right: 0.8125rem;
 
       & strong {
         font-size: 0.875rem;
@@ -359,23 +410,70 @@ const StyledTableRow = styled.tr<{ checked: boolean }>`
         overflow: hidden;
         text-overflow: ellipsis;
       }
+
+      @media only screen and (max-width: 480px) {
+        width: 11.0625rem;
+        padding: 1rem 0;
+        padding-right: 0;
+        display: flex;
+        align-items: center;
+
+        & > div {
+          overflow: hidden;
+          text-overflow: ellipsis;
+
+          & p {
+            margin-top: 0.25rem;
+            width: fit-content;
+            font-size: 0.625rem;
+            font-weight: 400;
+          }
+        }
+      }
+
+      & > span {
+        vertical-align: middle;
+        font-size: 0.75rem;
+        font-weight: 500;
+        color: var(--gray400-color);
+        margin-right: 0.75rem;
+
+        @media only screen and (max-width: 480px) {
+          align-self: flex-start;
+          margin-right: 0.5rem;
+        }
+      }
     }
     &:nth-of-type(3) {
-      width: 37.75rem;
+      padding-right: 1.25rem;
       font-size: 0.875rem;
       font-weight: 400;
+
+      @media only screen and (max-width: 480px) {
+        width: 0;
+        visibility: hidden;
+        padding-right: 0;
+      }
     }
     &:nth-of-type(4) {
       width: 5rem;
       font-size: 0.75rem;
       font-weight: 400;
       color: #9f9f9f;
+
+      @media only screen and (max-width: 480px) {
+        width: 4.375rem;
+        padding-right: 0.625rem;
+      }
     }
     &:nth-of-type(5) {
       padding: 0.625rem 1.9375rem 0.625rem 4.5625rem;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      float: right;
+
+      @media only screen and (max-width: 480px) {
+        position: absolute;
+        visibility: hidden;
+      }
     }
   }
 `;

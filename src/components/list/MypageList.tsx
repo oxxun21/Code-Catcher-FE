@@ -91,7 +91,7 @@ export const MypageList = ({ listType, data }: MyPageListProps) => {
             <tr>
               <th>Lv</th>
               <th>Title</th>
-              <th>Date</th>
+              <th>{isBookmark ? "Added Date" : "Created Date"}</th>
             </tr>
           </StyledTableHead>
           <StyledTableBody>
@@ -124,11 +124,23 @@ const StyledContainer = styled.article`
   width: 26.25rem;
   height: 16.4375rem;
 
+  @media only screen and (max-width: 480px) {
+    border: none;
+    background-color: #ffffff;
+    padding: 0;
+    width: 20.9375rem;
+    height: 13.5625rem;
+  }
+
   & > div {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1.875rem;
+    @media only screen and (max-width: 480px) {
+      padding: 0.8125rem 0;
+      margin-bottom: 0.9375rem;
+    }
   }
 
   & > div > strong {
@@ -153,7 +165,7 @@ const StyledTableHead = styled.thead`
   & > tr > th {
     color: var(--secondary-color);
     border-bottom: 1px solid var(--gray200-color);
-    font-family: var(--font-Galmuri);
+    font-family: var(--font--Galmuri);
     font-weight: bold;
     font-size: 0.625rem;
     text-align: left;
@@ -165,9 +177,9 @@ const StyledTableHead = styled.thead`
     }
     &:nth-of-type(2) {
       padding-right: 11.4375rem;
-    }
-    &:nth-of-type(3) {
-      padding-right: 3rem;
+      @media only screen and (max-width: 480px) {
+        padding-right: 10.5rem;
+      }
     }
   }
 `;
@@ -204,6 +216,7 @@ const StyledTableBody = styled.tbody`
     &:nth-of-type(2) {
       display: flex;
       align-items: center;
+
       & span {
         font-size: 0.75rem;
         font-weight: 500;
@@ -220,6 +233,10 @@ const StyledTableBody = styled.tbody`
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+
+        @media only screen and (max-width: 480px) {
+          width: 8.5rem;
+        }
       }
     }
     &:nth-of-type(3) {

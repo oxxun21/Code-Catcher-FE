@@ -7,6 +7,9 @@ const datePicker = css`
     padding: 0;
     border-color: transparent;
     background-color: transparent;
+    @media only screen and (max-width: 480px) {
+      width: 21.5625rem;
+    }
   }
   .react-datepicker__month-container {
     border-color: transparent;
@@ -26,6 +29,9 @@ const datePicker = css`
 
   .react-datepicker__navigation {
     line-height: 1.5rem;
+    @media only screen and (max-width: 480px) {
+      line-height: 2.75rem;
+    }
   }
   .react-datepicker__navigation-icon--previous::before,
   .react-datepicker__navigation-icon--next::before {
@@ -53,20 +59,33 @@ const datePicker = css`
     font-size: 1.125rem;
     line-height: 1.125rem;
     font-weight: bold;
+    @media only screen and (max-width: 480px) {
+      width: 21.5625rem;
+      margin-bottom: 38px;
+    }
   }
   //day 컨테이너
   .react-datepicker__month {
     margin: 0;
     width: 340px;
     line-height: 0.875rem;
+    @media only screen and (max-width: 480px) {
+      padding-left: 0.5625rem;
+      width: 20.375rem;
+    }
   }
   //요일 가로
   .react-datepicker__day-names {
-    width: 20.3125rem;
-    margin: 0 7px;
-    margin-bottom: 1.5rem;
+    width: 20.375rem;
+    margin: 0 0.4375rem 1.5rem;
+
     display: flex;
     justify-content: space-between;
+
+    @media only screen and (max-width: 480px) {
+      width: 19.375rem;
+      margin: 0 0.4375rem 1.625rem 1rem;
+    }
 
     & div:nth-of-type(6) {
       margin-left: 0.1875rem;
@@ -83,6 +102,11 @@ const datePicker = css`
     font-size: 0.875rem;
     line-height: 0.875rem;
     font-weight: bold;
+
+    @media only screen and (max-width: 480px) {
+      font-size: 0.75rem;
+      line-height: 0.75rem;
+    }
   }
   //day 가로 (week)
   .react-datepicker__week {
@@ -91,6 +115,10 @@ const datePicker = css`
     margin-bottom: 0.625rem;
     & > div:not(:last-of-type) {
       margin-right: 10px;
+    }
+    @media only screen and (max-width: 480px) {
+      width: 20.375rem;
+      max-height: 2.375rem;
     }
   }
   //전체 day

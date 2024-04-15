@@ -3,12 +3,15 @@ import styled from "@emotion/styled";
 import { Header, HelmetMetaTags, SplashCarousel } from "../components";
 import KakaoImg from "../assets/kakao_logo.svg";
 import { metaData } from "../meta/metaData.ts";
-import { useEventTracker } from "../hook";
+import { useEventTracker, useWindowSize } from "../hook";
 
 export const Splash = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const backgroundColors = ["#F5D3D3", "#D3E7F5", "#F5E9D3", "#D9F5D3"];
   const currentBgColor = backgroundColors[currentSlide];
+
+  const { width } = useWindowSize();
+  const isMobile = (width ?? 0) <= 480;
 
   const handleKakaoLogin = () => {
     const kakaoRestApi = import.meta.env.VITE_KAKAO_REST_API;
@@ -32,12 +35,20 @@ export const Splash = () => {
         <StyledSection style={{ backgroundColor: currentBgColor }}>
           <div>
             <SplashCarousel currentSlide={currentSlide} setCurrentSlide={setCurrentSlide} />
-            <StyledButton onClick={handleKakaoLogin}>
-              <img src={KakaoImg} alt="카카오 소셜 로고" />
-              카카오 로그인
-            </StyledButton>
+            {!isMobile && (
+              <StyledButton onClick={handleKakaoLogin}>
+                <img src={KakaoImg} alt="카카오 소셜 로고" />
+                카카오 로그인
+              </StyledButton>
+            )}
           </div>
         </StyledSection>
+        {isMobile && (
+          <StyledButton onClick={handleKakaoLogin}>
+            <img src={KakaoImg} alt="카카오 소셜 로고" />
+            카카오 로그인
+          </StyledButton>
+        )}
       </StyledMain>
     </>
   );
@@ -49,6 +60,10 @@ const StyledMain = styled.main`
   justify-content: center;
   align-items: center;
   background-color: #ffffff;
+
+  @media (max-width: 768px) {
+    height: auto;
+  }
 `;
 
 const StyledSection = styled.section`
@@ -58,6 +73,11 @@ const StyledSection = styled.section`
   display: flex;
   justify-content: center;
   align-items: center;
+
+  @media only screen and (max-width: 480px) {
+    height: 515px;
+    padding: 1.25rem 0;
+  }
 
   & > div {
     position: relative;
@@ -69,6 +89,7 @@ const StyledSection = styled.section`
     @media (max-width: 768px) {
       height: auto;
       overflow: visible;
+      max-height: unset;
     }
   }
 `;
@@ -92,9 +113,28 @@ const StyledButton = styled.button`
     margin-right: 2.375rem;
   }
 
+  @media (min-width: 768px) and (max-width: 880px) {
+    bottom: 6.25rem;
+  }
+
   @media (max-width: 768px) {
     left: 50%;
     transform: translateX(-50%);
     bottom: 0;
+  }
+
+  @media only screen and (max-width: 480px) {
+    top: 37.0625rem;
+    bottom: unset;
+    width: fit-content;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.875rem;
+    padding: 0 7.0625rem;
+    white-space: nowrap;
+    & > img {
+      margin-right: 0.625rem;
+    }
   }
 `;
