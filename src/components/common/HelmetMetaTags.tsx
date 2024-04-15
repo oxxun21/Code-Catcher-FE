@@ -18,8 +18,6 @@ export const HelmetRootMetaTags = ({ meta }: HelmetMetaTagsProps) => {
 };
 
 export const HelmetMetaTags = ({ meta }: HelmetMetaTagsProps) => {
-  console.log(meta.image);
-
   return (
     <Helmet>
       <title>{meta.title}</title>
@@ -29,7 +27,7 @@ export const HelmetMetaTags = ({ meta }: HelmetMetaTagsProps) => {
 
       <meta property="og:title" content={meta.title} />
       <meta property="og:description" content={meta.description} />
-      <meta property="og:image" content={meta.image} />
+      <meta property="og:image" content="https://likelion-codee.com/metaCover.png" />
       <meta property="og:url" content={meta.url} />
       <meta property="og:type" content="website" />
       <meta property="og:site_name" content="코디(Codee)" />
