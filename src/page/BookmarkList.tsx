@@ -121,7 +121,7 @@ export const BookmarkList = () => {
                   <tr>
                     <th>Lv</th>
                     <th>Title</th>
-                    <th>Detail</th>
+                    {isMobile ? <th /> : <th>Detail</th>}
                     <th>Added Date</th>
                     <th />
                   </tr>
@@ -149,7 +149,7 @@ export const BookmarkList = () => {
                           <strong>{item.title}</strong>
                         )}
                       </td>
-                      <td>{item.subject}</td>
+                      {isMobile ? <td /> : <td>{item.subject}</td>}
                       <td>{item.createdAt}</td>
                       <td>
                         <CheckboxDiv
@@ -340,8 +340,7 @@ const StyledTableHead = styled.thead`
     &:nth-of-type(3) {
       width: 39rem;
       @media only screen and (max-width: 480px) {
-        width: 0;
-        visibility: hidden;
+        width: 1.25rem;
       }
     }
     &:nth-of-type(4) {
@@ -451,7 +450,6 @@ const StyledTableRow = styled.tr<{ checked: boolean }>`
 
       @media only screen and (max-width: 480px) {
         width: 0;
-        visibility: hidden;
         padding-right: 0;
       }
     }
