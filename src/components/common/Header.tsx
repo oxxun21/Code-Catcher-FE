@@ -355,7 +355,7 @@ const ModalContents = styled.div`
 
       @media only screen and (max-width: 480px) {
         width: unset;
-        min-width: 5rem;
+        min-width: 8.75rem;
       }
     }
 
