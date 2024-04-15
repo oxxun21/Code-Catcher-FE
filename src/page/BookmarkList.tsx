@@ -19,8 +19,8 @@ export const BookmarkList = () => {
   const isAnyChecked = Object.values(checkedItems).some(checked => checked);
   const [currentPage, setCurrentPage] = useState<number>(data?.currentPage || 0);
   const trackEvent = useEventTracker();
-  const { windowWidth } = useWindowSize();
-  const isMobile = (windowWidth ?? 0) <= 480;
+  const { width } = useWindowSize();
+  const isMobile = (width ?? 0) <= 480;
 
   useEffect(() => {
     const fetchQuestions = async () => {

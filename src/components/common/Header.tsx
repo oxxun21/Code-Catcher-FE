@@ -33,8 +33,8 @@ export const Header = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
   const trackEvent = useEventTracker();
-  const { windowWidth } = useWindowSize();
-  const isMobile = (windowWidth ?? 0) <= 480;
+  const { width } = useWindowSize();
+  const isMobile = (width ?? 0) <= 480;
 
   useEffect(() => {
     const token = getLoginCookie();

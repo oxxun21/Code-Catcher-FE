@@ -10,8 +10,8 @@ export const Splash = () => {
   const backgroundColors = ["#F5D3D3", "#D3E7F5", "#F5E9D3", "#D9F5D3"];
   const currentBgColor = backgroundColors[currentSlide];
 
-  const { windowWidth } = useWindowSize();
-  const isMobile = (windowWidth ?? 0) <= 480;
+  const { width } = useWindowSize();
+  const isMobile = (width ?? 0) <= 480;
 
   const handleKakaoLogin = () => {
     const kakaoRestApi = import.meta.env.VITE_KAKAO_REST_API;

@@ -17,8 +17,8 @@ interface CarouselItem {
 }
 
 export const SplashCarousel = ({ currentSlide, setCurrentSlide }: SplashCarouselProps) => {
-  const { windowWidth } = useWindowSize();
-  const isMobile = (windowWidth ?? 0) <= 480;
+  const { width } = useWindowSize();
+  const isMobile = (width ?? 0) <= 480;
   const [carouselData, setCarouselData] = useState<CarouselItem[]>([]);
 
   useEffect(() => {

@@ -13,8 +13,8 @@ declare global {
 const GoogleTranslate = () => {
   const translateElementRef = useRef<HTMLDivElement>(null);
   const [isEnglishVisible, setIsEnglishVisible] = useState(true);
-  const { windowWidth } = useWindowSize();
-  const isMobile = (windowWidth ?? 0) <= 480;
+  const { width } = useWindowSize();
+  const isMobile = (width ?? 0) <= 480;
 
   useEffect(() => {
     window.googleTranslateElementInit = () => {

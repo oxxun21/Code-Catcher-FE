@@ -10,8 +10,8 @@ import { useWindowSize } from "../hook/index.ts";
 
 export const Home = () => {
   const navigate = useNavigate();
-  const { windowWidth } = useWindowSize();
-  const isMobile = (windowWidth ?? 0) <= 480;
+  const { width } = useWindowSize();
+  const isMobile = (width ?? 0) <= 480;
 
   useEffect(() => {
     const token = getLoginCookie();
