@@ -96,8 +96,9 @@ const StyledMain = styled.main`
   justify-content: center;
   align-items: center;
 
-  @media (max-width: 768px) {
+  @media (max-width: 1300px) {
     padding: 2rem 1rem;
+    height: auto;
   }
 `;
 
@@ -136,7 +137,7 @@ const StyledCardContainer = styled.div`
   gap: 2.5rem;
   margin: 1.5625rem 0 4.75rem;
 
-  @media (max-width: 768px) {
+  @media (max-width: 1300px) {
     height: fit-content;
     padding: 1.25rem;
     flex-direction: column;
