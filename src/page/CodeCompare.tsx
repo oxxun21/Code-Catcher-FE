@@ -206,7 +206,7 @@ export const CodeCompare = () => {
           </section>
           <Gutter orientation="horizontal" onMouseDown={startDragHorizontal} />
           <section style={{ width: isMedia ? "100%" : `${100 - descWidth}%` }}>
-            <div style={{ height: `${editorHeight}%` }}>
+            <div style={{ height: isMedia ? "100%" : `${editorHeight}%` }}>
               <CompareHeader>
                 <strong>AI Code</strong>
               </CompareHeader>
@@ -276,10 +276,13 @@ const Main = styled.main`
   background-color: #32323a;
   display: flex;
   flex-direction: column;
+  @media only screen and (max-width: 768px) {
+    height: 100%;
+  }
 `;
 
 const PageHeader = styled.div`
-  padding: 5px 16px 5px 24px;
+  padding: 8px 16px 8px 24px;
   font-weight: 600;
   border-bottom: 2px solid var(--background-color);
   display: flex;
@@ -317,7 +320,7 @@ const PageHeader = styled.div`
     font-size: 12px;
     background-color: #282828;
     border-radius: 57px;
-    padding: 13px 18px;
+    padding: 10px 14px;
     color: #bdbdbd;
     font-weight: 600;
     transition: all 0.3s;
@@ -325,7 +328,7 @@ const PageHeader = styled.div`
     align-items: center;
     gap: 5px;
     & > img {
-      width: 15px;
+      width: 16px;
     }
     &:hover {
       color: #fff;
@@ -348,7 +351,7 @@ const FeedbackTitle = styled.strong`
   background-color: #3f3f47;
   display: block;
   font-size: 0.75rem;
-  padding: 0 22px 20px;
+  padding: 0 22px 18px;
   font-weight: 600;
   border-bottom: 2px solid var(--background-color);
   font-family: var(--font--Galmuri);
@@ -383,11 +386,16 @@ const FeedbackTitle = styled.strong`
       transform: rotate(45deg);
     }
   }
+  @media only screen and (max-width: 768px) {
+    padding-top: 20px;
+    margin-top: 20px;
+    border-top: 2px solid var(--background-color);
+  }
 `;
 
 const Contain = styled.div`
   display: flex;
-  height: calc(100vh - 10.875rem);
+  height: calc(100vh - 11.125rem);
 
   & > section:first-of-type {
     overflow: auto;
@@ -422,7 +430,7 @@ const Contain = styled.div`
 
   @media only screen and (max-width: 768px) {
     flex-direction: column;
-    height: 100%;
+    height: initial;
   }
 `;
 
@@ -463,10 +471,6 @@ const ButtonContain = styled.div`
   }
   & > button:first-of-type:hover + .notice {
     visibility: visible;
-  }
-
-  @media only screen and (max-width: 768px) {
-    position: relative;
   }
 `;
 
@@ -550,9 +554,5 @@ const FeedbackSection = styled.section<{ editorHeight: number }>`
   * {
     scrollbar-width: thin;
     scrollbar-color: #555 transparent;
-  }
-  @media only screen and (max-width: 768px) {
-    padding-top: 20px;
-    border-top: 2px solid var(--background-color);
   }
 `;
