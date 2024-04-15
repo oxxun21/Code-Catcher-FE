@@ -5,7 +5,6 @@ import styled from "@emotion/styled";
 import { Header, GalmuriButton, HelmetMetaTags } from "../components";
 import { UserCard } from "../components";
 import { metaData } from "../meta/metaData.ts";
-import GoogleTranslate from "../components/common/GoogleTranslate.tsx";
 import { useWindowSize } from "../hook/index.ts";
 
 export const Home = () => {
@@ -28,7 +27,7 @@ export const Home = () => {
         <strong>START TEST . . .</strong>
         <UserCard />
         <StyledGalmuriButton as={Link} to="question/select" text="오늘의 코테 시작하기" />
-        {isMobile && <GoogleTranslate />}
+        {/* {isMobile && <GoogleTranslate />} */}
       </StyledMain>
     </>
   );
