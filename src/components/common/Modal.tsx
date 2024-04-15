@@ -63,7 +63,7 @@ const BoxStyle = styled.div`
   color: #000;
   padding: 24px 44px 50px;
   height: fit-content;
-  min-width: 440px;
+  max-width: 440px;
   border-radius: 6px;
   position: fixed;
   top: 50%;
@@ -71,6 +71,10 @@ const BoxStyle = styled.div`
   transform: translate(-50%, -50%);
   overflow-y: auto;
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+  @media only screen and (max-width: 480px) {
+    max-width: 80%;
+    padding: 24px;
+  }
 `;
 
 const ModalHeader = styled.div`
