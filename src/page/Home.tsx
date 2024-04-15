@@ -5,12 +5,9 @@ import styled from "@emotion/styled";
 import { Header, GalmuriButton, HelmetMetaTags } from "../components";
 import { UserCard } from "../components";
 import { metaData } from "../meta/metaData.ts";
-import { useWindowSize } from "../hook/index.ts";
 
 export const Home = () => {
   const navigate = useNavigate();
-  const { width } = useWindowSize();
-  const isMobile = (width ?? 0) <= 480;
 
   useEffect(() => {
     const token = getLoginCookie();
