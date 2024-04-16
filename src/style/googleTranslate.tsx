@@ -2,6 +2,7 @@ import { css } from "@emotion/react";
 
 const googleTranslate = css`
   .translation-links {
+    cursor: pointer;
     li {
       padding: 10px;
       margin-right: 20px;
