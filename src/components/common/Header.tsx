@@ -333,7 +333,7 @@ const ModalContents = styled.div`
   }
 
   & > p {
-    font-size: 1rem;
+    font-size: 0.875rem;
     font-weight: 400;
     margin-bottom: 1.875rem;
   }

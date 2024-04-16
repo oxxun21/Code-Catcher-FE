@@ -63,7 +63,7 @@ const BoxStyle = styled.div`
   color: #000;
   padding: 24px 44px 50px;
   height: fit-content;
-  max-width: 440px;
+  min-width: 440px;
   border-radius: 6px;
   position: fixed;
   top: 50%;
