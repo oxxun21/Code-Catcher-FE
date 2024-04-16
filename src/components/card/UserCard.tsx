@@ -167,7 +167,7 @@ const StyledCard = styled.article`
   padding: 2.5rem 3.875rem 2.8125rem 3.625rem;
   height: 34.1875rem;
 
-  @media (max-width: 768px) {
+  @media (max-width: 1300px) {
     width: 26.2494rem;
   }
 

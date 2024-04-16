@@ -64,8 +64,7 @@ const StyledMain = styled.main`
   justify-content: center;
   align-items: center;
 
-  @media (max-width: 768px) {
-    height: auto;
+  @media (max-width: 1300px) {
     padding: 2rem 1rem;
     justify-content: flex-start;
   }
@@ -80,7 +79,7 @@ const StyledMain = styled.main`
     gap: 2.1875rem;
     margin-bottom: 4.875rem;
 
-    @media (max-width: 768px) {
+    @media (max-width: 1300px) {
       flex-direction: column;
       justify-content: center;
       align-items: center;
