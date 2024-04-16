@@ -6,7 +6,9 @@ import * as images from "../../assets/level";
 import editIcon from "../../assets/edit.svg";
 import TooltipIcon from "../../assets/icon_tooltip.svg";
 import LevelInfoImage from "../../assets/tooltip_level.svg";
+import LevelInfoImageEng from "../../assets/tooltip_level_en.svg";
 import { useEventTracker } from "../../hook";
+import { useCookies } from "react-cookie";
 
 export const UserCard = () => {
   const { nickname, email, level, exp, expUpper, totalCnt, completeCnt, bookmarkCnt, setUserInfo } = useUserStore();
@@ -14,6 +16,10 @@ export const UserCard = () => {
   const [editedNickname, setEditedNickname] = useState<string | null>(nickname);
   const [isVisible, setIsVisible] = useState(false);
   const trackEvent = useEventTracker();
+
+  const [cookies] = useCookies(["googtrans"]);
+
+  const isGoogTransEn = cookies.googtrans === "/ko/en";
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -82,7 +88,7 @@ export const UserCard = () => {
     </StyledNicknameInput>
   ) : (
     <StyledNickname>
-      <strong>{nickname}</strong>
+      <strong className="notranslate">{nickname}</strong>
       <button onClick={handleEditClick}>
         <img src={editIcon} alt="닉네임 수정 아이콘" />
       </button>
@@ -95,7 +101,7 @@ export const UserCard = () => {
         <StyledProgress>
           <div>
             <span>
-              <strong>Lv.{level}</strong>
+              <strong className="notranslate">Lv.{level}</strong>
               <StyledTooltip>
                 <img
                   src={TooltipIcon}
@@ -103,11 +109,16 @@ export const UserCard = () => {
                   onMouseEnter={() => setIsVisible(true)}
                   onMouseLeave={() => setIsVisible(false)}
                 />
-                {isVisible && (
-                  <StyledLevelInfoImage>
-                    <img src={LevelInfoImage} alt="레벨 규정 설명" />
-                  </StyledLevelInfoImage>
-                )}
+                {isVisible &&
+                  (isGoogTransEn ? (
+                    <StyledLevelInfoImage>
+                      <img src={LevelInfoImageEng} alt="Level info" />
+                    </StyledLevelInfoImage>
+                  ) : (
+                    <StyledLevelInfoImage>
+                      <img src={LevelInfoImage} alt="레벨 규정 설명" />
+                    </StyledLevelInfoImage>
+                  ))}
               </StyledTooltip>
             </span>
             <strong>
@@ -136,7 +147,7 @@ export const UserCard = () => {
             </div>
             <div>
               <strong>Bookmark</strong>
-              <span>{bookmarkCnt}</span>
+              <span className="notranslate">{bookmarkCnt}</span>
             </div>
           </StyledStatistics>
         </div>

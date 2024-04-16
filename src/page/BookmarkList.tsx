@@ -11,6 +11,7 @@ import { Pagination } from "../components/list/Pagination";
 import { Header, HelmetMetaTags, Modal } from "../components";
 import { metaData } from "../meta/metaData";
 import { useEventTracker, useWindowSize } from "../hook";
+import { useCookies } from "react-cookie";
 
 export const BookmarkList = () => {
   const [data, setData] = useState<BookmarkListAll_I | undefined>(undefined);
@@ -21,6 +22,9 @@ export const BookmarkList = () => {
   const trackEvent = useEventTracker();
   const { width } = useWindowSize();
   const isMobile = (width ?? 0) <= 480;
+
+  const [cookies] = useCookies(["googtrans"]);
+  const isGoogTransEn = cookies.googtrans === "/ko/en";
 
   useEffect(() => {
     const fetchQuestions = async () => {
@@ -94,7 +98,7 @@ export const BookmarkList = () => {
       <StyledMain>
         <section>
           <div>
-            <h2>북마크</h2>
+            <h2 className="notranslate">{isGoogTransEn ? "Bookmark" : "북마크"}</h2>
             <p>내가 저장한 답안의 북마크 목록이 표시됩니다.</p>
             {(data?.questionData?.length ?? 0) > 0 && (
               <DeleteButton onClick={openModal} disabled={!isAnyChecked}>
@@ -139,7 +143,7 @@ export const BookmarkList = () => {
                         ))}
                       </td>
                       <td>
-                        <span>#{String(item.problemId).padStart(4, "0")}</span>
+                        <span className="notranslate">#{String(item.problemId).padStart(4, "0")}</span>
                         {isMobile ? (
                           <div>
                             <strong>{item.title}</strong>
@@ -171,6 +175,7 @@ export const BookmarkList = () => {
             <StyledEmpty>
               <div>
                 <img src={BookMarkEmptyImage} alt="데이터 없음" />
+                <p>아직 저장한 북마크 내역이 없어요</p>
                 <button onClick={handleNavigateToMyPage}>
                   마이페이지로 돌아가기
                   <img src={ArrowRightIcon} alt="마이페이지로 돌아가기" />
@@ -288,6 +293,7 @@ const ModalContents = styled.div`
       border-radius: 20px;
       padding: 1rem 4.3125rem;
       cursor: pointer;
+      white-space: nowrap;
     }
     & button:nth-of-type(1) {
       color: var(--black-color);
@@ -400,14 +406,15 @@ const StyledTableRow = styled.tr<{ checked: boolean }>`
     &:nth-of-type(2) {
       padding-right: 0.8125rem;
 
-      & strong {
+      & strong,
+      font {
         font-size: 0.875rem;
         font-weight: 600;
         color: var(--black-color);
         line-height: 0.875rem;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
       }
 
       @media only screen and (max-width: 480px) {
@@ -493,15 +500,22 @@ const Checkmark = styled.img`
 `;
 
 const StyledEmpty = styled.div`
-  width: 100%;
+  width: inherit;
   padding: 10.125rem 0 10.3125rem;
   background-color: #f4f4f4;
   border-radius: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
+
   & > div {
     text-align: center;
+    & > p {
+      margin-top: 0.625rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--gray700-color);
+    }
     & > button {
       display: block;
       width: 100%;

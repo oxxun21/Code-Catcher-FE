@@ -6,6 +6,7 @@ import BookMarkEmptyImage from "../../assets/bookmark_empty.svg";
 import LastEmptyImage from "../../assets/last_empty.svg";
 import ArrowRightIcon from "../../assets/arrow_right_lastTests.svg";
 import { useEventTracker } from "../../hook";
+import { useCookies } from "react-cookie";
 
 type ListType = "bookmark" | "lastTests";
 
@@ -15,8 +16,11 @@ interface MyPageListProps {
 }
 
 export const MypageList = ({ listType, data }: MyPageListProps) => {
+  const [cookies] = useCookies(["googtrans"]);
+  const isGoogTransEn = cookies.googtrans === "/ko/en";
+
   const isBookmark = listType === "bookmark";
-  const title = isBookmark ? "북마크" : "지난 테스트 내역";
+  const title = isBookmark ? (isGoogTransEn ? "Bookmark" : "북마크") : isGoogTransEn ? "Test History" : "지난 테스트";
   const trackEvent = useEventTracker();
 
   const navigate = useNavigate();
@@ -64,10 +68,12 @@ export const MypageList = ({ listType, data }: MyPageListProps) => {
       {isBookmark ? (
         <StyledBookmarkEmpty>
           <img src={BookMarkEmptyImage} alt="북마크 데이터 없음" />
+          <p>아직 저장한 북마크 내역이 없어요</p>
         </StyledBookmarkEmpty>
       ) : (
         <StyledLastEmpty>
           <img src={LastEmptyImage} alt="지난 테스트 내역 데이터 없음" />
+          <p>아직 풀이한 테스트 내역이 없어요</p>
           <button onClick={handleNavigateToQuestionSelect}>
             테스트하러가기
             <img src={ArrowRightIcon} alt="테스트하러가기" />
@@ -80,7 +86,7 @@ export const MypageList = ({ listType, data }: MyPageListProps) => {
   return (
     <StyledContainer>
       <div>
-        <strong>{title}</strong>
+        <strong className="notranslate">{title}</strong>
         {isEmpty ? null : <button onClick={handleMoreClick}>more &gt;</button>}
       </div>
       {isEmpty ? (
@@ -103,7 +109,7 @@ export const MypageList = ({ listType, data }: MyPageListProps) => {
                   ))}
                 </td>
                 <td>
-                  <span>#{String(item.problemId).padStart(4, "0")}</span>
+                  <span className="notranslate">#{String(item.problemId).padStart(4, "0")}</span>
                   <strong>{item.title}</strong>
                 </td>
                 <td>{item.createdAt}</td>
@@ -204,7 +210,7 @@ const StyledTableBody = styled.tbody`
   }
 
   & > tr > td {
-    padding: 0.5rem 0;
+    height: 2.125rem;
 
     &:first-of-type {
       & img {
@@ -224,12 +230,13 @@ const StyledTableBody = styled.tbody`
         margin-right: 0.75rem;
       }
 
-      & strong {
+      & strong,
+      font {
         font-size: 0.875rem;
         font-weight: 600;
         color: var(--black-color);
         width: 9.5625rem;
-        line-height: 0.875rem;
+        line-height: 2.125rem;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -256,10 +263,25 @@ const StyledEmptyComponent = styled.div`
 
 const StyledBookmarkEmpty = styled.div`
   margin: 0 auto;
+  text-align: center;
+  & p {
+    margin-top: 0.625rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--gray700-color);
+  }
 `;
 
 const StyledLastEmpty = styled.div`
   margin: 0 auto;
+  text-align: center;
+
+  & p {
+    margin-top: 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--gray700-color);
+  }
   & > button {
     display: block;
     width: 100%;
