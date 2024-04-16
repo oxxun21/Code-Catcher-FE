@@ -343,7 +343,7 @@ const ModalContents = styled.div`
     display: flex;
     gap: 1rem;
     text-align: center;
-    font-size: 1rem;
+    font-size: 0.875rem;
     justify-content: space-between;
 
     & button {
