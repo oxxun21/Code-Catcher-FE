@@ -339,24 +339,21 @@ const ModalContents = styled.div`
   }
 
   & > div {
+    width: 100%;
     display: flex;
-    gap: 20px;
+    gap: 1rem;
+    text-align: center;
+    font-size: 1rem;
+    justify-content: space-between;
 
     & button {
-      flex: 1;
-      width: 10.375rem;
-      line-height: 3rem;
+      width: 50%;
       font-size: 1rem;
       font-weight: 500;
       border-radius: 20px;
       text-align: center;
       cursor: pointer;
-      white-space: nowrap;
-
-      @media only screen and (max-width: 480px) {
-        width: unset;
-        min-width: 8.75rem;
-      }
+      padding: 1rem 0;
     }
 
     & button:nth-of-type(1) {

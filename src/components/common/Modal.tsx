@@ -72,7 +72,7 @@ const BoxStyle = styled.div`
   overflow-y: auto;
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
   @media only screen and (max-width: 480px) {
-    max-width: 80%;
+    min-width: 80%;
     padding: 24px;
   }
 `;
