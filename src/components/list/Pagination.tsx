@@ -36,7 +36,7 @@ export const Pagination = ({ totalPage, currentPage, onPageChange }: PaginationP
           BACK
         </button>
       )}
-      <ul>
+      <ul className="notranslate">
         {pageNumbers.map(number => (
           <li key={number}>
             <StyledButton onClick={() => onPageChange(number - 1)} isCurrent={number === currentPage + 1}>

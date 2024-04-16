@@ -8,6 +8,7 @@ interface ButtonProps {
   onClick?: (e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => void;
   to?: string;
   as?: React.ForwardRefExoticComponent<LinkProps & React.RefAttributes<HTMLAnchorElement>>;
+  className?: string;
 }
 
 export const GalmuriButton = ({ text, ...props }: ButtonProps) => {

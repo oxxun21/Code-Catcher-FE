@@ -8,11 +8,15 @@ import { Pagination } from "../components/list/Pagination";
 import { Header, HelmetMetaTags } from "../components";
 import { metaData } from "../meta/metaData";
 import { useEventTracker } from "../hook";
+import { useCookies } from "react-cookie";
 
 export const LastQuestionList = () => {
   const [data, setData] = useState<ProblemListAll_I | undefined>(undefined);
   const [currentPage, setCurrentPage] = useState<number>(data?.currentPage || 0);
   const trackEvent = useEventTracker();
+
+  const [cookies] = useCookies(["googtrans"]);
+  const isGoogTransEn = cookies.googtrans === "/ko/en";
 
   useEffect(() => {
     const fetchQuestions = async () => {
@@ -71,7 +75,7 @@ export const LastQuestionList = () => {
       <StyledMain>
         <section>
           <div>
-            <h2>지난 테스트 내역</h2>
+            <h2 className="notranslate">{isGoogTransEn ? "Test History" : "지난 테스트 내역"}</h2>
             <p>
               지난 한 달 간의 모든 테스트 내역이 표시됩니다. 지난 테스트는 다시 풀 수 있지만, 경험치에 반영되지
               않습니다.
@@ -99,7 +103,7 @@ export const LastQuestionList = () => {
                         ))}
                       </td>
                       <td>
-                        <span>#{String(item.problemId).padStart(4, "0")}</span>
+                        <span className="notranslate">#{String(item.problemId).padStart(4, "0")}</span>
                         <strong>{item.title}</strong>
                       </td>
                       <td>{item.subject}</td>
