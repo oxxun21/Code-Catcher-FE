@@ -106,6 +106,7 @@ export const CodeCompare = () => {
       trackEvent({
         category: "Bookmark",
         action: "addBookmark",
+        label: `${id}`,
       });
     } catch (error) {
       handleAxiosError({ text: "Bookmark save", error: error as AxiosError, navigate });
@@ -119,6 +120,7 @@ export const CodeCompare = () => {
       trackEvent({
         category: "Bookmark",
         action: "deleteBookmark",
+        label: `${id}`,
       });
     } catch (error) {
       handleAxiosError({ text: "Bookmark off", error: error as AxiosError, navigate });
@@ -146,12 +148,18 @@ export const CodeCompare = () => {
 
   const handleAICodeReview = async () => {
     setIsLoading(true);
+    trackEvent({
+      category: "CodingTest",
+      action: "clickAiCodeReview",
+      label: `${id}`,
+    });
     try {
       const response = await postUserAiFeedbackAPI({ myCode: location.state.myCode, problemId: Number(id) });
       setUserAiReview(response);
       trackEvent({
         category: "CodingTest",
-        action: "startAiCodeReview",
+        action: "AiCodeReview success",
+        label: `${id}`,
       });
     } catch (error) {
       handleAxiosError({ text: "User AI Code Review", error: error as AxiosError, navigate });

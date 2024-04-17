@@ -46,6 +46,31 @@ export const CodingTest = () => {
   const [cookies] = useCookies(["googtrans"]);
   const isGoogTransEn = cookies.googtrans === "/ko/en";
 
+  useEffect(() => {
+    if (testValue) {
+      let correctCount = 0;
+      Object.values(testValue).forEach(testCase => {
+        if (testCase.correct) correctCount++;
+      });
+
+      trackEvent({
+        category: "CodingTest",
+        action: "testCaseClicked",
+        label: `${id}_success:${correctCount}_total:${Object.keys(testValue).length}`,
+      });
+    }
+  }, [testValue]);
+
+  useEffect(() => {
+    if (submitValue !== undefined) {
+      trackEvent({
+        category: "CodingTest",
+        action: "submissionClicked",
+        label: `${id}_${submitValue.correct ? "success" : "failed"}`,
+      });
+    }
+  }, [submitValue]);
+
   const {
     width: descWidth,
     height: editorHeight,
@@ -119,11 +144,7 @@ export const CodingTest = () => {
   const handleTestSubmit = () => {
     setSubmitValue(undefined);
     submissionFunc<TestScoreSubmit_I>(postTestScoreSubmitAPI, setTestValue);
-
-    trackEvent({
-      category: "CodingTest",
-      action: "testCaseClicked",
-    });
+    console.log(testValue);
   };
 
   const handleSubmit = () => {
@@ -135,11 +156,6 @@ export const CodingTest = () => {
     } else {
       submissionFunc<ScoreSubmit_I>(postRetryScoreSubmitAPI, setSubmitValue, true);
     }
-
-    trackEvent({
-      category: "CodingTest",
-      action: "submitAnswer",
-    });
   };
 
   let message = "";
@@ -229,7 +245,7 @@ export const CodingTest = () => {
                   text="AI 설명 보기"
                   onClick={() => {
                     trackEvent({
-                      category: "CodingTestComplete",
+                      category: "CodingTest",
                       action: "goToAiExplain",
                       label: `${id}`,
                     });
@@ -253,7 +269,7 @@ export const CodingTest = () => {
                   text="다시 풀기"
                   onClick={() => {
                     trackEvent({
-                      category: "CodingTestFailed",
+                      category: "CodingTest",
                       action: "retry",
                       label: `${id}`,
                     });
