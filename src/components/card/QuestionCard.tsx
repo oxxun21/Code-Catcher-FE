@@ -103,12 +103,6 @@ const StyledCard = styled.article<StyledCardProps>`
     `;
     }
   }}
-
-  @media  (max-width: 1300px) {
-    height: 22.5rem;
-    padding: unset;
-    padding: 2rem 2rem 2rem 2.5rem;
-  }
 `;
 const StyledSpan = styled.span`
   display: flex;
@@ -119,6 +113,7 @@ const StyledSpan = styled.span`
     font-size: 1.25rem;
     color: var(--secondary-color);
   }
+  position: relative;
 `;
 const StyledRank = styled.div`
   & > img:not(:last-of-type) {
@@ -131,25 +126,14 @@ const StyledDesc = styled.div<{ isSuccess: boolean | null }>`
   height: 13.3125rem;
   word-break: keep-all;
 
-  @media (max-width: 1300px) {
-    bottom: 2.5rem;
-  }
-
   & > div:nth-of-type(1) {
     max-width: 312px;
     min-width: 66px;
-    @media (max-width: 1300px) {
-      position: absolute;
-      top: 6.875rem;
-    }
   }
 
   & > div:nth-of-type(2) {
     position: absolute;
     bottom: 5.6875rem;
-    @media (max-width: 1300px) {
-      bottom: 2.5rem;
-    }
   }
 
   & > span {
@@ -161,7 +145,7 @@ const StyledDesc = styled.div<{ isSuccess: boolean | null }>`
       isSuccess === true ? "var(--system-positivie-color)" : "var(--system-negative-color)"};
     background-color: ${({ isSuccess }) => (isSuccess === true ? "rgba(57,143,245, 0.25)" : "rgba(245,57,102,0.2)")};
     border-radius: 999px;
-    padding: 0.375rem 0.625rem;
+    padding: 0.5rem 0.625rem;
     visibility: ${({ isSuccess }) => (isSuccess === null ? "hidden" : "visible")};
   }
 
@@ -194,9 +178,5 @@ const StyledDesc = styled.div<{ isSuccess: boolean | null }>`
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 3;
-    @media (max-width: 1300px) {
-      -webkit-box-orient: vertical;
-      -webkit-line-clamp: 2;
-    }
   }
 `;

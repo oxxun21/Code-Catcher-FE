@@ -4,6 +4,7 @@ import * as images from "../../assets/carousel";
 import arrowNext from "../../assets/arrow_slide_next.svg";
 import arrowPrev from "../../assets/arrow_slide_prev.svg";
 import { useWindowSize } from "../../hook";
+import { useCookies } from "react-cookie";
 
 interface SplashCarouselProps {
   currentSlide: number;
@@ -20,32 +21,43 @@ export const SplashCarousel = ({ currentSlide, setCurrentSlide }: SplashCarousel
   const { width } = useWindowSize();
   const isMobile = (width ?? 0) <= 480;
   const [carouselData, setCarouselData] = useState<CarouselItem[]>([]);
+  const [cookies] = useCookies(["googtrans"]);
+
+  const isGoogTransEn = cookies.googtrans === "/ko/en";
 
   useEffect(() => {
     const data = [
       {
-        title: "초보자도 쉽게 하는\n코딩 테스트",
-        desc: "개발 입문자도 쉽게 풀 수 있는 수준의\n다양한 문제를 만나보실 수 있어요.",
+        title: isGoogTransEn ? "Easy Coding Test\nfor Beginners" : "초보자도 쉽게 하는\n코딩 테스트",
+        desc: isGoogTransEn
+          ? "Easy challenges for beginners."
+          : "개발 입문자도 쉽게 풀 수 있는 수준의\n다양한 문제를 만나보실 수 있어요.",
         imgUrl: isMobile ? images.carouselMobileImg1 : images.carouselImg1,
       },
       {
-        title: "하루 3문제!\n습관처럼 풀어보세요",
-        desc: "매일 세 문제씩, AI가 추천하는 문제로\n규칙적인 코딩 루틴을 만들어봐요.",
+        title: isGoogTransEn ? "3 Daily Problems!\nMake it a Habit" : "하루 3문제!\n습관처럼 풀어보세요",
+        desc: isGoogTransEn
+          ? "Daily coding habit with 3 problems."
+          : "매일 세 문제씩, AI가 추천하는 문제로\n규칙적인 코딩 루틴을 만들어봐요.",
         imgUrl: isMobile ? images.carouselMobileImg2 : images.carouselImg2,
       },
       {
-        title: "문제를 맞추고\n코디를 키워보세요",
-        desc: "정답을 맞출 때마다 쌓이는 경험치로\n코디의 개발 레벨을 올려봐요.",
+        title: isGoogTransEn ? "Level Up\nYour Codie" : "문제를 맞추고\n코디를 키워보세요",
+        desc: isGoogTransEn
+          ? "Earn XP and level up your Codie."
+          : "정답을 맞출 때마다 쌓이는 경험치로\n코디의 개발 레벨을 올려봐요.",
         imgUrl: isMobile ? images.carouselMobileImg3 : images.carouselImg3,
       },
       {
-        title: "AI 코드와\n비교해보세요",
-        desc: "AI가 제공하는 코드와 피드백을 통해\n오늘도 한 단계 성장한 자신을 느껴보세요!",
+        title: isGoogTransEn ? "Compare Code\nwith AI Codes" : "AI 코드와\n비교해보세요",
+        desc: isGoogTransEn
+          ? "Grow daily via AI feedback."
+          : "AI가 제공하는 코드와 피드백을 통해\n오늘도 한 단계 성장한 자신을 느껴보세요!",
         imgUrl: isMobile ? images.carouselMobileImg4 : images.carouselImg4,
       },
     ];
     setCarouselData(data);
-  }, [isMobile]);
+  }, [isMobile, isGoogTransEn]);
 
   const totalSlides = carouselData.length;
 
@@ -61,7 +73,7 @@ export const SplashCarousel = ({ currentSlide, setCurrentSlide }: SplashCarousel
     <>
       <StyledCarousel style={{ transform: `translateX(-${currentSlide * 100}%)` }}>
         {carouselData.map((slide, index) => (
-          <Slide key={index}>
+          <Slide key={index} className="notranslate">
             {isMobile ? (
               <>
                 <img src={slide.imgUrl} alt={`Slide ${index + 1}`} />
@@ -82,7 +94,7 @@ export const SplashCarousel = ({ currentSlide, setCurrentSlide }: SplashCarousel
           </Slide>
         ))}
       </StyledCarousel>
-      <CarouselControls>
+      <CarouselControls className="notranslate">
         <button onClick={prevSlide}>
           <img src={arrowPrev} alt="이전 슬라이드" />
         </button>
@@ -146,6 +158,11 @@ const Slide = styled.div`
     white-space: pre-wrap;
     color: var(--black-color);
     line-height: 130%;
+
+    @media (max-width: 768px) {
+      text-align: center;
+    }
+
     @media only screen and (max-width: 480px) {
       text-align: center;
       font-size: 1.625rem;

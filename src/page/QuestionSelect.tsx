@@ -52,7 +52,7 @@ export const QuestionSelect = () => {
       <Header />
       <StyledMain>
         <StyledSection>
-          <StyledTodayCount>
+          <StyledTodayCount className="notranslate">
             <span>TODAY</span>
             {successCount} / 3
           </StyledTodayCount>
