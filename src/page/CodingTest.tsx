@@ -23,6 +23,7 @@ import icon_test_failed from "../assets/icon_test_failed.svg";
 import { AxiosError } from "axios";
 import { metaData } from "../meta/metaData.ts";
 import { handleAxiosError } from "../utils/handleAxiosError.ts";
+import { useCookies } from "react-cookie";
 
 interface TodayQuestionList_I {
   [key: string]: QuestionOutline_I;
@@ -42,6 +43,8 @@ export const CodingTest = () => {
   const navigate = useNavigate();
   const [selectedTodayQuestion, setSelectedTodayQuestion] = useState<QuestionOutline_I | undefined>();
   const trackEvent = useEventTracker();
+  const [cookies] = useCookies(["googtrans"]);
+  const isGoogTransEn = cookies.googtrans === "/ko/en";
 
   const {
     width: descWidth,
@@ -194,8 +197,17 @@ export const CodingTest = () => {
           </CodeContain>
         </Contain>
         <ButtonContain>
-          <SquareButton text="코드 실행" white onClick={handleTestSubmit} />
-          <SquareButton text="제출 후 채점하기" onClick={handleSubmit} />
+          <SquareButton
+            text={isGoogTransEn ? "Code Execution" : "코드 실행"}
+            white
+            onClick={handleTestSubmit}
+            className="notranlsate"
+          />
+          <SquareButton
+            text={isGoogTransEn ? "Submit and Grade" : "제출 후 채점하기"}
+            onClick={handleSubmit}
+            className="notranlsate"
+          />
         </ButtonContain>
       </Main>
       {isModal && (

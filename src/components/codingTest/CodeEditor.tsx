@@ -38,6 +38,11 @@ export const CodeEditor = ({ editorHeight, language, setCodeValue, question, isM
     });
 
     monacoInstance.editor.setTheme("customTheme");
+
+    setTimeout(() => {
+      const marginViewOverlays = document.querySelectorAll(".monaco-editor .margin-view-overlays");
+      marginViewOverlays.forEach(el => el.classList.add("notranslate"));
+    }, 0);
   }, []);
 
   const defaultContentFunction = () => {
