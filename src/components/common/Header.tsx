@@ -278,6 +278,9 @@ const StyledHeader = styled.header<{ isDarkMode: boolean }>`
 const StyledLeftNav = styled.div`
   display: flex;
   align-items: center;
+  & > div:first-of-type li {
+    padding: 0;
+  }
 `;
 
 const StyledBtnGroup = styled.div`
