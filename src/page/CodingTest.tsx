@@ -144,7 +144,6 @@ export const CodingTest = () => {
   const handleTestSubmit = () => {
     setSubmitValue(undefined);
     submissionFunc<TestScoreSubmit_I>(postTestScoreSubmitAPI, setTestValue);
-    console.log(testValue);
   };
 
   const handleSubmit = () => {

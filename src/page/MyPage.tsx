@@ -79,6 +79,7 @@ const StyledMain = styled.main`
 
   @media only screen and (max-width: 480px) {
     padding: 0;
+    justify-content: unset;
   }
 
   & > section {
