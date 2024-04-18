@@ -278,6 +278,9 @@ const StyledHeader = styled.header<{ isDarkMode: boolean }>`
 const StyledLeftNav = styled.div`
   display: flex;
   align-items: center;
+  & > div:first-of-type li {
+    padding: 0;
+  }
 `;
 
 const StyledBtnGroup = styled.div`
@@ -339,30 +342,27 @@ const ModalContents = styled.div`
   }
 
   & > p {
-    font-size: 1rem;
+    font-size: 0.875rem;
     font-weight: 400;
     margin-bottom: 1.875rem;
   }
 
   & > div {
+    width: 100%;
     display: flex;
-    gap: 20px;
+    gap: 1rem;
+    text-align: center;
+    font-size: 0.875rem;
+    justify-content: space-between;
 
     & button {
-      flex: 1;
-      width: 10.375rem;
-      line-height: 3rem;
+      width: 50%;
       font-size: 1rem;
       font-weight: 500;
       border-radius: 20px;
       text-align: center;
       cursor: pointer;
-      white-space: nowrap;
-
-      @media only screen and (max-width: 480px) {
-        width: unset;
-        min-width: 8.75rem;
-      }
+      padding: 1rem 0;
     }
 
     & button:nth-of-type(1) {
