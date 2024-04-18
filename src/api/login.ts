@@ -12,7 +12,7 @@ export const getLoginAPI = async (code: string, navigate: NavigateFunction, setU
     const resData = response.data;
     if (resData) {
       const { jwt, isNew, ...userInfo } = resData;
-      console.log(resData);
+
       setLoginCookie(jwt, { path: "/" });
       setUserInfo(userInfo);
 
