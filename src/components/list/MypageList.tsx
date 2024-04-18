@@ -134,8 +134,8 @@ const StyledContainer = styled.article`
     border: none;
     background-color: #ffffff;
     padding: 0;
-    width: 20.9375rem;
-    height: 13.5625rem;
+    width: fit-content;
+    height: unset;
   }
 
   & > div {

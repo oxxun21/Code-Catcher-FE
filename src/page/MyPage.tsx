@@ -79,7 +79,9 @@ const StyledMain = styled.main`
 
   @media only screen and (max-width: 480px) {
     padding: 0;
+    display: unset;
     justify-content: unset;
+    align-items: unset;
   }
 
   & > section {
@@ -91,7 +93,6 @@ const StyledMain = styled.main`
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      gap: 1rem;
       margin-bottom: 2rem;
     }
 
