@@ -85,7 +85,7 @@ export const Bookmark = () => {
         return (
           <>
             {getBookmark?.gptReviewRes ? (
-              <FeedbackSection>
+              <FeedbackArticle>
                 <strong>AI 코드리뷰</strong>
                 <FeedbackSectionContent>
                   <div>
@@ -110,24 +110,24 @@ export const Bookmark = () => {
                     <p>{getBookmark?.gptReviewRes.suggest}</p>
                   </div>
                 </FeedbackSectionContent>
-              </FeedbackSection>
+              </FeedbackArticle>
             ) : (
-              <FeedbackSection>
+              <FeedbackArticle>
                 <strong>AI 코드리뷰</strong>
                 <p>코드 리뷰 받은 내역이 없습니다.</p>
-              </FeedbackSection>
+              </FeedbackArticle>
             )}
           </>
         );
       case "aiCode":
         return (
           <>
-            <FeedbackSection>
+            <FeedbackArticle>
               <strong>AI Feedback</strong>
               <FeedbackSectionContent>
                 <p>{getBookmark?.gptExplain}</p>
               </FeedbackSectionContent>
-            </FeedbackSection>
+            </FeedbackArticle>
           </>
         );
       case "phoneDesc":
@@ -177,8 +177,8 @@ export const Bookmark = () => {
                   AI Code
                 </TabButton>
               </TabContainer>
-              {renderTabContent()}
             </div>
+            {renderTabContent()}
             {renderTabContentReview()}
           </CodeContain>
         </Contain>
@@ -249,7 +249,7 @@ const PageHeader = styled.div`
     border-bottom: none;
     align-items: center;
     & > h2 {
-      max-width: 40%;
+      max-width: 55%;
     }
   }
 `;
@@ -271,15 +271,10 @@ const CodeContain = styled.section`
   flex-direction: column;
   justify-content: space-between;
   & > div {
-    min-height: 60%;
-    @media only screen and (max-width: 768px) {
-      min-height: initial;
-    }
-  }
-  & > div:first-child {
     @media only screen and (max-width: 480px) {
       position: sticky;
       top: 0;
+      z-index: 100;
     }
   }
   @media only screen and (max-width: 768px) {
@@ -337,7 +332,7 @@ const TabButton = styled.button<{ isActive: boolean }>`
   }
 `;
 
-const FeedbackSection = styled.section`
+const FeedbackArticle = styled.article`
   height: 35%;
   background-color: #2a2a31;
   color: var(--gray400-color);

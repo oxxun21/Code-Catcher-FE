@@ -66,7 +66,7 @@ export const ReadOnlyEditor = ({ code, language }: ReadOnlyEditorProps) => {
   }, []);
 
   return (
-    <CodeReadSection isMedia={isMedia}>
+    <CodeReadArticle isMedia={isMedia}>
       <Editor
         value={code}
         language={language}
@@ -84,19 +84,20 @@ export const ReadOnlyEditor = ({ code, language }: ReadOnlyEditorProps) => {
         }}
         onMount={handleEditorDidMount}
       />
-    </CodeReadSection>
+    </CodeReadArticle>
   );
 };
 
-const CodeReadSection = styled.div<{ isMedia: boolean }>`
+const CodeReadArticle = styled.article<{ isMedia: boolean }>`
   height: 80%;
   overflow: auto;
   background-color: ${props => (props.isMedia ? "#f4f4f4" : "#2a2a31")};
   border-radius: 6px;
   padding: 20px 0px;
-  margin: 0 22px;
+  margin: 0 22px 16px;
   white-space: pre-wrap;
   @media only screen and (max-width: 768px) {
     height: 350px;
+    margin-bottom: 0;
   }
 `;
