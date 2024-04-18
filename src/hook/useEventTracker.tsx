@@ -9,7 +9,10 @@ interface TrackEventParams {
 
 export const useEventTracker = () => {
   const trackEvent = ({ category, action, label, value }: TrackEventParams) => {
-    console.log("Event tracked:", { category, action, label, value });
+    if (window.location.hostname === "localhost") {
+      console.log("Localhost event tracked:", { category, action, label, value });
+      return;
+    }
     ReactGA.event({
       category, // 이벤트 카테고리
       action, // 이벤트 액션

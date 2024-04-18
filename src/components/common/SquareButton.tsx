@@ -8,6 +8,7 @@ interface ButtonProps {
   to?: string;
   as?: React.ForwardRefExoticComponent<LinkProps & React.RefAttributes<HTMLAnchorElement>>;
   disabled?: boolean;
+  className?: string;
 }
 
 export const SquareButton = ({ text, ...props }: ButtonProps) => {

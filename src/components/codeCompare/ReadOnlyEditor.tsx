@@ -53,6 +53,11 @@ export const ReadOnlyEditor = ({ code, language }: ReadOnlyEditorProps) => {
           },
         });
         monacoInstance.editor.setTheme("customTheme");
+
+        setTimeout(() => {
+          const marginViewOverlays = document.querySelectorAll(".monaco-editor .margin-view-overlays");
+          marginViewOverlays.forEach(el => el.classList.add("notranslate"));
+        }, 0);
       }
     };
 

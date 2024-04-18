@@ -11,6 +11,8 @@ import ArrowBack from "../../assets/arrow_back_header.svg";
 import { Modal } from "./Modal.tsx";
 import { withdrawAPI } from "../../api";
 import { useEventTracker, useWindowSize } from "../../hook";
+import { GoogleTranslate } from "./GoogleTranslate.tsx";
+import { useCookies } from "react-cookie";
 
 type ModalContentType = "logout" | "withdraw" | "leavePage" | "";
 
@@ -34,6 +36,9 @@ export const Header = () => {
   const trackEvent = useEventTracker();
   const { width } = useWindowSize();
   const isMobile = (width ?? 0) <= 480;
+
+  const [cookies] = useCookies(["googtrans"]);
+  const isGoogTransEn = cookies.googtrans === "/ko/en";
 
   useEffect(() => {
     const token = getLoginCookie();
@@ -123,11 +128,11 @@ export const Header = () => {
     if (modalContent === "logout") {
       return (
         <>
-          <strong>로그아웃</strong>
+          <strong>{isGoogTransEn ? "Logout" : "로그아웃"}</strong>
           <p>접속 중인 계정에서 로그아웃 하시겠어요?</p>
           <div>
-            <button onClick={closeModal}>취소</button>
-            <button onClick={handleLogout}>로그아웃</button>
+            <button onClick={closeModal}>{isGoogTransEn ? "Cancel" : "취소"}</button>
+            <button onClick={handleLogout}>{isGoogTransEn ? "Logout" : "로그아웃"}</button>
           </div>
         </>
       );
@@ -137,8 +142,8 @@ export const Header = () => {
           <strong>정말 탈퇴 하시겠어요?</strong>
           <p>탈퇴 버튼 선택 시, 계정은 삭제되며 복구할 수 없습니다</p>
           <div>
-            <button onClick={handleWithdraw}>탈퇴</button>
-            <button onClick={closeModal}>취소</button>
+            <button onClick={handleWithdraw}>{isGoogTransEn ? "Widthdraw" : "탈퇴"}</button>
+            <button onClick={closeModal}>{isGoogTransEn ? "Cancel" : "취소"}</button>
           </div>
         </>
       );
@@ -148,7 +153,7 @@ export const Header = () => {
           <strong>페이지를 나가시겠습니까?</strong>
           <p>지금 페이지를 나가면 작성 중인 코드가 삭제돼요</p>
           <div>
-            <button onClick={closeModal}>취소</button>
+            <button onClick={closeModal}>{isGoogTransEn ? "Cancel" : "취소"}</button>
             <button onClick={() => navigate("/myPage")}>나가기</button>
           </div>
         </>
@@ -161,16 +166,16 @@ export const Header = () => {
     window.history.back();
   };
 
-  if (isMobile && (isMyPage || isBookmarkList || isBookmark)) {
-    let title = "마이페이지";
-    isMyPage ? (title = "마이페이지") : (title = "북마크");
+  const myPageTitle = isGoogTransEn ? "MyPage" : "마이페이지";
+  const bookmarkTitle = isGoogTransEn ? "Bookmark" : "북마크";
 
+  if (isMobile && (isMyPage || isBookmarkList || isBookmark)) {
     return (
       <StyledHeaderWithBack>
         <button onClick={handleNavigateBack}>
           <img src={ArrowBack} alt="뒤로가기" />
         </button>
-        <h1>{title}</h1>
+        <h1>{isMyPage ? myPageTitle : bookmarkTitle}</h1>
         {isBookmarkList ? (
           <button>
             <img src={HomePageIcon} alt="홈페이지" onClick={handleNavigateToHome} />
@@ -187,16 +192,17 @@ export const Header = () => {
           <img src={logoImage} alt="로고 이미지" onClick={handleNavigateToHome} />
         </h1>
         <StyledLeftNav>
+          {!isMobile ? <GoogleTranslate /> : null}
           {!isLoggedIn ? (
-            <StyledLoginBtn onClick={handleKakaoLogin}>로그인</StyledLoginBtn>
+            <StyledLoginBtn onClick={handleKakaoLogin}>{isGoogTransEn ? "Login" : "로그인"}</StyledLoginBtn>
           ) : (
             <StyledBtnGroup>
-              <button onClick={() => openModal("logout")}>로그아웃</button>
+              <button onClick={() => openModal("logout")}>{isGoogTransEn ? "Logout" : "로그아웃"}</button>
               {isMyPage ? (
-                <button onClick={() => openModal("withdraw")}>회원탈퇴</button>
+                <button onClick={() => openModal("withdraw")}>{isGoogTransEn ? "Withdraw" : "회원탈퇴"}</button>
               ) : (
                 <button onClick={handleMyPageClick}>
-                  {isMobile ? <img src={MyPageIcon} alt="마이페이지" /> : "마이페이지"}
+                  {isMobile ? <img src={MyPageIcon} alt="마이페이지" /> : `${myPageTitle}`}
                 </button>
               )}
             </StyledBtnGroup>
@@ -272,6 +278,9 @@ const StyledHeader = styled.header<{ isDarkMode: boolean }>`
 const StyledLeftNav = styled.div`
   display: flex;
   align-items: center;
+  & > div:first-of-type li {
+    padding: 0;
+  }
 `;
 
 const StyledBtnGroup = styled.div`

@@ -412,6 +412,7 @@ const FeedbackSectionContent = styled.div`
 `;
 
 const PhoneDescBtn = styled.button`
+  text-align: center;
   cursor: pointer;
   display: block;
   margin-left: auto;

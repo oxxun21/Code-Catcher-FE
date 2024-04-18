@@ -6,6 +6,7 @@ import { getMyPageInfoAPI } from "../api";
 import { MyPageInfo_I } from "../interface";
 import { metaData } from "../meta/metaData";
 import { useEventTracker } from "../hook";
+import { useCookies } from "react-cookie";
 
 export const MyPage = ({}) => {
   const [myInfo, setMyInfo] = useState<MyPageInfo_I>({
@@ -16,6 +17,10 @@ export const MyPage = ({}) => {
 
   const navigate = useNavigate();
   const trackEvent = useEventTracker();
+
+  const [cookies] = useCookies(["googtrans"]);
+
+  const isGoogTransEn = cookies.googtrans === "/ko/en";
 
   useEffect(() => {
     const fetchMyInfo = async () => {
@@ -51,7 +56,10 @@ export const MyPage = ({}) => {
           </div>
           <MonthlyAchieve data={myInfo.achieveInfo} />
         </section>
-        <StyledGalmuriButton onClick={handleNavigateToQuestionSelect} text="오늘의 코테 시작하기" />
+        <StyledGalmuriButton
+          onClick={handleNavigateToQuestionSelect}
+          text={isGoogTransEn ? "Start Today's Test" : "오늘의 코테 시작하기"}
+        />
       </StyledMain>
     </>
   );
@@ -64,8 +72,7 @@ const StyledMain = styled.main`
   justify-content: center;
   align-items: center;
 
-  @media (max-width: 768px) {
-    height: auto;
+  @media (max-width: 1300px) {
     padding: 2rem 1rem;
     justify-content: flex-start;
   }
@@ -80,7 +87,7 @@ const StyledMain = styled.main`
     gap: 2.1875rem;
     margin-bottom: 4.875rem;
 
-    @media (max-width: 768px) {
+    @media (max-width: 1300px) {
       flex-direction: column;
       justify-content: center;
       align-items: center;

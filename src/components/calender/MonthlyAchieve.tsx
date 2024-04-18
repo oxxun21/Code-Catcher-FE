@@ -3,8 +3,7 @@ import DatePicker from "react-datepicker";
 import styled from "@emotion/styled";
 import { AchieveInfo_I } from "../../interface";
 import { getMonthlyAchieveAPI } from "../../api";
-import AchieveInfoImg from "../../assets/achieve_info.svg";
-
+import { useCookies } from "react-cookie";
 interface MonthlyAchieveProps {
   data: Array<AchieveInfo_I>;
 }
@@ -12,6 +11,9 @@ interface MonthlyAchieveProps {
 export const MonthlyAchieve = ({ data }: MonthlyAchieveProps) => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
   const [achieveData, setAchieveData] = useState<AchieveInfo_I[]>(data);
+  const [cookies] = useCookies(["googtrans"]);
+
+  const isGoogTransEn = cookies.googtrans === "/ko/en";
 
   useEffect(() => {
     setAchieveData(data);
@@ -56,7 +58,7 @@ export const MonthlyAchieve = ({ data }: MonthlyAchieveProps) => {
           const day = date.getDate();
           const cnt = achieveMap[day];
 
-          let className = "react-datepicker__day--disabled";
+          let className = "react-datepicker__day--disabled notranslate";
           if (cnt === 1) {
             className += " react-datepicker__day--cnt-1";
           } else if (cnt === 2) {
@@ -68,7 +70,17 @@ export const MonthlyAchieve = ({ data }: MonthlyAchieveProps) => {
           return className;
         }}
       />
-      <img src={AchieveInfoImg} alt="달성률 표기법" />
+      <LevelIndicatorContainer className="notranslate">
+        <LevelIndicator color="#98EA98">
+          <span>{isGoogTransEn ? "1 success" : "1단계 성공"}</span>
+        </LevelIndicator>
+        <LevelIndicator color="#44B044">
+          <span>{isGoogTransEn ? "2 success" : "2단계 성공"}</span>
+        </LevelIndicator>
+        <LevelIndicator color="#076E07">
+          <span>{isGoogTransEn ? "3 success" : "3단계 성공"}</span>
+        </LevelIndicator>
+      </LevelIndicatorContainer>
     </StyledContianer>
   );
 };
@@ -81,15 +93,7 @@ const StyledContianer = styled.article`
   width: 26.25rem;
   height: 34.1875rem;
   position: relative;
-  & img {
-    position: absolute;
-    right: 2.5rem;
-    bottom: 3rem;
-    @media only screen and (max-width: 480px) {
-      right: 0;
-      bottom: 0;
-    }
-  }
+
   @media only screen and (max-width: 480px) {
     width: 21.5625rem;
     height: 25.25rem;
@@ -97,5 +101,35 @@ const StyledContianer = styled.article`
     background-color: #ffffff;
     padding: 0;
     padding-top: 1.25rem;
+  }
+`;
+
+const LevelIndicatorContainer = styled.div`
+  position: absolute;
+  right: 2.5rem;
+  bottom: 3rem;
+  display: flex;
+  gap: 1.25rem;
+  @media only screen and (max-width: 480px) {
+    right: 0;
+    bottom: 0;
+  }
+`;
+const LevelIndicator = styled.div<{ color: string }>`
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  & > span {
+    color: var(--gray500-color);
+    font-size: 0.75rem;
+  }
+
+  &::before {
+    content: "";
+    width: 12px;
+    height: 12px;
+    background-color: ${props => props.color};
+    border-radius: 2px;
   }
 `;
