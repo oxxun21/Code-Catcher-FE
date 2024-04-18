@@ -122,12 +122,12 @@ const Slide = styled.div`
   justify-content: center;
   gap: 20px;
   min-height: 300px;
-  overflow: hidden;
 
   @media (max-width: 768px) {
     flex-direction: column;
     align-items: center;
     gap: 10px;
+    overflow-x: hidden;
   }
 
   @media only screen and (max-width: 480px) {
@@ -141,6 +141,7 @@ const Slide = styled.div`
     margin-top: 165px;
 
     @media (min-width: 768px) and (max-width: 880px) {
+      overflow-x: hidden;
       flex: 0;
     }
 
