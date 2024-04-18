@@ -49,7 +49,7 @@ export const BookmarkList = () => {
     trackEvent({
       category: "BookmarkList",
       action: "bookmarkItemClicked",
-      label: `${item.bookmarkId}`,
+      label: `문제Id:${item.bookmarkId}`,
     });
     navigate(`/bookmark/${item.bookmarkId}`);
   };

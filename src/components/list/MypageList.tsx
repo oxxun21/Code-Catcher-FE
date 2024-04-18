@@ -33,7 +33,7 @@ export const MypageList = ({ listType, data }: MyPageListProps) => {
     trackEvent({
       category: isBookmark ? "BookmarkList" : "LastQuestion",
       action: isBookmark ? "bookmarkItemClicked" : "lastQuestionItemClicked",
-      label: `${routeId}`,
+      label: `문제Id:${routeId}`,
     });
   };
 

@@ -56,7 +56,7 @@ export const CodingTest = () => {
       trackEvent({
         category: "CodingTest",
         action: "testCaseClicked",
-        label: `${id}_success:${correctCount}_total:${Object.keys(testValue).length}`,
+        label: `문제Id:${id}_success:${correctCount}_total:${Object.keys(testValue).length}`,
       });
     }
   }, [testValue]);
@@ -66,7 +66,7 @@ export const CodingTest = () => {
       trackEvent({
         category: "CodingTest",
         action: "submissionClicked",
-        label: `${id}_${submitValue.correct ? "success" : "failed"}`,
+        label: `문제Id:${id}_${submitValue.correct ? "success" : "failed"}`,
       });
     }
   }, [submitValue]);
@@ -247,7 +247,7 @@ export const CodingTest = () => {
                     trackEvent({
                       category: "CodingTest",
                       action: "goToAiExplain",
-                      label: `${id}`,
+                      label: `문제Id:${id}`,
                     });
                     navigate(`/CodeCompare/${id}`, {
                       state: {
@@ -271,7 +271,7 @@ export const CodingTest = () => {
                     trackEvent({
                       category: "CodingTest",
                       action: "retry",
-                      label: `${id}`,
+                      label: `문제Id:${id}`,
                     });
                     setIsModal(false);
                   }}
