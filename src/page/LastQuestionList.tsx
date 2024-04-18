@@ -41,7 +41,7 @@ export const LastQuestionList = () => {
     trackEvent({
       category: "LastQuestionLis",
       action: "lastQuestionItemClicked",
-      label: `${item.problemId}`,
+      label: `문제Id:${item.problemId}`,
     });
     navigate(`/codingTest/${item.problemId}`);
   };

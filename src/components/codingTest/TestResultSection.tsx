@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import { ScoreSubmit_I, TestScoreSubmit_I } from "../../interface";
 import { ShowResult } from "./ShowResult.tsx";
+import { useCookies } from "react-cookie";
 
 interface TestResultProps {
   editorHeight: number;
@@ -10,9 +11,11 @@ interface TestResultProps {
 
 export const TestResultSection = ({ editorHeight, testValue, submitValue }: TestResultProps) => {
   const resultValue = testValue || submitValue;
+  const [cookies] = useCookies(["googtrans"]);
+  const isGoogTransEn = cookies.googtrans === "/ko/en";
   return (
     <>
-      <ResultTitle>실행 결과</ResultTitle>
+      <ResultTitle className="notranslate">{isGoogTransEn ? "Execution Results" : "실행 결과"}</ResultTitle>
       <ResultSection editorHeight={editorHeight}>
         {resultValue ? <ShowResult value={resultValue} /> : <article>실행 결과가 여기에 표시됩니다.</article>}
       </ResultSection>

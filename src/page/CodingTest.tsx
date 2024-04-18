@@ -23,6 +23,7 @@ import icon_test_failed from "../assets/icon_test_failed.svg";
 import { AxiosError } from "axios";
 import { metaData } from "../meta/metaData.ts";
 import { handleAxiosError } from "../utils/handleAxiosError.ts";
+import { useCookies } from "react-cookie";
 
 interface TodayQuestionList_I {
   [key: string]: QuestionOutline_I;
@@ -42,6 +43,33 @@ export const CodingTest = () => {
   const navigate = useNavigate();
   const [selectedTodayQuestion, setSelectedTodayQuestion] = useState<QuestionOutline_I | undefined>();
   const trackEvent = useEventTracker();
+  const [cookies] = useCookies(["googtrans"]);
+  const isGoogTransEn = cookies.googtrans === "/ko/en";
+
+  useEffect(() => {
+    if (testValue) {
+      let correctCount = 0;
+      Object.values(testValue).forEach(testCase => {
+        if (testCase.correct) correctCount++;
+      });
+
+      trackEvent({
+        category: "CodingTest",
+        action: "testCaseClicked",
+        label: `문제Id:${id}_success:${correctCount}_total:${Object.keys(testValue).length}`,
+      });
+    }
+  }, [testValue]);
+
+  useEffect(() => {
+    if (submitValue !== undefined) {
+      trackEvent({
+        category: "CodingTest",
+        action: "submissionClicked",
+        label: `문제Id:${id}_${submitValue.correct ? "success" : "failed"}`,
+      });
+    }
+  }, [submitValue]);
 
   const {
     width: descWidth,
@@ -116,11 +144,7 @@ export const CodingTest = () => {
   const handleTestSubmit = () => {
     setSubmitValue(undefined);
     submissionFunc<TestScoreSubmit_I>(postTestScoreSubmitAPI, setTestValue);
-
-    trackEvent({
-      category: "CodingTest",
-      action: "testCaseClicked",
-    });
+    console.log(testValue);
   };
 
   const handleSubmit = () => {
@@ -132,11 +156,6 @@ export const CodingTest = () => {
     } else {
       submissionFunc<ScoreSubmit_I>(postRetryScoreSubmitAPI, setSubmitValue, true);
     }
-
-    trackEvent({
-      category: "CodingTest",
-      action: "submitAnswer",
-    });
   };
 
   let message = "";
@@ -194,8 +213,17 @@ export const CodingTest = () => {
           </CodeContain>
         </Contain>
         <ButtonContain>
-          <SquareButton text="코드 실행" white onClick={handleTestSubmit} />
-          <SquareButton text="제출 후 채점하기" onClick={handleSubmit} />
+          <SquareButton
+            text={isGoogTransEn ? "Code Execution" : "코드 실행"}
+            white
+            onClick={handleTestSubmit}
+            className="notranlsate"
+          />
+          <SquareButton
+            text={isGoogTransEn ? "Submit and Grade" : "제출 후 채점하기"}
+            onClick={handleSubmit}
+            className="notranlsate"
+          />
         </ButtonContain>
       </Main>
       {isModal && (
@@ -217,9 +245,9 @@ export const CodingTest = () => {
                   text="AI 설명 보기"
                   onClick={() => {
                     trackEvent({
-                      category: "CodingTestComplete",
+                      category: "CodingTest",
                       action: "goToAiExplain",
-                      label: `${id}`,
+                      label: `문제Id:${id}`,
                     });
                     navigate(`/CodeCompare/${id}`, {
                       state: {
@@ -241,9 +269,9 @@ export const CodingTest = () => {
                   text="다시 풀기"
                   onClick={() => {
                     trackEvent({
-                      category: "CodingTestFailed",
+                      category: "CodingTest",
                       action: "retry",
-                      label: `${id}`,
+                      label: `문제Id:${id}`,
                     });
                     setIsModal(false);
                   }}
