@@ -37,8 +37,13 @@ export const GoogleTranslate = () => {
 
   // 언어 변경 처리
   const handleLanguageChange = (lang: String) => {
-    setCookie("googtrans", `/${lang}`, { path: "/" });
-    window.location.reload();
+    const currentLang = cookies.googtrans;
+    const newLang = `/${lang}`;
+
+    if (currentLang !== newLang) {
+      setCookie("googtrans", newLang, { path: "/" });
+      window.location.reload();
+    }
   };
 
   const isGoogTransKo = cookies.googtrans === "/ko";
