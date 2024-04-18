@@ -73,6 +73,9 @@ const DescSection = styled.section`
   @media only screen and (max-width: 768px) {
     overflow: initial;
   }
+  @media only screen and (max-width: 480px) {
+    padding-top: 0;
+  }
 `;
 
 const DescArticle = styled.article`
@@ -99,7 +102,6 @@ const DescArticle = styled.article`
     line-height: 1.5;
     & > strong {
       font-size: 15px;
-      color: var(--main-color);
     }
   }
 `;

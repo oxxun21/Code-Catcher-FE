@@ -20,7 +20,6 @@ export const Bookmark = () => {
   const [isMediaPhone, setIsMediaPhone] = useState(window.innerWidth <= 480);
   const navigate = useNavigate();
   const { width: descWidth, startDragHorizontal } = useDraggable({ initialWidth: 40, initialHeight: 60 });
-  const [showDescSection, setShowDescSection] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -53,9 +52,11 @@ export const Bookmark = () => {
     })();
   }, [id]);
 
-  const toggleDescSection = () => {
-    setShowDescSection(!showDescSection);
-  };
+  useEffect(() => {
+    if (activeTab === "phoneDesc" && !isMediaPhone) {
+      setActiveTab("myCode");
+    }
+  }, [isMediaPhone, activeTab, setActiveTab]);
 
   const renderTabContent = () => {
     switch (activeTab) {
@@ -84,7 +85,7 @@ export const Bookmark = () => {
         return (
           <>
             {getBookmark?.gptReviewRes ? (
-              <FeedbackSection>
+              <FeedbackArticle>
                 <strong>AI 코드리뷰</strong>
                 <FeedbackSectionContent>
                   <div>
@@ -109,26 +110,31 @@ export const Bookmark = () => {
                     <p>{getBookmark?.gptReviewRes.suggest}</p>
                   </div>
                 </FeedbackSectionContent>
-              </FeedbackSection>
+              </FeedbackArticle>
             ) : (
-              <FeedbackSection>
+              <FeedbackArticle>
                 <strong>AI 코드리뷰</strong>
                 <p>코드 리뷰 받은 내역이 없습니다.</p>
-              </FeedbackSection>
+              </FeedbackArticle>
             )}
           </>
         );
       case "aiCode":
         return (
           <>
-            <FeedbackSection>
+            <FeedbackArticle>
               <strong>AI Feedback</strong>
               <FeedbackSectionContent>
                 <p>{getBookmark?.gptExplain}</p>
               </FeedbackSectionContent>
-            </FeedbackSection>
+            </FeedbackArticle>
           </>
         );
+      case "phoneDesc":
+        if (isMediaPhone) {
+          return <TestDescSection descWidth={100} question={getBookmark as Bookmark_I} />;
+        }
+        return null;
       default:
         return null;
     }
@@ -150,16 +156,8 @@ export const Bookmark = () => {
             ))}
           </span>
           <span>{getBookmark?.subject}</span>
-          {isMediaPhone && (
-            <PhoneDescBtn onClick={toggleDescSection}>{showDescSection ? "문제 숨기기" : "문제보기"}</PhoneDescBtn>
-          )}
         </PageHeader>
         <Contain>
-          {showDescSection && (
-            <ShowPhoneDesc showDescSection={showDescSection}>
-              <TestDescSection descWidth={100} question={getBookmark as Bookmark_I} />
-            </ShowPhoneDesc>
-          )}
           <ShowWebDesc descWidth={isMedia ? 100 : descWidth}>
             <TestDescSection descWidth={100} question={getBookmark as Bookmark_I} />
           </ShowWebDesc>
@@ -167,6 +165,11 @@ export const Bookmark = () => {
           <CodeContain style={{ width: isMedia ? "100%" : `${100 - descWidth}%` }}>
             <div>
               <TabContainer>
+                {isMediaPhone && (
+                  <TabButton onClick={() => setActiveTab("phoneDesc")} isActive={activeTab === "phoneDesc"}>
+                    문제 보기
+                  </TabButton>
+                )}
                 <TabButton onClick={() => setActiveTab("myCode")} isActive={activeTab === "myCode"}>
                   My Code
                 </TabButton>
@@ -174,8 +177,8 @@ export const Bookmark = () => {
                   AI Code
                 </TabButton>
               </TabContainer>
-              {renderTabContent()}
             </div>
+            {renderTabContent()}
             {renderTabContentReview()}
           </CodeContain>
         </Contain>
@@ -195,6 +198,7 @@ const Main = styled.main`
   @media only screen and (max-width: 480px) {
     background-color: var(--light-background-color);
     color: var(--black-color);
+    height: 100%;
   }
 `;
 
@@ -245,7 +249,7 @@ const PageHeader = styled.div`
     border-bottom: none;
     align-items: center;
     & > h2 {
-      max-width: 40%;
+      max-width: 55%;
     }
   }
 `;
@@ -257,6 +261,9 @@ const Contain = styled.div`
     flex-direction: column;
     overflow: auto;
   }
+  @media only screen and (max-width: 480px) {
+    height: 100%;
+  }
 `;
 
 const CodeContain = styled.section`
@@ -264,14 +271,18 @@ const CodeContain = styled.section`
   flex-direction: column;
   justify-content: space-between;
   & > div {
-    min-height: 60%;
-    @media only screen and (max-width: 768px) {
-      min-height: initial;
+    @media only screen and (max-width: 480px) {
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
   }
   @media only screen and (max-width: 768px) {
     justify-content: initial;
     gap: 20px;
+  }
+  @media only screen and (max-width: 480px) {
+    position: absolute;
   }
 `;
 
@@ -296,7 +307,7 @@ const TabContainer = styled.div`
   padding: 13px 22px;
   @media only screen and (max-width: 480px) {
     gap: 0;
-    padding: 0 0 20px 0;
+    padding: 0 0 12px 0;
   }
 `;
 
@@ -321,7 +332,7 @@ const TabButton = styled.button<{ isActive: boolean }>`
   }
 `;
 
-const FeedbackSection = styled.section`
+const FeedbackArticle = styled.article`
   height: 35%;
   background-color: #2a2a31;
   color: var(--gray400-color);
@@ -346,7 +357,7 @@ const FeedbackSection = styled.section`
   @media only screen and (max-width: 480px) {
     padding: 0;
     background-color: #fff;
-    margin-top: 52px;
+    margin: 52px 22px;
     font-size: 1rem;
   }
 `;
@@ -408,29 +419,6 @@ const FeedbackSectionContent = styled.div`
   * {
     scrollbar-width: thin;
     scrollbar-color: #555 transparent;
-  }
-`;
-
-const PhoneDescBtn = styled.button`
-  text-align: center;
-  cursor: pointer;
-  display: block;
-  margin-left: auto;
-  border-radius: 999px;
-  color: var(--gray600-color);
-  border: 1px solid var(--gray200-color);
-  background-color: #f4f4f4;
-  font-size: 10px;
-  padding: 5px 10px;
-  font-weight: 600;
-`;
-
-const ShowPhoneDesc = styled.div<{ showDescSection: boolean }>`
-  display: ${props => (props.showDescSection ? "block" : "none")};
-  margin-bottom: 30px;
-
-  @media (min-width: 480px) {
-    display: none;
   }
 `;
 
