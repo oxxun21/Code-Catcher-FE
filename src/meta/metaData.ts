@@ -7,20 +7,20 @@ export const metaData: { [key: string]: MetaData_I } = {
     description:
       "코디(Codee)는 캐릭터를 성장시키며 코딩 테스트 습관을 기를 수 있는 서비스입니다. 매일 새로운 문제를 통해 프로그래밍 능력을 향상시킬 수 있습니다.",
     image: images.Home,
-    url: "https://likelion-codee.com",
+    url: "https://likelion-codee.com/",
   },
   splash: {
     title: "온보딩 | 코디 Codee",
     description:
       "코디(Codee) 온보딩 페이지. 서비스에 대한 설명을 확인할 수 있고 로그인하여 서비스를 시작할 수 있습니다.",
     image: images.Splash,
-    url: "https://likelion-codee.com",
+    url: "https://likelion-codee.com/splash",
   },
   home: {
     title: "홈페이지 | 코디 Codee",
     description: "코디(Codee) 홈페이지. 유저 정보를 확인할 수 있고 오늘의 코딩테스트를 하러 갈 수 있습니다.",
     image: images.Home,
-    url: "https://likelion-codee.com",
+    url: "https://likelion-codee.com/",
   },
   bookmark: {
     title: "북마크 페이지 | 코디 Codee",
