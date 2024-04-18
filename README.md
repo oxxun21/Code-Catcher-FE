@@ -1,3 +1,9 @@
+![07_Team](https://github.com/oxxun21/Code-Catcher-FE/assets/98699927/e0a46ffb-7ada-4f3f-84f4-293008eb8379)
+
+![Opportunity](https://github.com/oxxun21/Code-Catcher-FE/assets/98699927/a368fc74-fac3-4081-8b57-38e1f1733425)
+
+![02_Solution](https://github.com/oxxun21/Code-Catcher-FE/assets/98699927/d920a147-f724-49f2-b18e-66056a7cedcd)
+
 ### ✏️ Commit Convention
 
 ```
