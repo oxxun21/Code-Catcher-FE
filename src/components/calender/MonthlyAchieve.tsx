@@ -98,7 +98,7 @@ const StyledContianer = styled.article`
     width: 21.5625rem;
     height: 25.25rem;
     border: none;
-    background-color: #ffffff;
+    background-color: transparent;
     padding: 0;
     padding-top: 1.25rem;
   }

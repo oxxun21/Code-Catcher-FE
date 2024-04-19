@@ -63,6 +63,7 @@ const StyledMain = styled.main`
 
   @media (max-width: 768px) {
     height: auto;
+    overflow-x: hidden;
   }
 `;
 
@@ -75,6 +76,7 @@ const StyledSection = styled.section`
   align-items: center;
 
   @media only screen and (max-width: 480px) {
+    overflow-x: hidden;
     height: 515px;
     padding: 1.25rem 0;
   }
@@ -90,6 +92,7 @@ const StyledSection = styled.section`
       height: auto;
       overflow: visible;
       max-height: unset;
+      overflow-x: hidden;
     }
   }
 `;
