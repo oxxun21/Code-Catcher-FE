@@ -11,7 +11,6 @@ import ArrowBack from "../../assets/arrow_back_header.svg";
 import { Modal } from "./Modal.tsx";
 import { withdrawAPI } from "../../api";
 import { useEventTracker, useWindowSize } from "../../hook";
-import { GoogleTranslate } from "./GoogleTranslate.tsx";
 import { useCookies } from "react-cookie";
 import useAutoLogout from "../../hook/useAutoLogout.tsx";
 
@@ -197,7 +196,6 @@ export const Header = memo(() => {
           <img src={logoImage} alt="로고 이미지" onClick={handleNavigateToHome} />
         </h1>
         <StyledLeftNav>
-          {isMobile ? null : <GoogleTranslate />}
           {!isLoggedIn ? (
             <StyledLoginBtn onClick={handleKakaoLogin}>{isGoogTransEn ? "Login" : "로그인"}</StyledLoginBtn>
           ) : (
