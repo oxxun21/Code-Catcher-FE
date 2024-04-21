@@ -136,7 +136,7 @@ export const UserCard = () => {
             </div>
             <strong>{email}</strong>
           </StyledUserInfoGroup>
-          <StyledStatistics>
+          <StyledStatistics className="notranslate">
             <div>
               <strong>Total</strong>
               <span>{totalCnt}</span>

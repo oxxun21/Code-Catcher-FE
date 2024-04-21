@@ -52,6 +52,8 @@ export const GoogleTranslate = () => {
     window.location.reload();
   };
 
+  console.log("Google Translate Rendering");
+
   return (
     <div>
       <div ref={translateElementRef} id="google_translate_element" style={{ display: "none" }}></div>
