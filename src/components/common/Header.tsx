@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { useState, useEffect } from "react";
+import { useState, useEffect, memo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getLoginCookie, removeLoginCookie } from "../../utils/loginCookie.ts";
 import { useUserStore } from "../../stores/useUserStore.ts";
@@ -16,7 +16,7 @@ import { useCookies } from "react-cookie";
 
 type ModalContentType = "logout" | "withdraw" | "leavePage" | "";
 
-export const Header = () => {
+export const Header = memo(() => {
   const location = useLocation();
   const isDarkMode =
     location.pathname.startsWith("/codingTest/") ||
@@ -44,6 +44,8 @@ export const Header = () => {
     const token = getLoginCookie();
     setIsLoggedIn(!!token);
   }, []);
+
+  console.log("Header Rendering");
 
   const handleNavigateToHome = () => {
     trackEvent({
@@ -216,7 +218,7 @@ export const Header = () => {
       </StyledHeader>
     );
   }
-};
+});
 
 const StyledHeaderWithBack = styled.header`
   width: 100%;

@@ -210,8 +210,6 @@ const StyledTableBody = styled.tbody`
   }
 
   & > tr > td {
-    height: 2.125rem;
-
     &:first-of-type {
       & img {
         vertical-align: middle;
