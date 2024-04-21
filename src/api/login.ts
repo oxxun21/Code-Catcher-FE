@@ -13,7 +13,7 @@ export const getLoginAPI = async (code: string, navigate: NavigateFunction, setU
     if (resData) {
       const { jwt, isNew, ...userInfo } = resData;
 
-      setLoginCookie(jwt, { path: "/" });
+      setLoginCookie(jwt, { path: "/", maxAge: 86400 });
       setUserInfo(userInfo);
 
       navigate("/");

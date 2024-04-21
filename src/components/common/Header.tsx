@@ -13,6 +13,7 @@ import { withdrawAPI } from "../../api";
 import { useEventTracker, useWindowSize } from "../../hook";
 import { GoogleTranslate } from "./GoogleTranslate.tsx";
 import { useCookies } from "react-cookie";
+import useAutoLogout from "../../hook/useAutoLogout.tsx";
 
 type ModalContentType = "logout" | "withdraw" | "leavePage" | "";
 
@@ -46,6 +47,8 @@ export const Header = memo(() => {
   }, []);
 
   console.log("Header Rendering");
+
+  useAutoLogout(86400000);
 
   const handleNavigateToHome = () => {
     trackEvent({
