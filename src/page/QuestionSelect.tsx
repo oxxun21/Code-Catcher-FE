@@ -16,6 +16,7 @@ export const QuestionSelect = () => {
 
   const [selectedQuestionId, setSelectedQuestionId] = useState<number | null>(null);
   const navigate = useNavigate();
+  const trackEvent = useEventTracker();
 
   useEffect(() => {
     const fetchQuestions = async () => {
@@ -71,6 +72,12 @@ export const QuestionSelect = () => {
                 onClick={() => {
                   setSelectedCard(selectedCard === index ? null : index);
                   setSelectedQuestionId(selectedCard === index ? null : question.id);
+
+                  trackEvent({
+                    category: "CodingTest",
+                    action: "selectQuestionCard",
+                    label: `문제Id:${question.id}`,
+                  });
                 }}
                 onMouseEnter={() => setHoveredCard(index)}
                 onMouseLeave={() => setHoveredCard(null)}
