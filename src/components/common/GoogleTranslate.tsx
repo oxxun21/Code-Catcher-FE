@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useCookies } from "react-cookie";
 import FlagEn from "../../assets/flag_en.svg";
 import FlagKo from "../../assets/flag_ko.svg";
@@ -15,7 +15,8 @@ export const GoogleTranslate = () => {
   const translateElementRef = useRef<HTMLDivElement>(null);
   const { width } = useWindowSize();
   const isMobile = (width ?? 0) <= 480;
-  const [cookies, setCookie] = useCookies(["googtrans"]);
+  const [cookies, setCookie, removeCookie] = useCookies(["googtrans"]);
+  const [isGoogTransKo, setIsGoogTransKo] = useState<boolean>(true);
 
   useEffect(() => {
     window.googleTranslateElementInit = () => {
@@ -35,18 +36,21 @@ export const GoogleTranslate = () => {
     }
   }, []);
 
+  useEffect(() => {
+    const currentLang = cookies.googtrans;
+    setIsGoogTransKo(!currentLang || currentLang === "/ko");
+  }, [cookies.googtrans]);
+
   // 언어 변경 처리
   const handleLanguageChange = (lang: String) => {
-    const currentLang = cookies.googtrans;
-    const newLang = `/${lang}`;
-
-    if (currentLang !== newLang) {
-      setCookie("googtrans", newLang, { path: "/" });
-      window.location.reload();
+    if (cookies.googtrans && cookies.googtrans !== `/${lang}`) {
+      removeCookie("googtrans", { path: "/" });
     }
-  };
 
-  const isGoogTransKo = cookies.googtrans === "/ko";
+    // 쿠키를 새로 설정
+    setCookie("googtrans", `/${lang}`, { path: "/" });
+    window.location.reload();
+  };
 
   return (
     <div>
