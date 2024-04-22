@@ -195,6 +195,7 @@ const StyledTableBody = styled.tbody`
   font-family: var(--font-Pretendard);
 
   & > tr {
+    height: 2.125rem;
     border-bottom: 1px solid var(--gray200-color);
     background-color: #ffffff;
     cursor: pointer;
@@ -210,22 +211,33 @@ const StyledTableBody = styled.tbody`
   }
 
   & > tr > td {
+    vertical-align: middle;
     &:first-of-type {
-      & img {
-        vertical-align: middle;
-      }
       padding-left: 0.25rem;
       color: var(--secondary-color);
     }
     &:nth-of-type(2) {
-      display: flex;
-      align-items: center;
+      width: 12.5rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+
+      & span,
+      strong,
+      font {
+        display: inline-block;
+        vertical-align: middle;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
 
       & span {
         font-size: 0.75rem;
         font-weight: 500;
         color: var(--gray400-color);
         margin-right: 0.75rem;
+        max-width: calc(100% - 9.5625rem);
       }
 
       & strong,
@@ -233,11 +245,7 @@ const StyledTableBody = styled.tbody`
         font-size: 0.875rem;
         font-weight: 600;
         color: var(--black-color);
-        width: 9.5625rem;
-        line-height: 2.125rem;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        max-width: 9.5625rem;
 
         @media only screen and (max-width: 480px) {
           width: 8.5rem;
