@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, memo } from "react";
 import { useCookies } from "react-cookie";
 import FlagEn from "../../assets/flag_en.svg";
 import FlagKo from "../../assets/flag_ko.svg";
@@ -11,7 +11,7 @@ declare global {
   }
 }
 
-export const GoogleTranslate = () => {
+export const GoogleTranslate = memo(() => {
   const translateElementRef = useRef<HTMLDivElement>(null);
   const { width } = useWindowSize();
   const isMobile = (width ?? 0) <= 480;
@@ -44,15 +44,15 @@ export const GoogleTranslate = () => {
   // 언어 변경 처리
   const handleLanguageChange = (lang: String) => {
     if (cookies.googtrans && cookies.googtrans !== `/${lang}`) {
-      removeCookie("googtrans", { path: "/" });
+      removeCookie("googtrans", { path: "/", domain: window.location.hostname });
     }
+    console.log("Google Translate Rendering");
 
     // 쿠키를 새로 설정
-    setCookie("googtrans", `/${lang}`, { path: "/" });
+    setCookie("googtrans", `/${lang}`, { path: "/", domain: window.location.hostname });
+
     window.location.reload();
   };
-
-  console.log("Google Translate Rendering");
 
   return (
     <div>
@@ -76,4 +76,4 @@ export const GoogleTranslate = () => {
       </ul>
     </div>
   );
-};
+});
