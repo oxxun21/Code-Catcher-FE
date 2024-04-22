@@ -2,16 +2,14 @@ import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { getLoginCookie } from "../utils/loginCookie.ts";
 import styled from "@emotion/styled";
-import { Header, GalmuriButton, HelmetMetaTags, GoogleTranslate } from "../components";
+import { Header, GalmuriButton, HelmetMetaTags } from "../components";
 import { UserCard } from "../components";
 import { metaData } from "../meta/metaData.ts";
 import { useCookies } from "react-cookie";
-import { useWindowSize } from "../hook/index.ts";
 
 export const Home = () => {
   const navigate = useNavigate();
-  const { width } = useWindowSize();
-  const isMobile = (width ?? 0) <= 480;
+
   const [cookies] = useCookies(["googtrans"]);
   const isGoogTransEn = cookies.googtrans === "/ko/en";
 
@@ -34,7 +32,7 @@ export const Home = () => {
           to="question/select"
           text={isGoogTransEn ? "Start Today's Test" : "오늘의 코테 시작하기"}
         />
-        {isMobile && <GoogleTranslate />}
+        {/* {isMobile && <GoogleTranslate />} */}
       </StyledMain>
     </>
   );
