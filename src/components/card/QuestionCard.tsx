@@ -155,6 +155,11 @@ const StyledDesc = styled.div<{ isSuccess: boolean | null }>`
     color: var(--black-color);
     margin: 0.75rem 0;
     line-height: 122%;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   & h3 {
     font-size: 1.25rem;
