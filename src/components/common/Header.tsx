@@ -19,15 +19,13 @@ type ModalContentType = "logout" | "withdraw" | "leavePage" | "";
 
 export const Header = memo(() => {
   const location = useLocation();
-  const isDarkMode =
-    location.pathname.startsWith("/codingTest/") ||
-    location.pathname.startsWith("/CodeCompare/") ||
-    location.pathname.startsWith("/bookmark/");
-  const logoImage = isDarkMode ? LogoDark : LogoLight;
-
   const isMyPage = location.pathname === "/myPage";
   const isBookmarkList = location.pathname === "/bookmarkList";
   const isBookmark = location.pathname.startsWith("/bookmark/");
+  const isCodingTest = location.pathname.startsWith("/codingTest/");
+  const isDarkMode = isCodingTest || location.pathname.startsWith("/CodeCompare/") || isBookmark;
+  const logoImage = isDarkMode ? LogoDark : LogoLight;
+
   const [modalContent, setModalContent] = useState<ModalContentType>("");
 
   const { clearUserInfo } = useUserStore.getState();
@@ -197,7 +195,7 @@ export const Header = memo(() => {
           <img src={logoImage} alt="로고 이미지" onClick={handleNavigateToHome} />
         </h1>
         <StyledLeftNav>
-          {isMobile ? null : <GoogleTranslate />}
+          {isMobile || isCodingTest ? null : <GoogleTranslate />}
           {!isLoggedIn ? (
             <StyledLoginBtn onClick={handleKakaoLogin}>{isGoogTransEn ? "Login" : "로그인"}</StyledLoginBtn>
           ) : (

@@ -121,7 +121,7 @@ export const UserCard = () => {
                   ))}
               </StyledTooltip>
             </span>
-            <strong>
+            <strong className="notranslate">
               EXP {exp}/{expUpper}
             </strong>
           </div>
