@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState, memo } from "react";
 import { useLocation } from "react-router-dom";
-import { useCookies } from "react-cookie";
 import FlagEn from "../../assets/flag_en.svg";
 import FlagKo from "../../assets/flag_ko.svg";
 import { useWindowSize } from "../../hook";
+import { useCookies } from "react-cookie";
 
 declare global {
   interface Window {
@@ -16,88 +16,65 @@ export const GoogleTranslate = memo(() => {
   const translateElementRef = useRef<HTMLDivElement>(null);
   const { width } = useWindowSize();
   const isMobile = (width ?? 0) <= 480;
-  const [cookies] = useCookies(["googtrans"]);
-  const [translateWidgetLoaded, setTranslateWidgetLoaded] = useState(false);
-
+  const [cookies, removeCookie] = useCookies(["googtrans"]);
   const [isGoogTransKo, setIsGoogTransKo] = useState<boolean>(true);
   const location = useLocation();
 
-  const resetTranslation = () => {
-    if (!document.cookie.includes("googtrans")) {
-      return;
-    }
-    document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    window.location.reload();
-  };
-
   useEffect(() => {
-    const scriptId = "google-translate-script";
-    if (!document.getElementById(scriptId)) {
-      const script = document.createElement("script");
-      script.id = scriptId;
-      script.src = "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
-      document.body.appendChild(script);
-
-      script.onload = () => {
-        checkGoogleTranslateLoaded(); // 스크립트 로드 후 구글 번역 API 초기화 확인
-      };
-      script.onerror = () => {
-        setTranslateWidgetLoaded(false);
-        console.error("Failed to load the Google Translate script.");
-      };
-    }
-    return () => {
-      const existingScript = document.getElementById(scriptId);
-      if (existingScript) {
-        document.body.removeChild(existingScript);
-      }
-      delete window.googleTranslateElementInit;
-    };
+    loadGoogleTranslateScript();
+    return () => unloadGoogleTranslateScript();
   }, [location]);
 
-  const checkGoogleTranslateLoaded = () => {
-    if (window.google && window.google.translate && window.google.translate.TranslateElement) {
-      window.googleTranslateElementInit = () => {
-        if (translateElementRef.current) {
-          new window.google.translate.TranslateElement(
-            { pageLanguage: "ko", autoDisplay: true },
-            translateElementRef.current.id
-          );
-          setTranslateWidgetLoaded(true);
-        }
-      };
-      window.googleTranslateElementInit();
-    } else {
-      setTimeout(checkGoogleTranslateLoaded, 100); // 100ms 후 다시 확인
+  const loadGoogleTranslateScript = () => {
+    const scriptId = "google-translate-script";
+    if (document.getElementById(scriptId)) {
+      return;
     }
+    const script = document.createElement("script");
+    script.id = scriptId;
+    script.src = "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+    document.body.appendChild(script);
+
+    window.googleTranslateElementInit = () => {
+      if (translateElementRef.current) {
+        new window.google.translate.TranslateElement(
+          {
+            pageLanguage: "ko",
+            autoDisplay: true,
+          },
+          translateElementRef.current.id
+        );
+      }
+    };
+
+    script.onload = () => {
+      setIsGoogTransKo(!(cookies.googtrans && cookies.googtrans === "/ko/en"));
+    };
   };
 
-  useEffect(() => {
-    if (translateWidgetLoaded) {
-      const currentLang = cookies.googtrans === "/ko/en" ? "en" : "ko";
-      refreshTranslateElement(currentLang);
+  const unloadGoogleTranslateScript = () => {
+    const script = document.getElementById("google-translate-script");
+    if (script) {
+      document.body.removeChild(script);
     }
-  }, [translateWidgetLoaded, cookies.googtrans]);
+    delete window.googleTranslateElementInit;
+  };
 
   const refreshTranslateElement = (langCode: string) => {
-    console.log("[langCode]", langCode);
-    try {
+    if (langCode === "en") {
       const gtcombo = document.querySelector(".goog-te-combo") as HTMLSelectElement;
-      if (langCode === "en") {
-        if (gtcombo) {
-          gtcombo.value = langCode;
-          gtcombo.dispatchEvent(new Event("change"));
-          console.log("[gtCombo]", gtcombo.value);
-        } else {
-          console.log("Waiting for gtcombo to be available...");
-          setTimeout(() => refreshTranslateElement(langCode), 500);
-        }
-      } else if (langCode === "ko") {
-        resetTranslation(); // 원본 언어로 리셋
+      if (gtcombo) {
+        gtcombo.value = langCode;
+        gtcombo.dispatchEvent(new Event("change"));
+        setIsGoogTransKo(false);
+      } else {
+        setTimeout(() => refreshTranslateElement(langCode), 500);
       }
-      setIsGoogTransKo(langCode === "ko");
-    } catch (error) {
-      console.error("Error refreshing the Google Translate element:", error);
+    } else if (langCode === "ko") {
+      unloadGoogleTranslateScript();
+      removeCookie("googtrans", { path: "/" }, { domain: "likelion-codee.com" });
+      window.location.reload();
+      setIsGoogTransKo(true);
     }
   };
 
