@@ -18,34 +18,59 @@ export const GoogleTranslate = memo(() => {
   const isMobile = (width ?? 0) <= 480;
   const [cookies] = useCookies(["googtrans"]);
   const [translateWidgetLoaded, setTranslateWidgetLoaded] = useState(false);
+
   const [isGoogTransKo, setIsGoogTransKo] = useState<boolean>(true);
   const location = useLocation();
 
+  const resetTranslation = () => {
+    if (!document.cookie.includes("googtrans")) {
+      return;
+    }
+    document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    window.location.reload();
+  };
+
   useEffect(() => {
     const scriptId = "google-translate-script";
-    const script = document.createElement("script");
-    script.id = scriptId;
-    script.src = "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
-    document.body.appendChild(script);
+    if (!document.getElementById(scriptId)) {
+      const script = document.createElement("script");
+      script.id = scriptId;
+      script.src = "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+      document.body.appendChild(script);
 
-    window.googleTranslateElementInit = () => {
-      if (translateElementRef.current) {
-        new window.google.translate.TranslateElement(
-          { pageLanguage: "ko", autoDisplay: true },
-          translateElementRef.current?.id
-        );
-      }
-      setTranslateWidgetLoaded(true);
-    };
-
-    script.onload = () => setTranslateWidgetLoaded(true);
-    script.onerror = () => setTranslateWidgetLoaded(false);
-
+      script.onload = () => {
+        checkGoogleTranslateLoaded(); // 스크립트 로드 후 구글 번역 API 초기화 확인
+      };
+      script.onerror = () => {
+        setTranslateWidgetLoaded(false);
+        console.error("Failed to load the Google Translate script.");
+      };
+    }
     return () => {
-      document.body.removeChild(script);
+      const existingScript = document.getElementById(scriptId);
+      if (existingScript) {
+        document.body.removeChild(existingScript);
+      }
       delete window.googleTranslateElementInit;
     };
   }, [location]);
+
+  const checkGoogleTranslateLoaded = () => {
+    if (window.google && window.google.translate && window.google.translate.TranslateElement) {
+      window.googleTranslateElementInit = () => {
+        if (translateElementRef.current) {
+          new window.google.translate.TranslateElement(
+            { pageLanguage: "ko", autoDisplay: true },
+            translateElementRef.current.id
+          );
+          setTranslateWidgetLoaded(true);
+        }
+      };
+      window.googleTranslateElementInit();
+    } else {
+      setTimeout(checkGoogleTranslateLoaded, 100); // 100ms 후 다시 확인
+    }
+  };
 
   useEffect(() => {
     if (translateWidgetLoaded) {
@@ -56,18 +81,24 @@ export const GoogleTranslate = memo(() => {
 
   const refreshTranslateElement = (langCode: string) => {
     console.log("[langCode]", langCode);
-    const gtcombo = document.querySelector(".goog-te-combo") as HTMLSelectElement;
-    if (!gtcombo) {
-      console.log("Waiting for gtcombo to be available...");
-      setTimeout(() => refreshTranslateElement(langCode), 500);
-      return;
+    try {
+      const gtcombo = document.querySelector(".goog-te-combo") as HTMLSelectElement;
+      if (langCode === "en") {
+        if (gtcombo) {
+          gtcombo.value = langCode;
+          gtcombo.dispatchEvent(new Event("change"));
+          console.log("[gtCombo]", gtcombo.value);
+        } else {
+          console.log("Waiting for gtcombo to be available...");
+          setTimeout(() => refreshTranslateElement(langCode), 500);
+        }
+      } else if (langCode === "ko") {
+        resetTranslation(); // 원본 언어로 리셋
+      }
+      setIsGoogTransKo(langCode === "ko");
+    } catch (error) {
+      console.error("Error refreshing the Google Translate element:", error);
     }
-
-    gtcombo.value = langCode; // 변경할 언어 적용
-    gtcombo.dispatchEvent(new Event("change")); // 변경 이벤트 트리거
-    setIsGoogTransKo(langCode === "ko");
-
-    console.log("[gtCombo]", gtcombo.value);
   };
 
   return (

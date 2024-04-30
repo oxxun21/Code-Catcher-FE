@@ -27,7 +27,7 @@ export const Home = () => {
       <HelmetMetaTags meta={metaData.home} />
       <Header />
       <StyledMain>
-        <strong>START TEST . . .</strong>
+        <strong className="notranslate">START TEST . . .</strong>
         <UserCard />
         <StyledGalmuriButton
           as={Link}
