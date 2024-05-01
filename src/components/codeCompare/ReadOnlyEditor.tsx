@@ -73,7 +73,7 @@ export const ReadOnlyEditor = ({ code, language }: ReadOnlyEditorProps) => {
   return (
     <CodeReadArticle isMedia={isMedia}>
       <Editor
-        value={code}
+        value={code ? code : "// JavaScript 언어 추가 관련 업데이트 중 입니다."}
         language={language}
         options={{
           readOnly: true,

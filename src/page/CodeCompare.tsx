@@ -230,7 +230,7 @@ export const CodeCompare = () => {
               <span className="tooltipInfo">AI Code에 대한 설명을 제공합니다.</span>
             </FeedbackTitle>
             <FeedbackSection editorHeight={editorHeight}>
-              <p>{aiRes?.gptCodeExplain}</p>
+              <p>{aiRes?.gptCodeExplain ? aiRes?.gptCodeExplain : "JavaScript 언어 추가 관련 업데이트 중 입니다."}</p>
             </FeedbackSection>
           </section>
         </Contain>

@@ -32,13 +32,14 @@ export const SelectLang = ({ language, setLanguage }: LangProps) => {
   return (
     <LangSelect ref={dropdownRef}>
       <button onClick={toggleDropdown}>
-        {language}
+        {language === "javascript" ? "Node.js" : language}
         <img src={icon_dropdown} alt="드롭다운" />
       </button>
       {showDropdown && (
         <ul>
           <li onClick={() => handleLanguageSelect("Java")}>Java</li>
           <li onClick={() => handleLanguageSelect("Python")}>Python</li>
+          <li onClick={() => handleLanguageSelect("javascript")}>Node.js</li>
         </ul>
       )}
     </LangSelect>
@@ -71,7 +72,7 @@ const LangSelect = styled.article`
   & > ul {
     font-size: 0.875rem;
     position: absolute;
-    bottom: -68px;
+    bottom: -102px;
     left: 22px;
     width: 120px;
     color: #222;

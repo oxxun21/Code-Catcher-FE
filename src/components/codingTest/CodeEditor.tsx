@@ -6,8 +6,9 @@ import styled from "@emotion/styled";
 
 interface EditorProps {
   editorHeight: number;
-  language: "Java" | "Python";
+  language: "Java" | "Python" | "javascript";
   setCodeValue: React.Dispatch<React.SetStateAction<any>>;
+  codeValue?: string;
   question?: Question_I;
   isMedia?: boolean;
 }
@@ -46,16 +47,23 @@ export const CodeEditor = ({ editorHeight, language, setCodeValue, question, isM
   }, []);
 
   const defaultContentFunction = () => {
-    if (language === "Java") {
-      return question?.javaSubmitCode
-        ? question.javaSubmitCode
-        : `public class Main {
-  public static void main(String[] args) {
-    
-  }
-}`;
-    } else {
-      return question?.pythonSubmitCode ? question.pythonSubmitCode : "# 코드를 입력해주세요";
+    switch (language) {
+      case "Java":
+        return question?.javaSubmitCode
+          ? question.javaSubmitCode
+          : `public class Main {
+    public static void main(String[] args) {
+      // 자바 코드를 입력하세요.
+    }
+  }`;
+      case "Python":
+        return question?.pythonSubmitCode ? question.pythonSubmitCode : "# 파이썬 코드를 입력해주세요";
+      case "javascript":
+        return question?.jsSubmitCode
+          ? question.jsSubmitCode
+          : "// 자바스크립트 코드를 입력해주세요. 입출력을 위한 readline 혹은 fs 모듈이 필요합니다";
+      default:
+        return "// 지원되는 언어 코드를 입력하세요.";
     }
   };
 
@@ -64,7 +72,7 @@ export const CodeEditor = ({ editorHeight, language, setCodeValue, question, isM
   return (
     <EditorSection style={{ height: isMedia ? "350px" : `${editorHeight}%` }}>
       <Editor
-        defaultLanguage={language === "Java" ? "java" : "python"}
+        defaultLanguage={language === "Java" ? "java" : language === "Python" ? "python" : "javascript"}
         value={defaultContent}
         options={{
           fontSize: 14,
