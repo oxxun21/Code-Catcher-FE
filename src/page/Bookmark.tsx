@@ -61,19 +61,9 @@ export const Bookmark = () => {
   const renderTabContent = () => {
     switch (activeTab) {
       case "myCode":
-        return (
-          <ReadOnlyEditor
-            code={getBookmark?.myCode ?? "// 콘솔을 확인해주세요"}
-            language={getBookmark?.codeType ?? "java"}
-          />
-        );
+        return <ReadOnlyEditor code={getBookmark?.myCode as string} language={getBookmark?.codeType ?? "java"} />;
       case "aiCode":
-        return (
-          <ReadOnlyEditor
-            code={getBookmark?.gptCode ?? "// 콘솔을 확인해주세요"}
-            language={getBookmark?.codeType ?? "java"}
-          />
-        );
+        return <ReadOnlyEditor code={getBookmark?.gptCode as string} language={getBookmark?.codeType ?? "java"} />;
       default:
         return null;
     }
@@ -125,7 +115,9 @@ export const Bookmark = () => {
             <FeedbackArticle>
               <strong>AI Feedback</strong>
               <FeedbackSectionContent>
-                <p>{getBookmark?.gptExplain}</p>
+                <p>
+                  {getBookmark?.gptExplain ? getBookmark?.gptExplain : "JavaScript 언어 추가 관련 업데이트 중 입니다."}
+                </p>
               </FeedbackSectionContent>
             </FeedbackArticle>
           </>

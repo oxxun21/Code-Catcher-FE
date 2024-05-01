@@ -10,5 +10,6 @@ export interface Question_I {
   output_2: string;
   javaSubmitCode: string;
   pythonSubmitCode: string;
+  jsSubmitCode: string;
   level: number;
 }
