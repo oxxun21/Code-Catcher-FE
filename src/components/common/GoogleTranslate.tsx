@@ -4,6 +4,7 @@ import FlagEn from "../../assets/flag_en.svg";
 import FlagKo from "../../assets/flag_ko.svg";
 import { useWindowSize } from "../../hook";
 import { useCookies } from "react-cookie";
+import { Loading } from "./Loading";
 
 declare global {
   interface Window {
@@ -16,9 +17,29 @@ export const GoogleTranslate = memo(() => {
   const translateElementRef = useRef<HTMLDivElement>(null);
   const { width } = useWindowSize();
   const isMobile = (width ?? 0) <= 480;
-  const [cookies, removeCookie] = useCookies(["googtrans"]);
+  const [cookies] = useCookies(["googtrans"]);
+  const [loading, setLoading] = useState(false);
   const [isGoogTransKo, setIsGoogTransKo] = useState<boolean>(true);
   const location = useLocation();
+
+  const removeGoogleTransCookies = () => {
+    const paths = [
+      "/",
+      "/bookmark/",
+      "/myPage",
+      "/bookmarkList",
+      "/lastQuestionList",
+      "/codingTest/",
+      "/codeCompare/",
+      "/splash",
+      "/question/select",
+    ];
+    paths.forEach(path => {
+      document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=" + path + ";";
+    });
+
+    window.location.reload();
+  };
 
   useEffect(() => {
     loadGoogleTranslateScript();
@@ -26,8 +47,10 @@ export const GoogleTranslate = memo(() => {
   }, [location]);
 
   const loadGoogleTranslateScript = () => {
+    setLoading(true);
     const scriptId = "google-translate-script";
     if (document.getElementById(scriptId)) {
+      setLoading(false);
       return;
     }
     const script = document.createElement("script");
@@ -49,6 +72,7 @@ export const GoogleTranslate = memo(() => {
 
     script.onload = () => {
       setIsGoogTransKo(!(cookies.googtrans && cookies.googtrans === "/ko/en"));
+      setLoading(false);
     };
   };
 
@@ -68,11 +92,13 @@ export const GoogleTranslate = memo(() => {
         gtcombo.dispatchEvent(new Event("change"));
         setIsGoogTransKo(false);
       } else {
-        setTimeout(() => refreshTranslateElement(langCode), 500);
+        if (!loading) {
+          setTimeout(() => refreshTranslateElement(langCode), 500);
+        }
       }
     } else if (langCode === "ko") {
       unloadGoogleTranslateScript();
-      removeCookie("googtrans", { path: "/" }, { domain: "likelion-codee.com" });
+      removeGoogleTransCookies();
       window.location.reload();
       setIsGoogTransKo(true);
     }
@@ -80,6 +106,7 @@ export const GoogleTranslate = memo(() => {
 
   return (
     <div>
+      {loading && <Loading />}
       <div ref={translateElementRef} id="google_translate_element" style={{ display: "none" }}></div>
       <ul className="translation-links">
         {isGoogTransKo ? (

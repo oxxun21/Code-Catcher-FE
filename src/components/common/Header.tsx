@@ -44,8 +44,6 @@ export const Header = memo(() => {
     setIsLoggedIn(!!token);
   }, []);
 
-  console.log("Header Rendering");
-
   useAutoLogout(86400000);
 
   const handleNavigateToHome = () => {
