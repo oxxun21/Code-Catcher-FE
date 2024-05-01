@@ -1,6 +1,6 @@
 export interface AiFeedbackProps_I {
   problemId: number;
-  codeType: "java" | "python";
+  codeType: "java" | "python" | "javascript";
 }
 
 export interface UserAiFeedbackProps_I {

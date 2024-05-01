@@ -24,7 +24,6 @@ import { AxiosError } from "axios";
 import { metaData } from "../meta/metaData.ts";
 import { handleAxiosError } from "../utils/handleAxiosError.ts";
 import { useCookies } from "react-cookie";
-
 interface TodayQuestionList_I {
   [key: string]: QuestionOutline_I;
 }
@@ -33,7 +32,7 @@ export const CodingTest = () => {
   const { id } = useParams();
   const [question, setQuestion] = useState<Question_I | undefined>();
   const [todayQuestionList, setTodayQuestionList] = useState<TodayQuestionList_I | undefined>();
-  const [language, setLanguage] = useState<"Java" | "Python">("Java");
+  const [language, setLanguage] = useState<"Java" | "Python" | "javascript">("Java");
   const [isModal, setIsModal] = useState(false);
   const [codeValue, setCodeValue] = useState("");
   const [testValue, setTestValue] = useState<TestScoreSubmit_I | undefined>();
@@ -45,6 +44,18 @@ export const CodingTest = () => {
   const trackEvent = useEventTracker();
   const [cookies] = useCookies(["googtrans"]);
   const isGoogTransEn = cookies.googtrans === "/ko/en";
+
+  useEffect(() => {
+    let defaultCode = "";
+    if (language === "Java") {
+      defaultCode = question?.javaSubmitCode ? question.javaSubmitCode : "";
+    } else if (language === "Python") {
+      defaultCode = question?.pythonSubmitCode ? question.pythonSubmitCode : "";
+    } else if (language === "javascript") {
+      defaultCode = question?.jsSubmitCode ? question.jsSubmitCode : "";
+    }
+    setCodeValue(defaultCode);
+  }, [language, question]);
 
   useEffect(() => {
     if (testValue) {
