@@ -13,7 +13,6 @@ import { withdrawAPI } from "../../api";
 import { useEventTracker, useWindowSize } from "../../hook";
 import { useCookies } from "react-cookie";
 import useAutoLogout from "../../hook/useAutoLogout.tsx";
-import { GoogleTranslate } from "./GoogleTranslate.tsx";
 
 type ModalContentType = "logout" | "withdraw" | "leavePage" | "";
 
@@ -193,7 +192,7 @@ export const Header = memo(() => {
           <img src={logoImage} alt="로고 이미지" onClick={handleNavigateToHome} />
         </h1>
         <StyledLeftNav>
-          {isMobile || isCodingTest ? null : <GoogleTranslate />}
+    
           {!isLoggedIn ? (
             <StyledLoginBtn onClick={handleKakaoLogin}>{isGoogTransEn ? "Login" : "로그인"}</StyledLoginBtn>
           ) : (

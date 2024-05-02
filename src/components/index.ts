@@ -20,4 +20,3 @@ export * from "./common/RouteChangeTracker.tsx";
 export * from "./codeCompare/UserAICodeReview.tsx";
 export * from "./list/Pagination.tsx";
 export * from "./common/Loading.tsx";
-export * from "./common/GoogleTranslate.tsx";
