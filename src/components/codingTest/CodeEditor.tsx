@@ -75,6 +75,7 @@ export const CodeEditor = ({ editorHeight, language, setCodeValue, question, isM
         defaultLanguage={language === "Java" ? "java" : language === "Python" ? "python" : "javascript"}
         value={defaultContent}
         options={{
+          tabSize: 4,
           fontSize: 14,
           minimap: { enabled: false },
           scrollbar: {
