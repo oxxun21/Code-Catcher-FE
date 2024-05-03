@@ -55,7 +55,7 @@ export const CodeEditor = ({ editorHeight, language, setCodeValue, question, isM
           
 public class Main {
     public static void main(String[] args) {
-      // 자바 코드를 입력하세요.
+        // 자바 코드를 입력하세요.
     }
 }`;
       case "Python":
