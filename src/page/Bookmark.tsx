@@ -254,7 +254,8 @@ const Contain = styled.div`
     overflow: auto;
   }
   @media only screen and (max-width: 480px) {
-    height: 100%;
+    height: auto;
+    overflow: initial;
   }
 `;
 
