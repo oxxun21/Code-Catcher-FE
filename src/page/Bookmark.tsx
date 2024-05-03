@@ -264,6 +264,7 @@ const CodeContain = styled.section`
   justify-content: space-between;
   & > div {
     @media only screen and (max-width: 480px) {
+      position: -webkit-sticky;
       position: sticky;
       top: 0;
       z-index: 100;
