@@ -76,6 +76,9 @@ export const ReadOnlyEditor = ({ code, language }: ReadOnlyEditorProps) => {
         value={code ? code : "// JavaScript 언어 추가 관련 업데이트 중 입니다."}
         language={language}
         options={{
+          tabSize: 4,
+          insertSpaces: true,
+          detectIndentation: false,
           readOnly: true,
           fontSize: 14,
           minimap: { enabled: false },

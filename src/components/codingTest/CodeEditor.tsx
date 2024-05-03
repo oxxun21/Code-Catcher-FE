@@ -51,11 +51,13 @@ export const CodeEditor = ({ editorHeight, language, setCodeValue, question, isM
       case "Java":
         return question?.javaSubmitCode
           ? question.javaSubmitCode
-          : `public class Main {
+          : `import java.util.Scanner;
+          
+public class Main {
     public static void main(String[] args) {
       // 자바 코드를 입력하세요.
     }
-  }`;
+}`;
       case "Python":
         return question?.pythonSubmitCode ? question.pythonSubmitCode : "# 파이썬 코드를 입력해주세요";
       case "javascript":
@@ -75,6 +77,9 @@ export const CodeEditor = ({ editorHeight, language, setCodeValue, question, isM
         defaultLanguage={language === "Java" ? "java" : language === "Python" ? "python" : "javascript"}
         value={defaultContent}
         options={{
+          tabSize: 4,
+          insertSpaces: true,
+          detectIndentation: false,
           fontSize: 14,
           minimap: { enabled: false },
           scrollbar: {
