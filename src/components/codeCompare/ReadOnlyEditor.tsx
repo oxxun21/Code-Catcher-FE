@@ -77,6 +77,8 @@ export const ReadOnlyEditor = ({ code, language }: ReadOnlyEditorProps) => {
         language={language}
         options={{
           tabSize: 4,
+          insertSpaces: true,
+          detectIndentation: false,
           readOnly: true,
           fontSize: 14,
           minimap: { enabled: false },
