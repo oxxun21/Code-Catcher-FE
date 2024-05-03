@@ -7,6 +7,7 @@ export const instance = axios.create({
   headers: {
     Authorization: `Bearer ${getLoginCookie()}`,
     "Content-Type": "application/json",
+    "X-Forwarded-Host": "https://likelion-codee.com",
   },
 });
 
